@@ -18,7 +18,7 @@
           name = "SSD2600";
           nativeBuildInputs = with pkgs; [ zsh ];
 
-          buildInputs = with pkgs; [ git dotnet-sdk ];
+          buildInputs = with pkgs; [ git dotnet-sdk jre_minimal ];
         };
       });
 }
