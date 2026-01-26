@@ -1,4 +1,12 @@
 services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      target: app
+    ports:
+      - 5202:5202
+
   backend:
     build:
       context: ./
