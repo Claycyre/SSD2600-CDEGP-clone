@@ -38,4 +38,4 @@ ENV ASPNETCORE_URLS=http://*:5202
 
 EXPOSE 5202
 
-ENTRYPOINT ["dotnet", "watch", "--no-launch-profile"]
+ENTRYPOINT ["dotnet", "watch", "--no-launch-profile", "--non-interactive"]
