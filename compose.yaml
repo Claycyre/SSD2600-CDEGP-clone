@@ -6,6 +6,24 @@ services:
       target: app
     ports:
       - 5202:5202
+    develop:
+      watch:
+        - action: rebuild
+          path: Dockerfile
+        - action: rebuild
+          path: compose.yaml
+        - action: rebuild
+          path: deploy/dev
+        - action: sync
+          path: ./
+          target: /App
+          ignore:
+            - .git/
+            - .vs/
+            - .vscode/
+            - node_modules/
+            - dist/
+            - "*.log"
 
   backend:
     build:
