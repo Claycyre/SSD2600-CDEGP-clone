@@ -16,6 +16,7 @@ RUN dos2unix /usr/config/**
 # Change back to default image user
 USER mssql
 
+ENV ACCEPT_EULA=Y
 EXPOSE 1433
 
 ENTRYPOINT ["./entrypoint.sh"]
