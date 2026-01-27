@@ -6,6 +6,8 @@ services:
       target: app
     ports:
       - 5202:5202
+    environment:
+      ConnectionStrings:DefaultConnection: "Server=tcp:mssql;Initial Catalog=appdb;User ID=sa;Password=P@ssw0rd;TrustServerCertificate=True"
     develop:
       watch:
         - action: rebuild
