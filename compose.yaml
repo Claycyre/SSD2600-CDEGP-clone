@@ -16,6 +16,8 @@ services:
           path: compose.yaml
         - action: rebuild
           path: deploy/dev
+        - action: rebuild
+          path: "*.csproj"
         - action: sync
           path: ./
           target: /App
@@ -26,6 +28,8 @@ services:
             - node_modules/
             - dist/
             - "*.log"
+            - "*.csproj"
+            - Properties/
 
   mssql:
     build:
