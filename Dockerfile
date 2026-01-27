@@ -1,7 +1,7 @@
 ##########################
 # Database 
 ##########################
-FROM mcr.microsoft.com/mssql/server:2022-latest AS backend-dev
+FROM mcr.microsoft.com/mssql/server:2022-latest AS mssql 
 
 # Change to root user for config
 USER root

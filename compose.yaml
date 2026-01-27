@@ -29,7 +29,7 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-      target: backend-dev
+      target: mssql 
     depends_on:
       mssql:
         condition: service_healthy
@@ -38,7 +38,7 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-      target: backend-dev
+      target: mssql 
     ports:
       - 1433:1433
     environment: 
