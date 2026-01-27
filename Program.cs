@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SSD2600_CDEGP.Data;
@@ -19,6 +20,10 @@ public class Program
         builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddControllersWithViews();
+
+        builder.Services.AddDataProtection()
+          .SetApplicationName("ssd2600")
+          .PersistKeysToFileSystem(new DirectoryInfo(@"/var/dpkeys/"));
 
         var app = builder.Build();
 
