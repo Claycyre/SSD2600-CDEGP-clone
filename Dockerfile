@@ -11,7 +11,7 @@ RUN mkdir -p /usr/config
 WORKDIR /usr/config
 
 # Bundle config source
-COPY --chmod=755 --chown=mmsql deploy/dev /usr/config/
+COPY --chmod=755 --chown=mmsql deploy/dev/mssql /usr/config/
 
 RUN apt-get update && apt-get install -y dos2unix
 RUN dos2unix /usr/config/**
