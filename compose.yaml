@@ -36,6 +36,17 @@ services:
             - Properties/
             - Dockerfile
 
+        - action: rebuild
+          path: ./
+          include:
+            - deploy/dev/app
+
+        - action: sync+exec
+          path: ./Data/Migrations
+          target: /App/Data/Migrations
+          exec:
+            command: dotnet ef database update
+
         - action: sync
           path: ./
           target: /App
@@ -50,6 +61,7 @@ services:
             - Properties/
             - Dockerfile
             - compose.yaml
+            - deploy/dev/app
 
   mssql:
     build:
