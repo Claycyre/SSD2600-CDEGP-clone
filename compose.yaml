@@ -21,6 +21,8 @@ services:
       app-build: 
         condition: service_completed_successfully
         restart: true
+      mssql:
+        condition: service_healthy
     ports:
       - 5202:5202
     environment:
