@@ -56,6 +56,8 @@ services:
             - .vscode/
             - node_modules/
             - dist/
+            - bin/
+            - obj/
             - "*.log"
             - "*.csproj"
             - Properties/
