@@ -7,10 +7,9 @@ services:
     develop:
       watch:
         - action: rebuild 
-          path: ./
+          path: ./app
           include: 
             - "*.csproj"
-            - Dockerfile
 
   app:
     build:
@@ -30,25 +29,25 @@ services:
     develop:
       watch:
         - action: rebuild
-          path: ./
+          path: ./app
           include:
             - "*.csproj"
             - Properties/
-            - Dockerfile
 
         - action: rebuild
           path: ./
           include:
+            - Dockerfile
             - deploy/dev/app
 
         - action: sync+exec
-          path: ./Data/Migrations
+          path: ./app/Data/Migrations
           target: /App/Data/Migrations
           exec:
             command: dotnet ef database update
 
         - action: sync
-          path: ./
+          path: ./app
           target: /App
           ignore:
             - .git/
@@ -61,9 +60,6 @@ services:
             - "*.log"
             - "*.csproj"
             - Properties/
-            - Dockerfile
-            - compose.yaml
-            - deploy/dev/app
 
   mssql:
     build:

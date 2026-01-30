@@ -32,7 +32,7 @@ RUN dotnet tool install --global dotnet-ef
 COPY --chmod=755 deploy/dev/app /usr/config/
 
 WORKDIR /App
-COPY *.csproj ./
+COPY ./app/*.csproj ./
 
 RUN dotnet restore
 
@@ -42,7 +42,7 @@ RUN dotnet restore
 FROM app-build AS app
 
 WORKDIR /App
-COPY . ./
+COPY ./app ./
 
 RUN dotnet restore
 
