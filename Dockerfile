@@ -26,6 +26,9 @@ ENTRYPOINT ["./entrypoint.sh"]
 ##########################
 FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:25d14b400b75fa4e89d5bd4487a92a604a4e409ab65becb91821e7dc4ac7f81f AS app-build
 
+RUN apt-get update && \
+  apt-get install -y socat
+
 ENV PATH="$PATH:/root/.dotnet/tools"
 RUN dotnet tool install --global dotnet-ef
 
@@ -48,6 +51,8 @@ RUN dotnet restore
 
 ENV ASPNETCORE_URLS=http://*:5202
 ENV DOTNET_ENVIRONMENT=Development
+
+ENV DOTNET_WATCH_AUTO_RELOAD_WS_PORT=42042
 
 EXPOSE 5202
 

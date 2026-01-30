@@ -24,6 +24,7 @@ services:
         condition: service_healthy
     ports:
       - 5202:5202
+      - 42042:42000
     environment:
       ConnectionStrings:DefaultConnection: "Server=tcp:mssql;Initial Catalog=appdb;User ID=sa;Password=P@ssw0rd;TrustServerCertificate=True"
     develop:
