@@ -47,6 +47,7 @@ COPY ./app ./
 RUN dotnet restore
 
 ENV ASPNETCORE_URLS=http://*:5202
+ENV DOTNET_ENVIRONMENT=Development
 
 EXPOSE 5202
 
