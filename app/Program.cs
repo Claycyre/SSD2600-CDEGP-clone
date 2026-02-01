@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SSD2600_CDEGP.Data;
+using Tailwind;
 
 namespace SSD2600_CDEGP;
 
@@ -24,6 +25,8 @@ public class Program
         builder.Services.AddDataProtection()
           .SetApplicationName("ssd2600")
           .PersistKeysToFileSystem(new DirectoryInfo(@"/var/dpkeys/"));
+
+        builder.UseTailwindCli();
 
         var app = builder.Build();
 

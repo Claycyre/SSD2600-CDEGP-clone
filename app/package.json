@@ -1,0 +1,27 @@
+{
+  "name": "ssd2600-cdegp",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "css:build": "npx @tailwindcss/cli -i wwwroot/css/site.css -o wwwroot/dist/site.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uFloppyDisk/SSD2600-CDEGP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/uFloppyDisk/SSD2600-CDEGP/issues"
+  },
+  "homepage": "https://github.com/uFloppyDisk/SSD2600-CDEGP#readme",
+  "dependencies": {
+    "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.18"
+  }
+}
