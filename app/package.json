@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/uFloppyDisk/SSD2600-CDEGP#readme",
   "dependencies": {
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.18"
