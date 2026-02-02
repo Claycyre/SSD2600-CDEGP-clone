@@ -1,2 +1,7 @@
-cd app && dotnet csharpier format .
+prettier $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g') --write --ignore-unknown
+
+cd app && 
+dotnet csharpier format . && 
+cd -
+
 git update-index --again
