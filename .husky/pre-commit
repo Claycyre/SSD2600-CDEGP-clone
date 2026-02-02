@@ -1,0 +1,2 @@
+cd app && dotnet csharpier format .
+git update-index --again
