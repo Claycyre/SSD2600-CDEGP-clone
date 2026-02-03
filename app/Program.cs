@@ -58,6 +58,11 @@ public class Program
 
         app.UseAuthorization();
 
+        app.MapControllerRoute(
+            name: "Identity",
+            pattern: "{area:exists}/{controller=Account}/{action=Index}/{id?}"
+        );
+
         app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
         app.MapRazorPages();
 
