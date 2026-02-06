@@ -6,9 +6,9 @@ services:
       target: app-build
     develop:
       watch:
-        - action: rebuild 
+        - action: rebuild
           path: ./app
-          include: 
+          include:
             - "*.csproj"
 
   app:
@@ -17,7 +17,7 @@ services:
       dockerfile: ./Dockerfile
       target: app
     depends_on:
-      app-build: 
+      app-build:
         condition: service_completed_successfully
         restart: true
       mssql:
@@ -47,6 +47,12 @@ services:
           exec:
             command: dotnet ef database update
 
+        - action: sync+exec
+          path: ./app/package.json
+          target: /App/package.json
+          exec:
+            command: npm install
+
         - action: sync
           path: ./app
           target: /App
@@ -61,21 +67,36 @@ services:
             - "*.log"
             - "*.csproj"
             - Properties/
+            - package.json
+            - package-lock.json
 
   mssql:
     build:
       context: ./
       dockerfile: ./Dockerfile
-      target: mssql 
+      target: mssql
     ports:
       - 1433:1433
-    environment: 
+    environment:
       ACCEPT_EULA: Y
       MSSQL_SA_PASSWORD: P@ssw0rd
       MSSQL_DATABASE: master
       MSSQL_PID: Express
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "P@ssw0rd", "-Q", "SELECT 1", "-No"]
+      test:
+        [
+          "CMD",
+          "/opt/mssql-tools18/bin/sqlcmd",
+          "-S",
+          "localhost",
+          "-U",
+          "sa",
+          "-P",
+          "P@ssw0rd",
+          "-Q",
+          "SELECT 1",
+          "-No",
+        ]
       interval: 5s
       timeout: 5s
       retries: 5
