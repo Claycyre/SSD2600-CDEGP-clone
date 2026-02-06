@@ -61,6 +61,8 @@ If you are using a Windows terminal such as `cmd` or `powershell`, `grep` is
 not available; in this case, run `docker compose logs -f` to watch all container
 logs.
 
+The site itself is at http://localhost:5202/ in the dev environment.
+
 > [!IMPORTANT]
 > When you are not working, run `docker compose down` to ensure development
 > containers are shut down and not taking resources/battery.
