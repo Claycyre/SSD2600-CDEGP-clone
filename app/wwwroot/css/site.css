@@ -1,8 +1,14 @@
 @import "tailwindcss";
 
+@import "../assets/fonts/inter/web/inter.css";
+
 @source '../**/*.cshtml';
 
 @theme {
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
   --color-primary-50: oklch(0.94 0.026 239.072);
   --color-primary-100: oklch(0.887 0.06 239.435);
   --color-primary-200: oklch(0.797 0.094 240.853);
