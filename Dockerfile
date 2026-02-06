@@ -51,6 +51,7 @@ COPY ./app ./
 
 RUN dotnet restore
 RUN dotnet tool restore
+RUN npm install
 
 ENV ASPNETCORE_URLS=http://*:5202
 ENV DOTNET_ENVIRONMENT=Development
