@@ -1,3 +1,60 @@
 @import "tailwindcss";
 
 @source '../**/*.cshtml';
+
+@theme {
+  --color-primary-50: oklch(0.94 0.026 239.072);
+  --color-primary-100: oklch(0.887 0.06 239.435);
+  --color-primary-200: oklch(0.797 0.094 240.853);
+  --color-primary-300: oklch(0.73 0.112 241.744);
+  --color-primary-400: oklch(0.654 0.126 243.257);
+  --color-primary-500: oklch(0.58 0.13 245.519);
+  --color-primary-600: oklch(0.526 0.127 246.691);
+  --color-primary-700: oklch(0.476 0.119 247.206);
+  --color-primary-800: oklch(0.438 0.112 247.771);
+  --color-primary-900: oklch(0.355 0.096 248.101);
+
+  --color-secondary-50: oklch(0.987 0.023 95.954);
+  --color-secondary-100: oklch(0.962 0.062 95.396);
+  --color-secondary-200: oklch(0.921 0.116 95.875);
+  --color-secondary-300: oklch(0.894 0.145 95.238);
+  --color-secondary-400: oklch(0.854 0.15 88.68);
+  --color-secondary-500: oklch(0.804 0.156 82.538);
+  --color-secondary-600: oklch(0.718 0.148 70.023);
+  --color-secondary-700: oklch(0.632 0.147 56.088);
+  --color-secondary-800: oklch(0.547 0.149 44.686);
+  --color-secondary-900: oklch(0.435 0.138 36.603);
+
+  --color-neutral-50: oklch(0.965 0.007 247.896);
+  --color-neutral-100: oklch(0.909 0.017 250.851);
+  --color-neutral-200: oklch(0.838 0.028 248.167);
+  --color-neutral-300: oklch(0.758 0.038 249.613);
+  --color-neutral-400: oklch(0.676 0.044 247.349);
+  --color-neutral-500: oklch(0.579 0.052 248.745);
+  --color-neutral-600: oklch(0.496 0.057 248.16);
+  --color-neutral-700: oklch(0.414 0.055 248.361);
+  --color-neutral-800: oklch(0.345 0.051 250.499);
+  --color-neutral-900: oklch(0.278 0.056 249.755);
+
+  --color-alpha-50: oklch(0.972 0.029 204.506);
+  --color-alpha-100: oklch(0.941 0.059 202.803);
+  --color-alpha-200: oklch(0.879 0.094 202.341);
+  --color-alpha-300: oklch(0.795 0.11 202.582);
+  --color-alpha-400: oklch(0.736 0.112 203.172);
+  --color-alpha-500: oklch(0.697 0.109 203.446);
+  --color-alpha-600: oklch(0.6 0.099 203.743);
+  --color-alpha-700: oklch(0.536 0.089 205.032);
+  --color-alpha-800: oklch(0.485 0.08 204.052);
+  --color-alpha-900: oklch(0.387 0.065 203.94);
+
+  --color-beta-50: oklch(0.963 0.018 17.478);
+  --color-beta-100: oklch(0.887 0.051 18.157);
+  --color-beta-200: oklch(0.777 0.105 19.714);
+  --color-beta-300: oklch(0.674 0.155 22.095);
+  --color-beta-400: oklch(0.597 0.182 24.512);
+  --color-beta-500: oklch(0.514 0.185 26.719);
+  --color-beta-600: oklch(0.469 0.174 27.226);
+  --color-beta-700: oklch(0.421 0.161 27.782);
+  --color-beta-800: oklch(0.366 0.142 28.024);
+  --color-beta-900: oklch(0.313 0.124 28.447);
+}
