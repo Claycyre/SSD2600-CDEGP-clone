@@ -1,6 +1,11 @@
 .git/
 
+# Dotnet build artifacts
 bin/
 obj/
 
+# NPM
 node_modules/
+
+# Roslyn virtual files
+*__virtual*
