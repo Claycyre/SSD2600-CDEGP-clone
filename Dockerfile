@@ -48,6 +48,7 @@ WORKDIR /App
 COPY ./app ./
 
 RUN dotnet restore
+RUN dotnet tool restore
 
 ENV ASPNETCORE_URLS=http://*:5202
 ENV DOTNET_ENVIRONMENT=Development
