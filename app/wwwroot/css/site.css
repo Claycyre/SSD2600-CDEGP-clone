@@ -10,6 +10,7 @@
     "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-heading: "Zalando Sans", var(--font-sans);
+  --font-headingsxp: "Zalando Sans SemiExpanded", var(--font-heading);
 
   --color-primary-50: oklch(0.94 0.026 239.072);
   --color-primary-100: oklch(0.887 0.06 239.435);

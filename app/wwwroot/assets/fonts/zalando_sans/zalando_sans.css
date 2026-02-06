@@ -12,6 +12,19 @@
 }
 
 @font-face {
+  font-family: "Zalando Sans SemiExpanded";
+  font-weight: 200 900;
+  font-display: swap;
+  font-style: normal;
+
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 115;
+
+  src: url("/assets/fonts/zalando_sans/ZalandoSans-VariableFont_wdth\,wght.ttf")
+    format("truetype");
+}
+
+@font-face {
   font-family: "Zalando Sans";
   font-weight: 200 900;
   font-display: swap;
@@ -19,6 +32,19 @@
 
   font-optical-sizing: auto;
   font-variation-settings: "wdth" 100;
+
+  src: url("/assets/fonts/zalando_sans/ZalandoSans-Italic-VariableFont_wdth\,wght.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Zalando Sans SemiExpanded";
+  font-weight: 200 900;
+  font-display: swap;
+  font-style: italic;
+
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 115;
 
   src: url("/assets/fonts/zalando_sans/ZalandoSans-Italic-VariableFont_wdth\,wght.ttf")
     format("truetype");
