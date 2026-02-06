@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 218 218" role="img" aria-label="Prometheus Atomics Procurement Industries logo">
+  <g transform="translate(-11,-11)">
+    <!-- Outer ring -->
+    <circle cx="120" cy="120" r="104" fill="none" stroke="currentColor" stroke-width="4"></circle>
+
+    <!-- Atomic orbits -->
+    <g fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round">
+      <ellipse cx="120" cy="120" rx="86" ry="36" transform="rotate(18 120 120)"></ellipse>
+      <ellipse cx="120" cy="120" rx="86" ry="36" transform="rotate(78 120 120)"></ellipse>
+      <ellipse cx="120" cy="120" rx="86" ry="36" transform="rotate(-42 120 120)"></ellipse>
+    </g>
+
+    <!-- Orbit nodes -->
+    <g fill="currentColor">
+      <circle cx="201.2" cy="138" r="10"></circle>
+      <circle cx="54.5" cy="150" r="10"></circle>
+      <circle cx="124.5" cy="46" r="10"></circle>
+    </g>
+
+    <!-- Prometheus spark / flame -->
+    <g transform="translate(120,120) scale(0.74)">
+      <path fill-rule="evenodd" d="M0,-66
+               C 22,-44 34,-22 28,0
+               C 22,26 2,44 0,64
+               C -2,44 -22,26 -28,0
+               C -34,-22 -22,-44 0,-66Z" fill="currentColor"></path>
+
+      <!-- Inner cut -->
+      <path fill-rule="evenodd" d="M0,-44
+               C 14,-30 20,-16 16,0
+               C 12,18 2,30 0,44
+               C -2,30 -12,18 -16,0
+               C -20,-16 -14,-30 0,-44Z" fill="white"></path>
+
+      <!-- Nucleus -->
+      <circle cx="0" cy="6" r="12" fill="currentColor"></circle>
+    </g>
+  </g>
+</svg>
