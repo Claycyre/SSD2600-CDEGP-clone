@@ -2,7 +2,7 @@ services:
   app-build:
     build:
       context: ./
-      dockerfile: ./Dockerfile
+      dockerfile: ./deploy/dev/Dockerfile
       target: app-build
     develop:
       watch:
@@ -14,7 +14,7 @@ services:
   app:
     build:
       context: ./
-      dockerfile: ./Dockerfile
+      dockerfile: ./deploy/dev/Dockerfile
       target: app
     depends_on:
       app-build:
@@ -38,7 +38,7 @@ services:
         - action: rebuild
           path: ./
           include:
-            - Dockerfile
+            - deploy/dev/Dockerfile
             - deploy/dev/app
 
         - action: sync+exec
@@ -73,7 +73,7 @@ services:
   mssql:
     build:
       context: ./
-      dockerfile: ./Dockerfile
+      dockerfile: ./deploy/dev/Dockerfile
       target: mssql
     ports:
       - 1433:1433
