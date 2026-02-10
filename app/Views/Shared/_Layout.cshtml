@@ -8,11 +8,82 @@
     <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true" />
 
     <title>@ViewData["Title"] - Prometheus Atomics</title>
+
+    <style>
+            .nav__list {
+                --hover-transition: 200ms ease-in-out;
+                gap: 0.5rem;
+            }
+
+            .nav__list>li {
+                position: relative;
+
+                padding: 0.5rem 1rem;
+
+                background-color: transparent;
+                transition: background-color var(--hover-transition);
+            }
+
+            .nav__list>li:hover {
+                background-color: var(--color-neutral-100);
+                transition: none;
+            }
+
+            .nav__list>li::after {
+                position: absolute;
+
+                content: "";
+
+                bottom: 0;
+                left: 50%;
+
+                width: 75%;
+                height: 2px;
+
+                background-color: var(--color-primary-500);
+
+                opacity: 0;
+
+                translate: -50% 0;
+
+                transition: opacity var(--hover-transition);
+            }
+
+            .nav__list>li:hover::after {
+                opacity: 100%;
+                transition: none;
+            }
+    </style>
 </head>
 
 <body class="flex flex-col min-h-dvh">
-    <header class="shrink px-2 bg-neutral-200">
-        <p class="text-3xl font-bold">Prometheus Atomics</p>
+    <header class="shrink px-2 py-4 bg-neutral-200">
+        <nav class="flex gap-8">
+            <div>
+                <p class="text-3xl font-displayxp font-bold">Prometheus Atomics</p>
+            </div>
+            <div class="flex justify-between items-center basis-0 grow">
+                <ul class="nav__list flex">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">Placeholder</a>
+                    </li>
+                    <li>
+                        <a href="#">Placeholder</a>
+                    </li>
+                </ul>
+                <ul class="nav__list flex">
+                    <li>
+                        <a href="/Identity/Account/Register">Register</a>
+                    </li>
+                    <li>
+                        <a href="/Identity/Account/Login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </header>
 
     <main role="main" class="basis-0 grow">
