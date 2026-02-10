@@ -51,7 +51,9 @@
 <body class="flex flex-col min-h-dvh">
     <header class="shrink px-2 py-4 border-b border-primary-500 shadow-lg">
         <nav class="flex gap-2 lg:gap-8">
-            @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Size", "small" }, { "LogoTypeShouldHide", true } })
+            <a class="basis-0" href="/">
+                @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Size", "small" }, { "LogoTypeShouldHide", true } })
+            </a>
             <div class="flex justify-between items-center basis-0 grow">
                 <ul class="nav__list flex">
                     <li>
