@@ -22,29 +22,18 @@ EXPOSE 1433
 ENTRYPOINT ["./entrypoint.sh"]
 
 ##########################
-# Application Build/Restore
+# Dev App Intermediate 
 ##########################
-FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:25d14b400b75fa4e89d5bd4487a92a604a4e409ab65becb91821e7dc4ac7f81f AS app-build
+FROM app-common AS app-dev-intermediate
 
-RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
-
-RUN apt-get update && \
-  apt-get install -y socat nodejs
-
-ENV PATH="$PATH:/root/.dotnet/tools"
-RUN dotnet tool install --global dotnet-ef
+RUN apt-get install -y socat
 
 COPY --chmod=755 deploy/dev/app /usr/config/
 
-WORKDIR /App
-COPY ./app/*.csproj ./
-
-RUN dotnet restore
-
 ##########################
-# Application Runtime 
+# Dev Application Runtime 
 ##########################
-FROM app-build AS app
+FROM app-dev-intermediate AS app-dev
 
 WORKDIR /App
 COPY ./app ./

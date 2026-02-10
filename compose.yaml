@@ -1,23 +1,23 @@
 services:
-  app-build:
+  app-common:
     build:
       context: ./
-      dockerfile: ./deploy/dev/Dockerfile
-      target: app-build
+      dockerfile: ./deploy/shared/Dockerfile
+      target: app-common
+    image: app-common:latest
     develop:
       watch:
         - action: rebuild
-          path: ./app
-          include:
-            - "*.csproj"
+          path: ./deploy/shared
+          include: Dockerfile
 
   app:
     build:
       context: ./
       dockerfile: ./deploy/dev/Dockerfile
-      target: app
+      target: app-dev
     depends_on:
-      app-build:
+      app-common:
         condition: service_completed_successfully
         restart: true
       mssql:
@@ -36,10 +36,11 @@ services:
             - Properties/
 
         - action: rebuild
-          path: ./
+          path: ./deploy
           include:
-            - deploy/dev/Dockerfile
-            - deploy/dev/app
+            - shared/Dockerfile
+            - dev/Dockerfile
+            - dev/app
 
         - action: sync+exec
           path: ./app/Data/Migrations
