@@ -51,9 +51,7 @@
 <body class="flex flex-col min-h-dvh">
     <header class="shrink px-2 py-4 border-b border-primary-500 shadow-lg">
         <nav class="flex gap-8">
-            <div>
-                <p class="text-3xl font-displayxp font-bold">Prometheus Atomics</p>
-            </div>
+            @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Size", "small" }, { "LogoTypeShouldHide", true } })
             <div class="flex justify-between items-center basis-0 grow">
                 <ul class="nav__list flex">
                     <li>
