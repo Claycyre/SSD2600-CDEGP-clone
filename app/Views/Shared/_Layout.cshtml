@@ -119,12 +119,12 @@
             </div>
         </footer>
         @await RenderSectionAsync("Scripts", required: false)
+
+        <script defer>
+                const copyrightEl = document.getElementById("copyright-year");
+                copyrightEl.innerText = new Date().getFullYear()
+        </script>
         <script defer src="~/dist/js/index.js"></script>
     </body>
-
-    <script defer>
-        const copyrightEl = document.getElementById("copyright-year");
-        copyrightEl.innerText = new Date().getFullYear()
-    </script>
 
 </html>
