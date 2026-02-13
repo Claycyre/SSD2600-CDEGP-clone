@@ -1,0 +1,522 @@
+@model ViewOrdersViewModel
+@{
+    ViewData["Title"] = "Your Orders";
+    var groups = Model.OrderGroups;
+}
+
+<style>
+    /* ── Date pill carousel ── */
+    .date-tabs-strip {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        padding: 0.25rem 0.25rem 0.5rem;
+        scrollbar-width: thin;
+        scrollbar-color: #d4d4d4 transparent;
+        scroll-behavior: smooth;
+    }
+    .date-tabs-strip::-webkit-scrollbar {
+        height: 4px;
+    }
+    .date-tabs-strip::-webkit-scrollbar-thumb {
+        background: #d4d4d4;
+        border-radius: 4px;
+    }
+
+    .date-tab {
+        cursor: pointer;
+        white-space: nowrap;
+        padding: 0.375rem 0.875rem;
+        border-radius: 9999px;
+        border: 1px solid #d4d4d4;
+        background: white;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: #525252;
+        transition: all 0.15s ease;
+        flex-shrink: 0;
+    }
+    .date-tab:hover {
+        background: #f5f5f5;
+        border-color: #a3a3a3;
+    }
+    .date-tab.active {
+        background: #262626;
+        color: white;
+        border-color: #262626;
+    }
+    .date-tab .tab-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 0.375rem;
+        min-width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 9999px;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        padding: 0 0.3rem;
+        background: #e5e5e5;
+        color: #525252;
+    }
+    .date-tab.active .tab-count {
+        background: rgba(255,255,255,0.2);
+        color: white;
+    }
+
+    /* ── Date carousel scroll arrows ── */
+    .date-carousel-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+    }
+    .date-scroll-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 9999px;
+        border: 1px solid #d4d4d4;
+        background: white;
+        color: #737373;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        flex-shrink: 0;
+        margin-bottom: 0.5rem;
+    }
+    .date-scroll-arrow:hover {
+        background: #f5f5f5;
+        color: #262626;
+        border-color: #a3a3a3;
+    }
+
+    /* ── Scrollable item list ── */
+    .item-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+        max-height: 28rem;
+        overflow-y: auto;
+        padding-right: 0.25rem;
+        scrollbar-width: thin;
+        scrollbar-color: #d4d4d4 transparent;
+        scroll-behavior: smooth;
+    }
+    .item-list::-webkit-scrollbar {
+        width: 4px;
+    }
+    .item-list::-webkit-scrollbar-thumb {
+        background: #d4d4d4;
+        border-radius: 4px;
+    }
+
+    .item-card {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        padding: 0.875rem 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid #e5e5e5;
+        background: white;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+    .item-card:hover {
+        border-color: #a3a3a3;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .item-card.selected {
+        border-color: #404040;
+        box-shadow: 0 0 0 1px #404040;
+        background: #fafafa;
+    }
+    .item-card-img {
+        width: 5.5rem;
+        height: 4rem;
+        border-radius: 0.375rem;
+        object-fit: cover;
+        background: #f5f5f5;
+        flex-shrink: 0;
+    }
+    .item-card-body {
+        min-width: 0;
+        flex: 1;
+    }
+    .item-card-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #262626;
+        margin: 0 0 0.125rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .item-card-price {
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: #525252;
+        margin: 0 0 0.25rem;
+    }
+    .item-card-desc {
+        font-size: 0.75rem;
+        color: #737373;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+</style>
+
+<!-- Top notification banner -->
+@if (!string.IsNullOrEmpty(Model.NotificationMessage))
+{
+    <div id="order-notification" class="mx-auto mt-4 max-w-2xl">
+        <div class="flex items-center justify-between gap-3 rounded border border-neutral-300 bg-neutral-100 px-4 py-3 text-sm">
+            <div class="flex items-center gap-2">
+                <svg class="h-5 w-5 shrink-0 text-neutral-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-neutral-700">@Model.NotificationMessage</span>
+            </div>
+            <button onclick="document.getElementById('order-notification').remove()" class="shrink-0 text-neutral-400 hover:text-neutral-600" aria-label="Dismiss notification">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+}
+
+@if (TempData["Notification"] is string tempNotification)
+{
+    <div id="temp-notification" class="mx-auto mt-2 max-w-2xl">
+        <div class="flex items-center justify-between gap-3 rounded border border-neutral-300 bg-neutral-50 px-4 py-3 text-sm">
+            <span class="text-neutral-700">@tempNotification</span>
+            <button onclick="document.getElementById('temp-notification').remove()" class="shrink-0 text-neutral-400 hover:text-neutral-600" aria-label="Dismiss">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+}
+
+<!-- Three-column layout -->
+<div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-8 lg:grid-cols-[280px_1fr_240px]">
+
+    <!-- ===================== LEFT COLUMN: Accordions ===================== -->
+    <aside class="space-y-3">
+
+        <!-- Order Specifications -->
+        <details open class="group rounded border border-neutral-300 bg-white">
+            <summary class="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-semibold text-neutral-800 select-none">
+                <span>Order Specifications</span>
+                <svg class="h-4 w-4 shrink-0 text-neutral-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </summary>
+            <div id="spec-content" class="border-t border-neutral-200 px-4 py-3 text-sm leading-relaxed text-neutral-600 whitespace-pre-line">
+                @groups.FirstOrDefault()?.Items.FirstOrDefault()?.Specifications
+            </div>
+        </details>
+
+        <!-- Order Again -->
+        <details class="group rounded border border-neutral-300 bg-white">
+            <summary class="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-semibold text-neutral-800 select-none">
+                <span>Order Again</span>
+                <svg class="h-4 w-4 shrink-0 text-neutral-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </summary>
+            <div class="border-t border-neutral-200 px-4 py-3">
+                <p class="mb-3 text-sm text-neutral-600">Want to reorder this product? Click below to add it to your cart with the same specifications.</p>
+                <form asp-action="OrderAgain" method="post">
+                    <input type="hidden" name="orderId" id="reorder-id" value="@groups.FirstOrDefault()?.OrderId" />
+                    <button type="submit" class="w-full rounded border border-neutral-400 bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200 transition-colors">
+                        Reorder This Item
+                    </button>
+                </form>
+            </div>
+        </details>
+
+        <!-- Learn about manufacturer -->
+        <details class="group rounded border border-neutral-300 bg-white">
+            <summary class="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-semibold text-neutral-800 select-none">
+                <span>Learn About Manufacturer</span>
+                <svg class="h-4 w-4 shrink-0 text-neutral-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </summary>
+            <div id="manufacturer-content" class="border-t border-neutral-200 px-4 py-3 text-sm text-neutral-600">
+                <p class="mb-1 font-medium text-neutral-700" id="manufacturer-name">@groups.FirstOrDefault()?.Items.FirstOrDefault()?.Manufacturer</p>
+                <p id="manufacturer-desc">@groups.FirstOrDefault()?.Items.FirstOrDefault()?.ManufacturerDescription</p>
+            </div>
+        </details>
+
+        <!-- Return item -->
+        <details class="group rounded border border-neutral-300 bg-white">
+            <summary class="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-semibold text-neutral-800 select-none">
+                <span>Return Item</span>
+                <svg class="h-4 w-4 shrink-0 text-neutral-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </summary>
+            <div class="border-t border-neutral-200 px-4 py-3">
+                <p class="mb-3 text-sm text-neutral-600">If you need to return this item, please initiate a return request below. Returns are accepted within 30 days of delivery.</p>
+                <form asp-action="ReturnItem" method="post">
+                    <input type="hidden" name="orderId" id="return-id" value="@groups.FirstOrDefault()?.OrderId" />
+                    <button type="submit" class="w-full rounded border border-neutral-400 bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200 transition-colors">
+                        Initiate Return
+                    </button>
+                </form>
+            </div>
+        </details>
+
+        <!-- Leave a feedback -->
+        <details class="group rounded border border-neutral-300 bg-white">
+            <summary class="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-semibold text-neutral-800 select-none">
+                <span>Leave a Feedback</span>
+                <svg class="h-4 w-4 shrink-0 text-neutral-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </summary>
+            <div class="border-t border-neutral-200 px-4 py-3">
+                <form asp-action="LeaveFeedback" method="post">
+                    <input type="hidden" name="orderId" id="feedback-id" value="@groups.FirstOrDefault()?.OrderId" />
+                    <textarea name="feedback" rows="3" placeholder="Share your experience with this product..." class="mb-3 w-full rounded border border-neutral-300 bg-neutral-50 px-3 py-2 text-sm text-neutral-700 placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none"></textarea>
+                    <button type="submit" class="w-full rounded border border-neutral-400 bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-200 transition-colors">
+                        Submit Feedback
+                    </button>
+                </form>
+            </div>
+        </details>
+
+    </aside>
+
+    <!-- ===================== CENTER COLUMN: Double Carousel ===================== -->
+    <section class="flex flex-col items-center mx-auto w-full" style="max-width:37.5rem;">
+
+        <!-- Page title -->
+        <div class="mb-5 w-full text-center">
+            <h1 class="text-2xl font-bold text-neutral-800">Your Orders</h1>
+            <div class="mx-auto mt-2 h-px w-24 bg-neutral-300"></div>
+        </div>
+
+        <!-- ─── Horizontal date pill carousel ─── -->
+        <div class="mb-4 w-full">
+            <div class="date-carousel-wrapper">
+                <!-- Left scroll arrow -->
+                <button id="date-scroll-left" onclick="scrollDates(-1)" class="date-scroll-arrow" aria-label="Scroll dates left">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+
+                <div id="date-tabs" class="date-tabs-strip">
+                    @for (int i = 0; i < groups.Count; i++)
+                    {
+                        var g = groups[i];
+                        <button class="date-tab @(i == 0 ? "active" : "")" onclick="selectGroup(@i)" data-group="@i">
+                            @g.OrderDate.ToString("MMM d")
+                            <span class="tab-count">@g.Items.Count</span>
+                        </button>
+                    }
+                </div>
+
+                <!-- Right scroll arrow -->
+                <button id="date-scroll-right" onclick="scrollDates(1)" class="date-scroll-arrow" aria-label="Scroll dates right">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Order number + status -->
+        <div class="mb-3 flex w-full items-center justify-between px-1">
+            <span id="group-order-number" class="text-xs font-medium text-neutral-500">@groups.FirstOrDefault()?.OrderNumber</span>
+            <div class="flex items-center gap-2">
+                <span id="group-status-badge" class="rounded-full border border-neutral-300 bg-neutral-50 px-2.5 py-0.5 text-xs font-medium text-neutral-600">@groups.FirstOrDefault()?.Status</span>
+                <span id="group-total" class="text-xs text-neutral-400">$@groups.FirstOrDefault()?.TotalPrice.ToString("N2")</span>
+            </div>
+        </div>
+
+        <!-- ─── Scrollable item list ─── -->
+        <div id="item-list" class="item-list w-full">
+            @if (groups.Any())
+            {
+                @for (int i = 0; i < groups.First().Items.Count; i++)
+                {
+                    var item = groups.First().Items[i];
+                    <div class="item-card @(i == 0 ? "selected" : "")" onclick="selectItem(@i)" data-item="@i">
+                        <img class="item-card-img" src="@item.ProductImage" alt="@item.ProductName" />
+                        <div class="item-card-body">
+                            <p class="item-card-title">@item.ProductName</p>
+                            <p class="item-card-price">$@item.Price.ToString("N2")</p>
+                            <p class="item-card-desc">@item.Description</p>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+    </section>
+
+    <!-- ===================== RIGHT COLUMN: User Info ===================== -->
+    <aside class="flex flex-col items-center lg:items-start">
+        <div class="flex flex-col items-center rounded-lg border border-neutral-300 bg-white px-6 py-5 shadow-sm lg:items-start">
+            <!-- Avatar -->
+            <div class="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-200 text-lg font-bold text-neutral-600">
+                @Model.UserAvatarInitials
+            </div>
+            <!-- Name -->
+            <h3 class="text-sm font-semibold text-neutral-800">@Model.UserName</h3>
+            <!-- Role -->
+            <p class="mt-1 text-xs text-neutral-500">@Model.UserRole</p>
+        </div>
+    </aside>
+
+</div>
+
+@section Scripts {
+    <script>
+        // ──────────────────────────────────────────────
+        //  Serialized order groups from the server
+        // ──────────────────────────────────────────────
+        const orderGroups = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(
+            groups.Select(g => new {
+                g.OrderId,
+                g.OrderNumber,
+                OrderDate = g.OrderDate.ToString("MMM d, yyyy"),
+                g.Status,
+                g.StatusTimeframe,
+                TotalPrice = g.TotalPrice.ToString("N2"),
+                Items = g.Items.Select(item => new {
+                    item.Id,
+                    item.ProductName,
+                    item.ProductImage,
+                    item.Description,
+                    Price = item.Price.ToString("N2"),
+                    item.Specifications,
+                    item.Manufacturer,
+                    item.ManufacturerDescription,
+                }),
+            }),
+            new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }
+        ));
+
+        // ──────────────────────────────────────────────
+        //  State
+        // ──────────────────────────────────────────────
+        let currentGroupIndex = 0;
+        let currentItemIndex  = 0;
+
+        // ──────────────────────────────────────────────
+        //  Scroll the date pill strip left / right
+        // ──────────────────────────────────────────────
+        function scrollDates(direction) {
+            const strip = document.getElementById('date-tabs');
+            strip.scrollBy({ left: direction * 200, behavior: 'smooth' });
+        }
+
+        // ──────────────────────────────────────────────
+        //  Select a date group (horizontal tabs)
+        // ──────────────────────────────────────────────
+        function selectGroup(index) {
+            currentGroupIndex = index;
+            currentItemIndex = 0;
+            rebuildItemList();
+            updateSidePanel();
+            updateGroupInfo();
+        }
+
+        // ──────────────────────────────────────────────
+        //  Select an item from the scrollable list
+        // ──────────────────────────────────────────────
+        function selectItem(index) {
+            currentItemIndex = index;
+
+            // Highlight selected card
+            document.querySelectorAll('.item-card').forEach((card, i) => {
+                card.classList.toggle('selected', i === currentItemIndex);
+            });
+
+            updateSidePanel();
+        }
+
+        // ──────────────────────────────────────────────
+        //  Rebuild the item list for the current group
+        // ──────────────────────────────────────────────
+        function rebuildItemList() {
+            const group = orderGroups[currentGroupIndex];
+            const items = group.items;
+            const container = document.getElementById('item-list');
+            container.innerHTML = '';
+
+            items.forEach((item, i) => {
+                const card = document.createElement('div');
+                card.className = `item-card${i === 0 ? ' selected' : ''}`;
+                card.setAttribute('data-item', i);
+                card.addEventListener('click', () => selectItem(i));
+
+                card.innerHTML = `
+                    <img class="item-card-img" src="${item.productImage}" alt="${item.productName}" />
+                    <div class="item-card-body">
+                        <p class="item-card-title">${item.productName}</p>
+                        <p class="item-card-price">$${item.price}</p>
+                        <p class="item-card-desc">${item.description}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Scroll to top on group switch
+            container.scrollTop = 0;
+        }
+
+        // ──────────────────────────────────────────────
+        //  Update group-level info (order number, status, tabs)
+        // ──────────────────────────────────────────────
+        function updateGroupInfo() {
+            const group = orderGroups[currentGroupIndex];
+
+            // Tab active state
+            document.querySelectorAll('.date-tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i === currentGroupIndex);
+            });
+
+            // Scroll active tab into view
+            const activeTab = document.querySelector('.date-tab.active');
+            if (activeTab) {
+                activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
+            // Order info
+            document.getElementById('group-order-number').textContent = group.orderNumber;
+            document.getElementById('group-status-badge').textContent = group.status;
+            document.getElementById('group-total').textContent        = '$' + group.totalPrice;
+
+            // Hidden form IDs
+            const reorderId  = document.getElementById('reorder-id');
+            const returnId   = document.getElementById('return-id');
+            const feedbackId = document.getElementById('feedback-id');
+            if (reorderId)  reorderId.value  = group.orderId;
+            if (returnId)   returnId.value   = group.orderId;
+            if (feedbackId) feedbackId.value  = group.orderId;
+        }
+
+        // ──────────────────────────────────────────────
+        //  Update left-column side panels for selected item
+        // ──────────────────────────────────────────────
+        function updateSidePanel() {
+            const item = orderGroups[currentGroupIndex].items[currentItemIndex];
+
+            document.getElementById('spec-content').textContent      = item.specifications;
+            document.getElementById('manufacturer-name').textContent = item.manufacturer;
+            document.getElementById('manufacturer-desc').textContent = item.manufacturerDescription;
+        }
+    </script>
+}
