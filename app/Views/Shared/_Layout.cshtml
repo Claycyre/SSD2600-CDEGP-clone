@@ -52,7 +52,8 @@
     <header class="shrink px-2 py-4 border-b border-primary-500 shadow-xl">
         <nav class="flex gap-2 lg:gap-8">
             <a class="basis-0" href="/">
-                @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Size", "small" }, { "LogoTypeShouldHide", true } })
+                @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Size", "small" }, {
+                "LogoTypeShouldHide", true } })
             </a>
             <div class="flex justify-between items-center basis-0 grow">
                 <ul class="nav__list flex">
@@ -82,11 +83,48 @@
         @RenderBody()
     </main>
 
-    <footer class="shrink px-2 bg-neutral-200">
-        &copy; 2026 - Prometheus Atomics Procurement Industries
-    </footer>
-    @await RenderSectionAsync("Scripts", required: false)
-    <script defer src="~/dist/js/index.js"></script>
-</body>
+    <footer class="shrink px-2 py-4 bg-neutral-50 shadow-lg">
+        <div class="container mx-auto max-w-240">
+            <nav class="flex px-6">
+                <div class="hidden md:block basis-1/4 shrink">
+                </div>
+                <ul class="grid grid-cols-2 grow shrink-0 gap-x-2">
+                    <li>
+                        <a class="footer__link" href="/">Home</a>
+                    </li>
+                    <li>
+                        <a class="footer__link" href="#">Products</a>
+                    </li>
+                    <li>
+                        <a class="footer__link" href="#">About Prometheus Atomics</a>
+                    </li>
+                    <li>
+                        <a class="footer__link" href="#">Contact us</a>
+                    </li>
+                    <li>
+                        <a class="footer__link" href="#">Legal</a>
+                    </li>
+                    <li>
+                        <a class="footer__link" href="#">Privacy</a>
+                    </li>
+                    <li>
+                        <a class="footer__link" href="#">Terms of use</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="text-center">
+                <p class="footer__notice">&copy; <span id="copyright-year"></span> - Prometheus Atomics Procurement
+                    Industries</p>
+                </div>
+            </div>
+        </footer>
+        @await RenderSectionAsync("Scripts", required: false)
+        <script defer src="~/dist/js/index.js"></script>
+    </body>
+
+    <script defer>
+        const copyrightEl = document.getElementById("copyright-year");
+        copyrightEl.innerText = new Date().getFullYear()
+    </script>
 
 </html>
