@@ -5,11 +5,15 @@ WORKDIR /source
 # copy csproj and restore as distinct layers
 COPY app/*.sln .
 COPY app/*.csproj .
+RUN dotnet restore
+
+# Copy and install from npm package manifest
+COPY app/package.json .
+COPY app/package-lock.json .
+RUN npm install
 
 # copy everything else and build app
-COPY app/ .
-RUN dotnet restore
-RUN npm install
+COPY app .
 RUN dotnet publish SSD2600_CDEGP.csproj -c Release -o ./app --no-restore
 
 # final stage/image

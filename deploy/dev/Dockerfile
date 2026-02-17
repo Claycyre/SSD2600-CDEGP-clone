@@ -28,7 +28,8 @@ FROM app-common AS app-dev-intermediate
 
 RUN apt-get install -y socat
 
-COPY --chmod=755 deploy/dev/app /usr/config/
+COPY app/dotnet-tools.json .
+RUN dotnet tool restore
 
 ##########################
 # Dev Application Runtime 
@@ -36,11 +37,17 @@ COPY --chmod=755 deploy/dev/app /usr/config/
 FROM app-dev-intermediate AS app-dev
 
 WORKDIR /App
-COPY ./app ./
 
+COPY app/*.sln .
+COPY app/*.csproj .
 RUN dotnet restore
-RUN dotnet tool restore
+
+COPY app/package.json .
+COPY app/package-lock.json .
 RUN npm install
+
+COPY app .
+RUN dotnet build
 
 ENV ASPNETCORE_URLS=http://*:5202
 ENV DOTNET_ENVIRONMENT=Development
@@ -49,4 +56,5 @@ ENV DOTNET_WATCH_AUTO_RELOAD_WS_PORT=42042
 
 EXPOSE 5202
 
+COPY --chmod=755 deploy/dev/app /usr/config/
 ENTRYPOINT ["/usr/config/entrypoint.sh"]
