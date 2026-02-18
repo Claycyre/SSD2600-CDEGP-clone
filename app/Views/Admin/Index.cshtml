@@ -1,0 +1,119 @@
+﻿@{
+    ViewData["Title"] = "User Management";
+}
+
+<div class="min-h-screen bg-gray-100">
+
+    <!-- Main Content Wrapper -->
+    <div class="w-full px-10 py-10">
+
+        <div class="bg-white rounded-2xl shadow-2xl p-10">
+
+            <!-- Title -->
+            <h1 class="text-3xl font-semibold mb-8">User Management</h1>
+
+            <!-- Search -->
+            <div class="mb-6">
+                <input type="text"
+                       placeholder="Search for user (by Id, associated organization, phone number, etc.)"
+                       class="w-full border border-gray-300 rounded-lg px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <!-- Suspicious Banner -->
+            <div class="mb-8 flex items-center justify-between border border-red-400 bg-red-50 text-red-700 px-4 py-3 rounded-lg">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold">⚠</span>
+                    <span>This user is engaged in suspicious activity.</span>
+                </div>
+                <button class="font-semibold hover:underline">Details →</button>
+            </div>
+
+            <!-- Main Flex Layout -->
+            <div class="flex flex-col xl:flex-row gap-10">
+
+                <!-- LEFT SIDE (All Info Panels) -->
+                <div class="flex-1">
+
+                    <!-- Horizontal Panels (Responsive Stack) -->
+                    <div class="flex flex-col lg:flex-row gap-6">
+
+                        <!-- User Info -->
+                        <div class="flex-1 border rounded-xl p-6 bg-gray-50 shadow-sm">
+                            <h2 class="font-semibold mb-4 border-b pb-2">User Information</h2>
+                            <div class="space-y-2 text-sm">
+                                <div><strong>User ID:</strong> exampleID</div>
+                                <div><strong>User Type:</strong> Supplier Admin</div>
+                                <div><strong>Organization:</strong> SupplierCo</div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="flex-1 border rounded-xl p-6 bg-gray-50 shadow-sm">
+                            <h2 class="font-semibold mb-4 border-b pb-2">Contact Information</h2>
+                            <div class="space-y-2 text-sm">
+                                <div><strong>Phone:</strong> (555) 123-4567</div>
+                                <div><strong>Address:</strong> 123 Main St</div>
+                                <div><strong>Other Info:</strong> Notes</div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Info -->
+                        <div class="flex-1 border rounded-xl p-6 bg-gray-50 shadow-sm">
+                            <h2 class="font-semibold mb-4 border-b pb-2">Payment Information</h2>
+                            <div class="space-y-2 text-sm">
+                                <div><strong>Credit Card:</strong> **** **** **** 1234</div>
+                            </div>
+                        </div>
+
+                        <!-- Order History -->
+                        <div class="flex-1 border rounded-xl p-6 bg-gray-50 shadow-sm">
+                            <h2 class="font-semibold mb-4 border-b pb-2">Order History</h2>
+                            <div class="space-y-2 text-sm">
+                                <div>#1001 – Widget A – $125 – Shipped</div>
+                                <div>#1002 – Widget B – $45 – Pending</div>
+                                <div>#1003 – Widget C – $89 – Delivered</div>
+                                <div>#1004 – Widget D – $150 – Cancelled</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE (Administrative Actions — Always Together) -->
+                <div class="w-full xl:w-80 flex-shrink-0">
+
+                    <div class="border rounded-xl p-6 bg-white shadow-md">
+                        <h2 class="font-semibold mb-6 border-b pb-2">
+                            Administrative Actions
+                        </h2>
+
+                        <div class="space-y-4">
+
+                            <button class="w-full bg-gray-200 py-3 rounded-lg shadow-md hover:shadow-lg hover:bg-gray-300 transition-all">
+                                Send Message
+                            </button>
+
+                            <button class="w-full bg-blue-600 text-white py-3 rounded-lg shadow-lg hover:shadow-xl hover:bg-blue-700 transition-all">
+                                Approve Verification
+                            </button>
+
+                            <button class="w-full bg-orange-500 text-white py-3 rounded-lg shadow-lg hover:shadow-xl hover:bg-orange-600 transition-all">
+                                Unlink From Supplier
+                            </button>
+
+                            <button class="w-full bg-red-600 text-white py-3 rounded-lg shadow-lg hover:shadow-xl hover:bg-red-700 transition-all">
+                                Suspend Account
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

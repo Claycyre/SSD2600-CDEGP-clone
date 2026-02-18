@@ -58,3 +58,4 @@ nunit-*.xml
 ## NPM
 node_modules
 app/wwwroot/dist
+.vs
