@@ -52,4 +52,13 @@
     <Exec Command="npm install" />
     <Touch Files="$(NpmLastInstall)" AlwaysCreate="true" />
   </Target>
+
+  <Target
+    Name="TailwindBuild"
+    BeforeTargets="PrepareForPublish"
+    Condition="'$(Configuration)' == 'Release'"
+  >
+    <Message Importance="high" Text="Running Tailwind CSS CLI production build..." />
+    <Exec Command="node node_modules/@tailwindcss/cli/dist/index.mjs -i ./wwwroot/css/site.css -o ./wwwroot/dist/site.css --minify" />
+  </Target>
 </Project>
