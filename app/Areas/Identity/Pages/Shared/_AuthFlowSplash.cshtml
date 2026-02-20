@@ -3,7 +3,7 @@
 @{
     var className = @ViewData["ClassName"] as string ?? "";
 }
-<div class="@className flex justify-center items-center bg-neutral-500">
+<div class="@className flex justify-center items-center bg-neutral-300">
     <div class="flex flex-col gap-8 px-12">
         @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Center", true } })
         <div class="hidden lg:block">
