@@ -1,0 +1,125 @@
+﻿@using SSD2600_CDEGP.Models
+@{
+    ViewData["Title"] = "Product Catalogue";
+
+    // sample cart for preview in the partial
+    var sampleCart = new CartViewModel
+    {
+        Items = new System.Collections.Generic.List<CartItem>
+        {
+            new CartItem { Id = "1", Name = "Helium 3 Canister", Quantity = 2, Price = 1999.99M },
+            new CartItem { Id = "2", Name = "Lunar Soil Sample", Quantity = 1, Price = 499.50M }
+        }
+    };
+}
+
+<div class="min-h-screen bg-gray-100">
+
+    <div class="w-full px-10 py-10">
+
+        <!-- Main Card Wrapper -->
+        <div class="bg-white rounded-2xl shadow-2xl p-10">
+
+            <!-- Page Title -->
+            <h1 class="text-3xl font-semibold mb-10">Product Catalogue</h1>
+
+            <!-- Main Horizontal Layout -->
+			<div class="grid grid-cols-4 gap-6">
+
+				<div class="col-span-3">
+					<!-- LEFT PANEL (product list) -->
+					<div class="w-full xl:w-3/4 space-y-6">
+
+                        <!-- Search Box -->
+                        <div>
+                            <input type="text"
+                                   placeholder="Search products, e.g. Helium 3"
+                                   class="w-full border border-gray-300 rounded-lg px-6 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+                        </div>
+
+						<!-- Product List -->
+						<div class="space-y-4">
+
+                            <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="1" class="block border rounded-xl p-4 bg-gray-50 shadow hover:shadow-md transition">
+                                <div class="flex justify-between items-center">
+									<span>Helium 3 Product: Specs, Purity, Location, Etc.</span>
+                                    <span class="text-gray-500">→</span>
+                                </div>
+                            </a>
+
+                            <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="2" class="block border rounded-xl p-4 bg-gray-50 shadow hover:shadow-md transition">
+                                <div class="flex justify-between items-center">
+                                    <span>Lunar Soil Sample — Regolith fragment</span>
+                                    <span class="text-gray-500">→</span>
+                                </div>
+                            </a>
+
+                            <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="3" class="block border rounded-xl p-4 bg-gray-50 shadow hover:shadow-md transition">
+                                <div class="flex justify-between items-center">
+                                    <span>Prototype Fusion Cell — Lab sample</span>
+                                    <span class="text-gray-500">→</span>
+                                </div>
+                            </a>
+
+                            <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="4" class="block border rounded-xl p-4 bg-gray-50 shadow hover:shadow-md transition">
+                                <div class="flex justify-between items-center">
+                                    <span>Calibration Gas Pack — Research grade</span>
+                                    <span class="text-gray-500">→</span>
+                                </div>
+                            </a>
+
+						</div>
+					</div>
+				</div>
+                <!-- RIGHT PANEL (search, past purchases, shopping cart stacked) -->
+				<div class="col-span-1 flex flex-col gap-6">
+					<div class="w-full xl:w-1/4 flex flex-col gap-6">       
+						<!-- Past Purchases card -->
+						<div class="border rounded-xl p-6 bg-gray-50 shadow-md">
+
+							<h2 class="font-semibold mb-6 border-b pb-2">
+								Past Purchases
+							</h2>
+
+							<div class="space-y-4">
+
+								<div class="flex items-center gap-4 border rounded-lg p-3 bg-white shadow-sm">
+									<div class="w-12 h-12 bg-blue-600 text-white rounded flex items-center justify-center font-bold">
+										Yb
+									</div>
+									<div>info</div>
+								</div>
+
+								<div class="flex items-center gap-4 border rounded-lg p-3 bg-white shadow-sm">
+									<div class="w-12 h-12 bg-purple-600 text-white rounded flex items-center justify-center font-bold">
+										He
+									</div>
+									<div>info</div>
+								</div>
+
+								<div class="flex items-center gap-4 border rounded-lg p-3 bg-white shadow-sm">
+									<div class="w-12 h-12 bg-gray-700 text-white rounded flex items-center justify-center font-bold">
+										Ca
+									</div>
+									<div>info</div>
+								</div>
+
+							</div>
+
+						</div>
+
+						<!-- Shopping Cart partial (below past purchases) -->
+						<div>
+							@await Html.PartialAsync("_ShoppingCart", sampleCart)
+						</div>
+
+					</div>
+				</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,40 @@
+@model SSD2600_CDEGP.Models.ProductViewModel
+@{
+    ViewData["Title"] = Model?.Name ?? "Product Details";
+}
+
+<div class="min-h-screen bg-gray-100">
+    <div class="w-full px-10 py-10">
+        <div class="bg-white rounded-2xl shadow-2xl p-10 max-w-4xl mx-auto">
+            <div class="grid grid-cols-3 gap-6">
+                <div class="col-span-1">
+                    <div class="w-full h-48 bg-gray-200 rounded flex items-center justify-center">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Model.ImageUrl" alt="@Model.Name" class="w-full h-full object-cover rounded" />
+                        }
+                        else
+                        {
+                            <span class="text-gray-500">No image</span>
+                        }
+                    </div>
+                </div>
+                <div class="col-span-2">
+                    <h1 class="text-2xl font-semibold">@Model.Name</h1>
+                    <p class="text-gray-600 mt-2">@Model.Description</p>
+
+                    <div class="mt-6 flex items-center justify-between">
+                        <div class="text-lg font-bold">@Model.Price.ToString("C")</div>
+                        <form method="post" asp-controller="Cart" asp-action="Add">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <input type="number" name="quantity" value="1" min="1" class="w-20 border rounded px-2 py-1" />
+                            <button type="submit" class="ml-3 bg-blue-600 text-white rounded px-4 py-2">Add to Cart</button>
+                        </form>
+                    </div>
+
+                    <a asp-action="Index" asp-controller="ProductCatalogue" class="inline-block mt-6 text-sm text-blue-600">? Back to catalogue</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
