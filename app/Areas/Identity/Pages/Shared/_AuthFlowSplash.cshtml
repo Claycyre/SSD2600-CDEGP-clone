@@ -1,16 +1,23 @@
-<div class="flex flex-col gap-8 px-12">
-    @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Center", true } })
-    <div class="hidden lg:block">
-        <p>
-            At Prometheus Atomics Procurement Industries (PAPI), we aren’t just
-            disrupting the energy sector; we are hyper-accelerating the
-            democratization of the periodic table through a consumer-centric,
-            isotope-forward ecosystem.
+@model dynamic
 
-            Our mission is to bridge the gap between heavy-element volatility
-            and the untapped potential of the cul-de-sac demographic.
-            By leveraging a vertically integrated supply chain of unstable
-            nuclei, we empower consumers to curate their own radiant future.
-        </p>
+@{
+    var className = @ViewData["ClassName"] as string ?? "";
+}
+<div class="@className flex justify-center items-center bg-neutral-500">
+    <div class="flex flex-col gap-8 px-12">
+        @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Center", true } })
+        <div class="hidden lg:block">
+            <p>
+                At Prometheus Atomics Procurement Industries (PAPI), we aren’t just
+                disrupting the energy sector; we are hyper-accelerating the
+                democratization of the periodic table through a consumer-centric,
+                isotope-forward ecosystem.
+
+                Our mission is to bridge the gap between heavy-element volatility
+                and the untapped potential of the cul-de-sac demographic.
+                By leveraging a vertically integrated supply chain of unstable
+                nuclei, we empower consumers to curate their own radiant future.
+            </p>
+        </div>
     </div>
 </div>

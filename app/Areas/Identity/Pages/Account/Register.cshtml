@@ -29,9 +29,7 @@
 </style>
 
 <div class="flex flex-col lg:flex-row h-full gap-4 lg:gap-0">
-    <div class="basis-48 lg:basis-1/2 flex justify-center items-center lg:order-last bg-neutral-500">
-        <partial name="_AuthFlowSplash" />
-    </div>
+    @await Html.PartialAsync("_AuthFlowSplash", new ViewDataDictionary(ViewData) { { "ClassName", "basis-48 lg:basis-1/2 lg:order-last" } })
     <div class="basis-full lg:basis-1/2 flex flex-col lg:place-content-center items-center gap-4">
         <h1 class="text-2xl">Register an account with us</h1>
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
