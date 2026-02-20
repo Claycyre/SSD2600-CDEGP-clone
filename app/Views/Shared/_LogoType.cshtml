@@ -8,14 +8,15 @@
 
     var logoStyles = new CssClasses(
         ("flex min-w-fit aspect-square overflow-hidden"),
-        (size == "small", "basis-fit h-16", "h-24 shrink-0"),
-        (center, "basis-1/3 justify-end", "")
+        (size == "small", "basis-fit h-16", "h-24"),
+        (center, "basis-1/3 shrink justify-end", "")
     );
 
     var logoTypeStyles = new CssClasses(
         ("basis-2/3 shrink font-displaysxp font-semibold z-10"),
         (typeHides, "hidden lg:block", ""),
-        (size == "small", "leading-none text-3xl", "text-5xl")
+        (size == "small", "leading-none text-3xl", "text-5xl"),
+        (center, "basis-2/3 shrink", "w-min")
     );
 }
 
