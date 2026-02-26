@@ -16,14 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference
-      Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore"
-      Version="10.0.2"
-    />
-    <PackageReference
-      Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"
-      Version="10.0.2"
-    />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.2" />
@@ -43,12 +37,7 @@
     <Error Condition="'$(ErrorCode)' != '0'" Text="You must install NPM to build this project" />
   </Target>
 
-  <Target
-    Name="NpmInstall"
-    BeforeTargets="Compile"
-    Inputs="package.json"
-    Outputs="$(NpmLastInstall)"
-  >
+  <Target Name="NpmInstall" BeforeTargets="Compile" Inputs="package.json" Outputs="$(NpmLastInstall)">
     <Exec Command="npm install" />
     <Touch Files="$(NpmLastInstall)" AlwaysCreate="true" />
   </Target>

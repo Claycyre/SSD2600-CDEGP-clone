@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SSD2600_CDEGP.Data;
+using SSD2600_CDEGP.Services;
 using Tailwind;
 
 namespace SSD2600_CDEGP;
@@ -36,6 +37,10 @@ public class Program
             .PersistKeysToFileSystem(new DirectoryInfo(@"/var/dpkeys/"));
 
         builder.UseTailwindCli();
+
+        //Implement Singleton service for periodic table data
+        builder.Services.AddSingleton<ElementService>();
+
 
         var app = builder.Build();
 

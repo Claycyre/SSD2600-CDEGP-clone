@@ -1,0 +1,105 @@
+﻿@model Element
+<style>
+        :root {
+            /* TILES */
+            --tile-size: 5%;
+            --fs-element-primary: clamp(20cqw, 40cqw, 50cqw);
+            --fs-element-secondary: clamp( calc(var(--fs-element-primary) * 0.33), calc(var(--fs-element-primary) * 0.5), calc(var(--fs-element-primary) * 0.75) );
+            --fs-element-tertiary: calc(var(--fs-element-primary) * 0.33);
+        }
+
+        .tile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            aspect-ratio: 1;
+            container-type: size;
+            margin: 0;
+            border-radius: 10%;
+            color: #fff;
+            line-height: 1;
+            background-color: #0f609b;
+            gap: 3%;
+
+            &:hover
+        {
+            background-color: gold;
+        }
+        }
+
+        .element-number {
+        font-size: var(--fs-element-secondary);
+        display: flex;
+        }
+
+        .element-symbol {
+        display: flex;
+        font-size: var(--fs-element-primary);
+        }
+
+        .element-name {
+        display: flex;
+        font-size: 14cqw;
+        text-align: center;
+        font-weight: bold;
+        }
+
+        .element-weight {
+        display: flex;
+        font-size: var(--fs-element-tertiary);
+        }
+
+        /* Element Category Colors - WCAG AA Compliant with #fff text */
+        .alkali-metal {
+            background-color: #4B0082;
+        }
+
+        .alkaline-earth-metal {
+            background-color: #6A4C93;
+        }
+
+        .transition-metal {
+            background-color: #1E40AF;
+        }
+
+        .lanthanide {
+            background-color: #7C3AED;
+        }
+
+        .actinide {
+            background-color: #059669;
+        }
+
+        .post-transition-metal {
+            background-color: #DC2626;
+        }
+
+        .metalloid {
+            background-color: #15803D;
+        }
+
+        .polyatomic-nonmetal {
+            background-color: #1F2937;
+        }
+
+        .diatomic-nonmetal {
+            background-color: #0369A1;
+        }
+
+        .noble-gas {
+            background-color: #7F1D1D;
+        }
+
+        .unavailable,
+        .unknown {
+            background-color: darkgrey;
+        }
+    </style>
+
+<div class="tile @Model.Category" style="grid-column: @Model.Column; grid-row: @Model.Row;">
+    <div class="element-number">@Model.Number</div>
+    <div class="element-symbol">@Model.Symbol</div>
+    <div class="element-name">@Model.Name</div>
+    <div class="element-weight">@Model.AtomicMass.ToString("F3").TrimEnd('0').TrimEnd('.')</div>
+</div>

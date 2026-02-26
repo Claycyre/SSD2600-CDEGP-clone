@@ -1,8 +1,118 @@
-@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IndexModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@{
+    ViewData["Title"] = "Welcome to Prometheus Atomics";
+}
+<style>
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        width: 30%;
+        min-height: 100%;
+        background-color: rgb(255, 0, 0, 0.2);
+        border: 1px solid rgb(255, 0, 0, 0.4);
+    }
+
+    .filters {
+        ul {
+        list-style-type: none; /* Removes default bullet points */
+        padding-left: 20px; /* Adjusts indentation */
+    }
+    }
+
+</style>
+@*body container*@
+<div class="m-0 flex h-full min-h-full w-[calc(100vw_-_(100vw_-_100%))] flex-col">
+
+    <div class="flex size-full">
+        <section class="sidebar justify-start">
+            @*logo placeholder*@
+            <div class="mt-[1rem] aspect-square w-[90%] rounded-lg bg-white text-center">LOGO</div>
+
+            @*filter checkboxes*@
+            <form method="get" id="filterForm" class="flex flex-col gap-4">
+                <fieldset class="mt-4">
+                    <legend>Filters:</legend>
+                    <div class="m-0 grid w-full grid-cols-2 p-0">
+                        <ul class="flex flex-col">
+                            <li>
+                                <input type="checkbox" id="checkboxSolids" name="Phases" value="Solid"
+                                       @(Model.Phases.Contains("Solid") ? "checked" : "")
+                                       onchange="document.getElementById('filterForm').submit()"/>
+                                <label for="checkboxSolids">Solids</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="checkboxLiquids" name="Phases" value="Liquid"
+                                       @(Model.Phases.Contains("Liquid") ? "checked" : "")
+                                       onchange="document.getElementById('filterForm').submit()"/>
+                                <label for="checkboxLiquids">Liquids</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="checkboxGases" name="Phases" value="Gas"
+                                       @(Model.Phases.Contains("Gas") ? "checked" : "")
+                                       onchange="document.getElementById('filterForm').submit()"/>
+                                <label for="checkboxGases">Gases</label>
+                            </li>
+                        </ul>
+                    </div>
+                </fieldset>
+
+                <fieldset class="mt-4">
+                    <legend>Sort By:</legend>
+                    <div class="flex flex-col gap-2">
+                        <label>
+                            <input type="radio" name="SortBy" value=""
+                                   @(string.IsNullOrEmpty(Model.SortBy) ? "checked" : "")
+                                   onchange="document.getElementById('filterForm').submit()"/>
+                            Atomic Number
+                        </label>
+                        <label>
+                            <input type="radio" name="SortBy" value="name"
+                                   @(Model.SortBy == "name" ? "checked" : "")
+                                   onchange="document.getElementById('filterForm').submit()"/>
+                            Name
+                        </label>
+                        <label>
+                            <input type="radio" name="SortBy" value="mass"
+                                   @(Model.SortBy == "mass" ? "checked" : "")
+                                   onchange="document.getElementById('filterForm').submit()"/>
+                            Atomic Mass
+                        </label>
+                    </div>
+                </fieldset>
+
+                <button type="button" onclick="clearFilters()" class="rounded bg-red-600 px-4 py-2 text-white">
+                    Clear Filters
+                </button>
+            </form>
+
+            @*list of elements, to be filterable/sortable*@
+            <partial name="_ElementList" model="Model.Elements"/>
+            <div></div>
+        </section>
+
+        @*main content*@
+        <div class="w-[70%]">
+
+            <section class="cta text-center font-bold">
+                <h1 class="text-2xl">Welcome to Prometheus Atomic Procurement Industries</h1>
+                <p>The best choice for all your isotopic needs</p>
+            </section>
+
+            <partial name="_PeriodicTable" model="Model.Elements"/>
+        </div>
+    </div>
 </div>
+
+<script>function clearFilters() {
+    // Uncheck all checkboxes
+    document.querySelectorAll('input[name="Phases"]').forEach(cb => cb.checked = false);
+
+    // Reset sort to default (no value)
+    document.querySelector('input[name="SortBy"][value=""]').checked = true;
+
+    // Submit form
+    document.getElementById('filterForm').submit();
+}</script>
+
+<script src="~/js/filters.js"></script>
