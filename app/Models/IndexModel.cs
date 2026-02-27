@@ -14,13 +14,14 @@ public class IndexModel(ElementService elementService)
     {
         Elements = new List<Element>(elementService.Elements);
 
-        if (Phases.Count > 0) Elements = Elements.Where(e => Phases.Contains(e.Phase)).ToList();
+        if (Phases.Count > 0)
+            Elements = Elements.Where(e => Phases.Contains(e.Phase)).ToList();
 
         Elements = SortBy switch
         {
             "name" => Elements.OrderBy(e => e.Name).ToList(),
             "mass" => Elements.OrderBy(e => e.AtomicMass).ToList(),
-            _ => Elements.OrderBy(e => e.Number).ToList()
+            _ => Elements.OrderBy(e => e.Number).ToList(),
         };
     }
 }

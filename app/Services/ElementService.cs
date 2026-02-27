@@ -1,5 +1,5 @@
-﻿using SSD2600_CDEGP.Models;
-using System.Text.Json;
+﻿using System.Text.Json;
+using SSD2600_CDEGP.Models;
 
 namespace SSD2600_CDEGP.Services;
 
@@ -11,11 +11,11 @@ public class ElementService
     {
         var jsonPath = Path.Combine(env.ContentRootPath, "Data/PeriodicTableJSON.json");
         var json = File.ReadAllText(jsonPath);
-        
+
         // Deserialize to a wrapper object first
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
         var wrapper = JsonSerializer.Deserialize<ElementWrapper>(json, options);
-        
+
         Elements = wrapper?.Elements ?? new List<Element>();
     }
 

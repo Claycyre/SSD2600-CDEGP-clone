@@ -41,7 +41,6 @@ public class Program
         //Implement Singleton service for periodic table data
         builder.Services.AddSingleton<ElementService>();
 
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

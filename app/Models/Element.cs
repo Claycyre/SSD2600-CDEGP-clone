@@ -8,7 +8,8 @@ public class Element
     public string Symbol { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
 
-    [JsonPropertyName("atomic_mass")] public double AtomicMass { get; set; }
+    [JsonPropertyName("atomic_mass")]
+    public double AtomicMass { get; set; }
 
     public string Category
     {
@@ -17,9 +18,11 @@ public class Element
         set => field = value?.Split(',')[0].Trim().Replace(" ", "-").ToLower() ?? string.Empty;
     }
 
-    [JsonPropertyName("xpos")] public int Column { get; set; }
+    [JsonPropertyName("xpos")]
+    public int Column { get; set; }
 
-    [JsonPropertyName("ypos")] public int Row { get; set; }
+    [JsonPropertyName("ypos")]
+    public int Row { get; set; }
 
     public string Phase { get; set; } = string.Empty;
 }

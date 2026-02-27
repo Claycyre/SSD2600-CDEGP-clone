@@ -32,9 +32,10 @@ public class ProductCatalogueController : Controller
         {
             Id = id,
             Name = id == "1" ? "Helium 3 Canister" : "Lunar Soil Sample",
-            Description = "Detailed description and specifications for the product. To be filled out later.",
+            Description =
+                "Detailed description and specifications for the product. To be filled out later.",
             Price = id == "1" ? 1999.99M : 499.50M,
-            ImageUrl = null
+            ImageUrl = null,
         };
 
         return View(product);

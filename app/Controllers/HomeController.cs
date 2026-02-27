@@ -10,15 +10,10 @@ public class HomeController(ILogger<HomeController> logger, ElementService eleme
 {
     private readonly ILogger<HomeController> _logger = logger;
 
-
     [HttpGet]
     public IActionResult Index(List<string>? phases, string? sortBy)
     {
-        var model = new IndexModel(elementService)
-        {
-            Phases = phases ?? [],
-            SortBy = sortBy
-        };
+        var model = new IndexModel(elementService) { Phases = phases ?? [], SortBy = sortBy };
         model.ApplyFilters();
 
         return View(model);
