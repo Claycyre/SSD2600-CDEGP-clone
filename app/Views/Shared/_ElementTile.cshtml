@@ -48,44 +48,26 @@
     }
 
     .tile {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        aspect-ratio: 1;
         container-type: size;
-        margin: 0;
-        border-radius: 10%;
-        line-height: 1;
-        gap: 3%;
+    }
+
+    .element-symbol {
+        font-size: var(--fs-element-primary);
     }
 
     .element-number {
         font-size: var(--fs-element-secondary);
-        display: flex;
-    }
-
-    .element-symbol {
-        display: flex;
-        font-size: var(--fs-element-primary);
-    }
-
-    .element-name {
-        display: flex;
-        font-size: 14cqw;
-        text-align: center;
-        font-weight: bold;
     }
 
     .element-weight {
-        display: flex;
         font-size: var(--fs-element-tertiary);
     }
 </style>
 
-<div class="tile @tileStyle" style="grid-column: @Model.Column; grid-row: @Model.Row;">
+<div class="tile @tileStyle flex flex-col justify-between items-center m-0 h-full rounded-md leading-none aspect-square"
+     style="grid-column: @Model.Column; grid-row: @Model.Row;">
     <div class="element-number">@Model.Number</div>
     <div class="element-symbol">@Model.Symbol</div>
-    <div class="element-name">@Model.Name</div>
+    <div class="text-[14cqw] text-center font-bold">@Model.Name</div>
     <div class="element-weight">@Model.AtomicMass.ToString("F3").TrimEnd('0').TrimEnd('.')</div>
 </div>
