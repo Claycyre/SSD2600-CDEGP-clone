@@ -6,14 +6,6 @@
     var tileStyle = "";
     switch (Model.Category)
     {
-        case "alkali-metal":
-            tileStyle = baseActiveTileStyle + "bg-alpha-500";
-            break;
-
-        case "alkaline-earth-metal":
-            tileStyle = baseActiveTileStyle + "bg-alpha-600";
-            break;
-
         case "transition-metal":
         case "lanthanide":
         case "actinide":
@@ -22,16 +14,18 @@
 
         case "post-transition-metal":
         case "metalloid":
+            tileStyle = baseActiveTileStyle + "bg-alpha-800";
+            break;
+
+        case "alkaline-earth-metal":
+        case "polyatomic-nonmetal":
+        case "diatomic-nonmetal":
             tileStyle = baseActiveTileStyle + "bg-alpha-700";
             break;
 
-        case "polyatomic-nonmetal":
-        case "diatomic-nonmetal":
-            tileStyle = baseActiveTileStyle + "bg-alpha-600";
-            break;
-
+        case "alkali-metal":
         case "noble-gas":
-            tileStyle = baseActiveTileStyle + "bg-alpha-500";
+            tileStyle = baseActiveTileStyle + "bg-alpha-600";
             break;
 
         default:
