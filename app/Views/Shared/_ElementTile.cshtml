@@ -52,22 +52,32 @@
     }
 
     .element-symbol {
+        grid-row: 1 / 4;
+        grid-column: 1 / 5;
         font-size: var(--fs-element-primary);
     }
 
     .element-number {
+        grid-row: 1 / 4;
+        grid-column: 5 / 7;
         font-size: var(--fs-element-secondary);
     }
 
+    .element-name {
+        grid-row: 5 / 6;
+    }
+
     .element-weight {
+        grid-row: 6 / 7;
         font-size: var(--fs-element-tertiary);
     }
 </style>
 
-<div class="tile @tileStyle flex flex-col justify-between items-center m-0 h-full rounded-md leading-none aspect-square"
+<div class="tile @tileStyle grid grid-rows-6 grid-cols-6 justify-between items-center m-0 h-full rounded-md leading-none aspect-square"
      style="grid-column: @Model.Column; grid-row: @Model.Row;">
-    <div class="element-number">@Model.Number</div>
-    <div class="element-symbol">@Model.Symbol</div>
-    <div class="text-[14cqw] text-center font-bold">@Model.Name</div>
-    <div class="element-weight">@Model.AtomicMass.ToString("F3").TrimEnd('0').TrimEnd('.')</div>
-</div>
+    <div class="element-number size-full text-end">@Model.Number</div>
+    <div class="element-symbol -mt-1 size-full font-semibold">@Model.Symbol</div>
+    <div class="element-name size-full text-[14cqw] text-center font-bold">@Model.Name</div>
+    <div class="element-weight size-full">
+        @Model.AtomicMass.ToString("F3").TrimEnd('0').TrimEnd('.')</div>
+    </div>
