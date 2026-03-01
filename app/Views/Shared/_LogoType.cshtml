@@ -1,3 +1,4 @@
+@using SSD2600_CDEGP.Helpers
 @model dynamic
 
 @{
@@ -5,29 +6,22 @@
     var center = @ViewData["Center"] as bool? ?? false;
     var typeHides = @ViewData["LogoTypeShouldHide"] as bool? ?? false;
 
-    List<string> logoStyleList = [
-        size == "small" ?
-        "basis-fit h-16" :
-        "h-24 shrink-0",
-        center ? 
-        "basis-1/3 justify-end" :
-        ""
-    ];
-    var logoStyles = String.Join(" ", logoStyleList);
+    var logoStyles = new CssClasses(
+        ("flex min-w-fit aspect-square overflow-hidden"),
+        (size == "small", "basis-fit h-16", "h-24 shrink-0"),
+        (center, "basis-1/3 justify-end", "")
+    );
 
-    List<string> logoTypeStyleList = [
-        typeHides ? "hidden lg:block" : "",
-        size == "small" ?
-            "leading-none text-3xl" :
-            "text-5xl"
-    ];
-
-    var logoTypeStyles = String.Join(" ", logoTypeStyleList);
+    var logoTypeStyles = new CssClasses(
+        ("basis-2/3 shrink font-displaysxp font-semibold z-10"),
+        (typeHides, "hidden lg:block", ""),
+        (size == "small", "leading-none text-3xl", "text-5xl")
+    );
 }
 
 <div class="flex gap-2 place-items-center">
-    <div class="@logoStyles flex min-w-fit aspect-square overflow-hidden">
+    <div class="@logoStyles">
         <img class="h-full object-cover" src="/assets/papi-logo.svg" />
     </div>
-    <p class="@logoTypeStyles basis-2/3 shrink font-displaysxp font-semibold z-10">Prometheus Atomics</p>
+    <p class="@logoTypeStyles">Prometheus Atomics</p>
 </div>
