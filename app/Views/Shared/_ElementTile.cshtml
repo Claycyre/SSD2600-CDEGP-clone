@@ -32,6 +32,8 @@
             tileStyle = baseTileStyle + "text-black! opacity-50";
             break;
     }
+
+    var symbolSize = Model.Symbol.Length <= 2 ? "text-[40cqw]" : "text-[33cqw]";
 }
 <style>
     :root {
@@ -48,7 +50,6 @@
     .element-symbol {
         grid-row: 1 / 4;
         grid-column: 1 / 5;
-        font-size: var(--fs-element-primary);
     }
 
     .element-number {
@@ -69,8 +70,10 @@
 
 <div class="tile @tileStyle grid grid-rows-6 grid-cols-6 justify-between items-center m-0 h-full rounded-md leading-none aspect-square"
      style="grid-column: @Model.Column; grid-row: @Model.Row;">
-    <div class="element-number size-full text-end">@Model.Number</div>
-    <div class="element-symbol -mt-1 size-full font-semibold">@Model.Symbol</div>
+    <div class="element-number size-full text-end overflow-hidden">@Model.Number</div>
+    <div class="element-symbol container-[size] -mt-1 size-full font-semibold overflow-hidden">
+        <div class="@symbolSize">@Model.Symbol</div>
+    </div>
     <div class="element-name size-full text-[14cqw] text-center font-bold">@Model.Name</div>
     <div class="element-weight size-full">
         @Model.AtomicMass.ToString("F3").TrimEnd('0').TrimEnd('.')</div>
