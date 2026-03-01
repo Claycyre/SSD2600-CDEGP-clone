@@ -2,7 +2,7 @@
 
 namespace SSD2600_CDEGP.Models;
 
-public class Element
+public record Element
 {
     public int Number { get; set; }
     public string Symbol { get; set; } = string.Empty;

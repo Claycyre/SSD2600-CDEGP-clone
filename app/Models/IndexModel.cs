@@ -15,7 +15,15 @@ public class IndexModel(ElementService elementService)
         Elements = new List<Element>(elementService.Elements);
 
         if (Phases.Count > 0)
-            Elements = Elements.Where(e => Phases.Contains(e.Phase)).ToList();
+            Elements = Elements.ConvertAll(e =>
+            {
+                if (!Phases.Contains(e.Phase))
+                {
+                    e = e with { Category = "filtered" };
+                }
+
+                return e;
+            });
 
         Elements = SortBy switch
         {

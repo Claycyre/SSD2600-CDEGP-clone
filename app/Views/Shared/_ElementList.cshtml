@@ -1,4 +1,9 @@
-﻿<style>
+﻿@model List<Element>
+
+@{
+    var className = @ViewData["ClassName"] as string ?? "";
+}
+<style>
     .element-list-container {
         height: 400px;
         overflow-y: auto;
@@ -14,7 +19,6 @@
     }
 
     .element-list li {
-        padding: 8px 12px;
         border-bottom: 1px solid #eee;
     }
 
@@ -23,6 +27,7 @@
     }
 
     .element-list a {
+        padding: 8px 12px;
         text-decoration: none;
         color: #0369a1;
         display: block;
@@ -30,13 +35,10 @@
 
     .element-list a:hover {
         background-color: #e8f4f8;
-        padding-left: 4px;
     }
 </style>
 
-@model List<Element>
-
-<div class="element-list-container">
+<div class="@className element-list-container">
     <ul class="element-list">
         @foreach (var element in Model)
         {
