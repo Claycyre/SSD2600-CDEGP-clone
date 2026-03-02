@@ -78,6 +78,12 @@ deleting the `bin` and `obj` directories inside `<project>/app/` before running
 > Commands that are designed to run indefinitely will hijack the NuGet console
 > and you will need to manually terminate the command process. (painful)
 
+#### Database migrations and seeding
+
+Using `docker compose watch`, your development database should be automatically
+migrated to the most recent migration in `app/Data/Migrations/` and seeded with
+mock data. To rerun database seeders, use `dotnet run -- --reseed`.
+
 ---
 
 # Contributing

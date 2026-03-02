@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SSD2600_CDEGP.Data;
+using SSD2600_CDEGP.Models;
 using SSD2600_CDEGP.Services;
 using Tailwind;
 
@@ -25,7 +26,7 @@ public class Program
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
         builder
-            .Services.AddDefaultIdentity<IdentityUser>(options =>
+            .Services.AddDefaultIdentity<ApplicationUser>(options =>
                 options.SignIn.RequireConfirmedAccount = true
             )
             .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -47,6 +48,32 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseMigrationsEndPoint();
+
+            // DB Seeding in development
+            using var scope = app.Services.CreateScope();
+
+            var services = scope.ServiceProvider;
+            var logger = services.GetRequiredService<ILogger<Program>>();
+
+            try
+            {
+                var shouldReseed =
+                    args.Contains("--reseed") || app.Configuration.GetValue<bool>("RESEED_DB");
+                var context = services.GetRequiredService<ApplicationDbContext>();
+                DbInitializer.Seed(context, shouldReseed);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while seeding the database.");
+            }
+
+            if (args.Contains("--reseed"))
+            {
+                // This application was bootstrapped to perform a reseed on the DB.
+                // Exit the application as this was probably all that was asked for.
+                logger.LogInformation("Finished (re)seeding the DB. Exiting...");
+                return;
+            }
         }
         else
         {
