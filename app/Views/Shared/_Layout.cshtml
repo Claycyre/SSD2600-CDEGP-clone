@@ -67,14 +67,26 @@
                         <a href="#">Placeholder</a>
                     </li>
                 </ul>
-                <ul class="nav__list flex">
-                    <li>
-                        <a href="/Identity/Account/Register">Register</a>
-                    </li>
-                    <li>
-                        <a href="/Identity/Account/Login">Login</a>
-                    </li>
-                </ul>
+                @if (User.Identity?.IsAuthenticated ?? false) {
+                    <div class="relative">
+                        <div>
+                            <p class="text-xs text-neutral-500 font-semibold">Logged in as</p>
+                            <p class="">@User.Identity.Name</p>
+                        </div>
+                        <form class="absolute" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                        </form>
+                    </div>
+                } else {
+                    <ul class="nav__list flex">
+                        <li>
+                            <a href="/Identity/Account/Register">Register</a>
+                        </li>
+                        <li>
+                            <a href="/Identity/Account/Login">Login</a>
+                        </li>
+                    </ul>
+                }
             </div>
         </nav>
     </header>
