@@ -1,7 +1,6 @@
 ﻿@model Element
 @{
-    const string baseTileStyle = "p-2 select-none ";
-    const string baseActiveTileStyle = baseTileStyle + "text-white hover:bg-alpha-50! hover:text-black! transition-colors duration-500 hover:duration-0 ";
+    const string baseActiveTileStyle = "text-white hover:bg-alpha-50! hover:text-black! transition-colors duration-500 hover:duration-0 ";
 
     var tileStyle = "";
     switch (Model.Category)
@@ -29,14 +28,14 @@
             break;
 
         default:
-            tileStyle = baseTileStyle + "text-black! opacity-50";
+            tileStyle = "text-black! opacity-50";
             break;
     }
 
     var symbolSize = Model.Symbol.Length <= 2 ? "text-[40cqw]" : "text-[33cqw]";
 }
 
-<div class="tile @tileStyle m-0 grid aspect-square h-full grid-cols-6 grid-rows-6 items-center justify-between rounded-md leading-none"
+<div class="tile @tileStyle m-0 p-2 grid aspect-square h-full grid-cols-6 grid-rows-6 items-center justify-between rounded-md leading-none select-none"
      style="grid-column: @Model.Column; grid-row: @Model.Row;">
     <div class="element-number size-full overflow-hidden text-end">@Model.Number</div>
     <div class="element-symbol container-[size] -mt-1 size-full overflow-hidden font-semibold">
