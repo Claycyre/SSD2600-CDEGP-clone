@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,56 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true" />
+    
+    @*allow for use of partial stylesheets - this is compiled at runtime*@
+    <link rel="stylesheet" href="~/SSD2600_CDEGP.styles.css" asp-append-version="true" />
 
     <title>@ViewData["Title"] - Prometheus Atomics</title>
 
     <style>
-            .nav__list {
-                --hover-transition: 200ms ease-in-out;
-                gap: 0.5rem;
-            }
+        .nav__list {
+            --hover-transition: 200ms ease-in-out;
+            gap: 0.5rem;
+        }
 
-            .nav__list>li>a {
+            .nav__list > li > a {
                 position: relative;
                 padding: 0.5rem 1rem;
             }
 
-            .nav__list>li>a::after {
-                position: absolute;
+                .nav__list > li > a::after {
+                    position: absolute;
+                    content: "";
+                    bottom: 0;
+                    left: 50%;
+                    width: 75%;
+                    height: 2px;
+                    background-color: var(--color-primary-500);
+                    opacity: 0;
+                    translate: -50% 0;
+                    transition: opacity var(--hover-transition);
+                    pointer-events: none;
+                }
 
-                content: "";
-
-                bottom: 0;
-                left: 50%;
-
-                width: 75%;
-                height: 2px;
-
-                background-color: var(--color-primary-500);
-
-                opacity: 0;
-                translate: -50% 0;
-
-                transition: opacity var(--hover-transition);
-
-                pointer-events: none;
-            }
-
-            .nav__list>li>a:hover::after {
-                opacity: 100%;
-                transition: none;
-            }
+                .nav__list > li > a:hover::after {
+                    opacity: 100%;
+                    transition: none;
+                }
     </style>
 </head>
 
-<body class="flex flex-col min-h-dvh">
-    <header class="shrink px-2 py-4 border-b border-primary-500 shadow-xl">
+<body class="flex min-h-dvh flex-col">
+    <header class="shrink border-b border-primary-500 px-2 py-4 shadow-xl">
         <nav class="flex gap-2 lg:gap-8">
             <a class="basis-0" href="/">
                 @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Size", "small" }, {
                 "LogoTypeShouldHide", true } })
             </a>
-            <div class="flex justify-between items-center basis-0 grow">
+            <div class="flex grow basis-0 items-center justify-between">
                 <ul class="nav__list flex">
                     <li>
                         <a href="/">Home</a>
@@ -70,7 +66,7 @@
                 @if (User.Identity?.IsAuthenticated ?? false) {
                     <div class="relative">
                         <div>
-                            <p class="text-xs text-neutral-500 font-semibold">Logged in as</p>
+                            <p class="text-xs font-semibold text-neutral-500">Logged in as</p>
                             <p class="">@User.Identity.Name</p>
                         </div>
                         <form class="absolute" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
@@ -91,16 +87,16 @@
         </nav>
     </header>
 
-    <main role="main" class="basis-0 grow">
+    <main role="main" class="grow basis-0">
         @RenderBody()
     </main>
 
-    <footer class="shrink px-2 py-4 bg-neutral-50 shadow-lg">
+    <footer class="shrink bg-neutral-50 px-2 py-4 shadow-lg">
         <div class="container mx-auto max-w-240">
             <nav class="flex px-6">
-                <div class="hidden md:block basis-1/4 shrink">
+                <div class="hidden shrink basis-1/4 md:block">
                 </div>
-                <ul class="grid grid-cols-2 grow shrink-0 gap-x-2">
+                <ul class="grid shrink-0 grow grid-cols-2 gap-x-2">
                     <li>
                         <a class="footer__link" href="/">Home</a>
                     </li>

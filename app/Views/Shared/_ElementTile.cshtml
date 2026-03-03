@@ -35,46 +35,14 @@
 
     var symbolSize = Model.Symbol.Length <= 2 ? "text-[40cqw]" : "text-[33cqw]";
 }
-<style>
-    :root {
-        /* TILES */
-        --fs-element-primary: clamp(20cqw, 40cqw, 50cqw);
-        --fs-element-secondary: clamp(calc(var(--fs-element-primary) * 0.33), calc(var(--fs-element-primary) * 0.5), calc(var(--fs-element-primary) * 0.75));
-        --fs-element-tertiary: calc(var(--fs-element-primary) * 0.33);
-    }
 
-    .tile {
-        container-type: size;
-    }
-
-    .element-symbol {
-        grid-row: 1 / 4;
-        grid-column: 1 / 5;
-    }
-
-    .element-number {
-        grid-row: 1 / 4;
-        grid-column: 5 / 7;
-        font-size: var(--fs-element-secondary);
-    }
-
-    .element-name {
-        grid-row: 5 / 6;
-    }
-
-    .element-weight {
-        grid-row: 6 / 7;
-        font-size: var(--fs-element-tertiary);
-    }
-</style>
-
-<div class="tile @tileStyle grid grid-rows-6 grid-cols-6 justify-between items-center m-0 h-full rounded-md leading-none aspect-square"
+<div class="tile @tileStyle m-0 grid aspect-square h-full grid-cols-6 grid-rows-6 items-center justify-between rounded-md leading-none"
      style="grid-column: @Model.Column; grid-row: @Model.Row;">
-    <div class="element-number size-full text-end overflow-hidden">@Model.Number</div>
-    <div class="element-symbol container-[size] -mt-1 size-full font-semibold overflow-hidden">
+    <div class="element-number size-full overflow-hidden text-end">@Model.Number</div>
+    <div class="element-symbol container-[size] -mt-1 size-full overflow-hidden font-semibold">
         <div class="@symbolSize">@Model.Symbol</div>
     </div>
-    <div class="element-name size-full text-[14cqw] text-center font-bold">@Model.Name</div>
+    <div class="element-name size-full text-center font-bold text-[14cqw]">@Model.Name</div>
     <div class="element-weight size-full">
         @Model.AtomicMass.ToString("F3").TrimEnd('0').TrimEnd('.')</div>
     </div>

@@ -1,0 +1,32 @@
+﻿.element-list-container {
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.element-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+  .element-list li {
+    border-bottom: 1px solid #eee;
+  }
+
+    .element-list li:last-child {
+      border-bottom: none;
+    }
+
+  .element-list a {
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #0369a1;
+    display: block;
+  }
+
+    .element-list a:hover {
+      background-color: #e8f4f8;
+    }

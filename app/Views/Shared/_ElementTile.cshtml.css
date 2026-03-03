@@ -1,0 +1,30 @@
+﻿:root {
+  /* TILES */
+  --fs-element-primary: clamp(20cqw, 40cqw, 50cqw);
+  --fs-element-secondary: clamp(calc(var(--fs-element-primary) * 0.33), calc(var(--fs-element-primary) * 0.5), calc(var(--fs-element-primary) * 0.75));
+  --fs-element-tertiary: calc(var(--fs-element-primary) * 0.33);
+}
+
+.tile {
+  container-type: size;
+}
+
+.element-symbol {
+  grid-row: 1 / 4;
+  grid-column: 1 / 5;
+}
+
+.element-number {
+  grid-row: 1 / 4;
+  grid-column: 5 / 7;
+  font-size: var(--fs-element-secondary);
+}
+
+.element-name {
+  grid-row: 5 / 6;
+}
+
+.element-weight {
+  grid-row: 6 / 7;
+  font-size: var(--fs-element-tertiary);
+}

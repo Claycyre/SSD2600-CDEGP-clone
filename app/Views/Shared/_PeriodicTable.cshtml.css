@@ -1,0 +1,8 @@
+﻿.periodic-table {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  gap: 0.25rem;
+  margin: 10vh auto;
+  padding: 0 1rem;
+}
