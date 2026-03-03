@@ -4,6 +4,21 @@
     ViewData["Title"] = "Welcome to Prometheus Atomics";
 }
 <style>
+    .hero {
+        position: relative;
+        min-height: calc(100vh - var(--header-height));
+    }
+
+    .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("https://images.unsplash.com/photo-1582368290517-a888d26e1624?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+        background-position: 70% 50%;
+        z-index: -50;
+        filter: grayscale(100%);
+    }
+
     .sidebar {
         display: flex;
         flex-direction: column;
@@ -24,6 +39,22 @@
 </style>
 @*body container*@
 <div class="m-0 flex h-full min-h-full w-full flex-col">
+    <section class="hero bg-primary-300/50 overflow-hidden">
+        <div
+            class="relative flex flex-col justify-center items-center gap-8 max-w-2xl h-full px-8 text-white isolate after:content-['_'] after:absolute after:right-0 after:-top-1/3 after:w-screen after:h-[200%] after:bg-primary-900/50 after:backdrop-blur-xs after:rotate-12 after:-z-10">
+            <h1 class="flex font-displayxp font-bold text-5xl">
+                @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "NoType", true } })
+                The World's Atomic Authority
+            </h1>
+            <p class="leading-relaxed indent-4">
+                Prometheus Atomics curates the fundamental building blocks of the universe, delivering mission-critical
+                isotopes and high-purity elements with subatomic precision. We command the global supply chain that
+                fuels
+                the next era of industrial evolution, providing the raw power needed to sustain the spark of human
+                progress.
+            </p>
+        </div>
+    </section>
     <div class="flex size-full">
         <section class="flex min-h-full w-fit flex-col justify-start bg-neutral-50 p-4">
             @*filter checkboxes*@
@@ -38,12 +69,6 @@
 
         @*main content*@
         <div class="w-full">
-
-            <section class="cta text-center font-bold">
-                <h1 class="text-2xl">Welcome to Prometheus Atomic Procurement Industries</h1>
-                <p>The best choice for all your isotopic needs</p>
-            </section>
-
             <partial name="_PeriodicTable" model="Model.Elements" />
         </div>
     </div>

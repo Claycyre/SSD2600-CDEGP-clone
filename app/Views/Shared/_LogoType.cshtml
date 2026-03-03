@@ -4,6 +4,7 @@
 @{
     var size = @ViewData["Size"] as string ?? "";
     var center = @ViewData["Center"] as bool? ?? false;
+    var noType = @ViewData["NoType"] as bool? ?? false;
     var typeHides = @ViewData["LogoTypeShouldHide"] as bool? ?? false;
 
     var logoStyles = new CssClasses(
@@ -15,6 +16,7 @@
     var logoTypeStyles = new CssClasses(
         ("basis-2/3 shrink font-displaysxp font-semibold z-10"),
         (typeHides, "hidden lg:block", ""),
+        (noType, "hidden!", ""),
         (size == "small", "leading-none text-3xl", "text-5xl"),
         (center, "basis-2/3 shrink", "w-min")
     );

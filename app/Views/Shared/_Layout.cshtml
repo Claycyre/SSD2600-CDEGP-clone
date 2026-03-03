@@ -13,39 +13,39 @@
     <title>@ViewData["Title"] - Prometheus Atomics</title>
 
     <style>
-        .nav__list {
-            --hover-transition: 200ms ease-in-out;
-            gap: 0.5rem;
-        }
+            .nav__list {
+                --hover-transition: 200ms ease-in-out;
+                gap: 0.5rem;
+            }
 
-            .nav__list > li > a {
+            .nav__list>li>a {
                 position: relative;
                 padding: 0.5rem 1rem;
             }
 
-                .nav__list > li > a::after {
-                    position: absolute;
-                    content: "";
-                    bottom: 0;
-                    left: 50%;
-                    width: 75%;
-                    height: 2px;
-                    background-color: var(--color-primary-500);
-                    opacity: 0;
-                    translate: -50% 0;
-                    transition: opacity var(--hover-transition);
-                    pointer-events: none;
-                }
+            .nav__list>li>a::after {
+                position: absolute;
+                content: "";
+                bottom: 0;
+                left: 50%;
+                width: 75%;
+                height: 2px;
+                background-color: var(--color-primary-500);
+                opacity: 0;
+                translate: -50% 0;
+                transition: opacity var(--hover-transition);
+                pointer-events: none;
+            }
 
-                .nav__list > li > a:hover::after {
-                    opacity: 100%;
-                    transition: none;
-                }
+            .nav__list>li>a:hover::after {
+                opacity: 100%;
+                transition: none;
+            }
     </style>
 </head>
 
 <body class="flex min-h-dvh flex-col">
-    <header class="shrink border-b border-primary-500 px-2 py-4 shadow-xl">
+    <header id="site-header" class="shrink border-b border-primary-500 px-2 py-4 shadow-xl">
         <nav class="flex gap-2 lg:gap-8">
             <a class="basis-0" href="/">
                 @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Size", "small" }, {
@@ -63,17 +63,21 @@
                         <a href="#">Placeholder</a>
                     </li>
                 </ul>
-                @if (User.Identity?.IsAuthenticated ?? false) {
+                @if (User.Identity?.IsAuthenticated ?? false)
+                {
                     <div class="relative">
                         <div>
                             <p class="text-xs font-semibold text-neutral-500">Logged in as</p>
                             <p class="">@User.Identity.Name</p>
                         </div>
-                        <form class="absolute" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                        <form class="absolute" asp-area="Identity" asp-page="/Account/Logout"
+                              asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
                             <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
                         </form>
                     </div>
-                } else {
+                }
+                else
+                {
                     <ul class="nav__list flex">
                         <li>
                             <a href="/Identity/Account/Register">Register</a>
@@ -131,6 +135,20 @@
         <script defer>
                 const copyrightEl = document.getElementById("copyright-year");
                 copyrightEl.innerText = new Date().getFullYear()
+        </script>
+        <script defer>
+                const header = document.getElementById('site-header');
+
+                function setHeaderHeight() {
+                    const h = header.getBoundingClientRect().height;
+                    document.documentElement.style.setProperty('--header-height', `${h}px`);
+                }
+
+                setHeaderHeight();
+                window.addEventListener('resize', setHeaderHeight);
+
+                // Optional: catches content/font changes too
+                new ResizeObserver(setHeaderHeight).observe(header);
         </script>
         <script defer src="~/dist/js/index.js"></script>
     </body>
