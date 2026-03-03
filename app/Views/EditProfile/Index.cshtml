@@ -1,0 +1,218 @@
+﻿
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="min-h-screen bg-gray-100">
+
+    <!-- Header with Banner -->
+    <div class="bg-blue-900 text-white text-center py-6 shadow">
+        <h1 class="text-3xl font-bold">Edit Profile</h1>
+        <!-- Placeholder banner -->
+        <div class="mt-4">
+            <img src="~/images/banner.jpg" alt="Banner"
+                 class="mx-auto h-24 object-cover rounded shadow">
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto p-8 grid grid-cols-4 gap-8">
+
+        <!-- MAIN CONTENT -->
+        <div class="col-span-3">
+
+            <!-- Wide Field-Style Buttons -->
+            <div class="bg-white rounded shadow p-6">
+                <div class="space-y-0 text-center">
+
+                    <button id="openPasswordModal"
+                            class="w-full border p-4 text-left bg-gray-50 hover:bg-gray-100">
+                        Edit Password
+                    </button>
+                    <button id="openBillingModal"
+                            class="w-full border border-t-0 p-4 text-left bg-gray-50 hover:bg-gray-100">
+                        Edit Billing Details
+                    </button>
+
+                </div>
+                <!-- Confirm / Cancel -->
+                <div class="flex flex-col items-center mt-6">
+
+                    <button class="bg-blue-600 text-white px-6 py-2 rounded-t hover:bg-blue-700">
+                        Confirm Changes
+                    </button>
+                    <button class="bg-red-600 text-white px-6 py-2 rounded-b hover:bg-red-700">
+                        Cancel
+                    </button>
+
+                </div>
+
+
+            </div>
+            <!-- Spacer -->
+            <div class="h-10"></div>
+            <!-- Order History Box -->
+            <div class="bg-white border rounded shadow p-6">
+                <h2 class="text-lg font-semibold mb-4">Recent Orders</h2>
+                <!-- Placeholder order list -->
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between border-b pb-2">
+                        <span>Order #1023 — Book</span>
+                        <span>$10.00</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-2">
+                        <span>Order #1024 — Pens (x3)</span>
+                        <span>$6.00</span>
+                    </div>
+                </div>
+                <!-- Bottom Action Buttons -->
+                <div class="flex justify-between mt-6">
+                    <!-- Empty box (future use) -->
+                    <div class="w-1/2 border rounded h-16 bg-gray-50"></div>
+                    <!-- Right-side buttons -->
+                    <div class="flex space-x-0">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-r hover:bg-blue-700 text-sm">
+                            View Full Orders & Invoices
+                        </button>
+                        <a asp-controller="Contact" asp-action="Index"
+                           class="bg-yellow-500 text-white px-4 py-2 hover:bg-yellow-600 text-sm inline-block">
+                            Report a Problem
+                        </a>
+
+                        </div>
+                </div>
+            </div>
+        </div>
+        <!-- RIGHT SIDE VERTICAL PANEL -->
+        <div class="bg-white rounded shadow p-6">
+            <h2 class="text-lg font-semibold mb-4">Profile Summary</h2>
+            <p class="text-sm text-gray-600">
+                Placeholder panel for profile stats, membership, saved cards, or notifications.
+            </p>
+            <div class="mt-4 h-64 border rounded bg-gray-50"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Billing Edit Modal -->
+<div id="billingModal"
+     class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center">
+
+    <div class="bg-white rounded shadow p-6 w-96">
+
+        <h2 class="text-lg font-semibold mb-4 text-center">Edit Billing Details</h2>
+
+        <form>
+
+            <input type="text" placeholder="Full Name"
+                   class="w-full border p-2 mb-2 rounded">
+
+            <input type="email" placeholder="Email"
+                   class="w-full border p-2 mb-2 rounded">
+
+            <input type="text" placeholder="Address"
+                   class="w-full border p-2 mb-2 rounded">
+
+            <input type="text" placeholder="City"
+                   class="w-full border p-2 mb-2 rounded">
+
+            <input type="text" placeholder="Postal Code"
+                   class="w-full border p-2 mb-4 rounded">
+
+            <div class="flex flex-col items-center">
+                <button type="submit"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-t hover:bg-blue-700">
+                    Confirm Changes
+                </button>
+
+                <button type="button" id="closeBillingModal"
+                        class="bg-red-600 text-white px-6 py-2 rounded-b hover:bg-red-700">
+                    Cancel
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- Edit Password Modal -->
+<div id="passwordModal"
+     class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center">
+    <div class="bg-white rounded shadow p-6 w-96">
+
+        <h2 class="text-lg font-semibold mb-4 text-center">Edit Password</h2>
+        <form>
+
+            <input type="password" placeholder="Old Password"
+                   class="w-full border p-2 mb-2 rounded">
+
+            <input type="password" placeholder="New Password"
+                   class="w-full border p-2 mb-2 rounded">
+
+            <input type="password" placeholder="Confirm New Password"
+                   class="w-full border p-2 mb-4 rounded">
+
+            <div class="flex flex-col items-center">
+                <button type="submit"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-t hover:bg-blue-700">
+                    Confirm Changes
+                </button>
+
+                <button type="button" id="closePasswordModal"
+                        class="bg-red-600 text-white px-6 py-2 rounded-b hover:bg-red-700">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const modal = document.getElementById("billingModal");
+            const openBtn = document.getElementById("openBillingModal");
+            const closeBtn = document.getElementById("closeBillingModal");
+            const passwordModal = document.getElementById("passwordModal");
+            const openPasswordBtn = document.getElementById("openPasswordModal");
+            const closePasswordBtn = document.getElementById("closePasswordModal");
+
+        if (passwordModal && openPasswordBtn && closePasswordBtn) {
+
+            openPasswordBtn.addEventListener("click", function () {
+                passwordModal.classList.remove("hidden");
+            });
+
+            closePasswordBtn.addEventListener("click", function () {
+                passwordModal.classList.add("hidden");
+            });
+
+            window.addEventListener("click", function (e) {
+                if (e.target === passwordModal) {
+                    passwordModal.classList.add("hidden");
+                }
+            });
+        }
+
+
+            if (!modal || !openBtn || !closeBtn) return;
+
+            openBtn.addEventListener("click", function () {
+                modal.classList.remove("hidden");
+            });
+
+            closeBtn.addEventListener("click", function () {
+                modal.classList.add("hidden");
+            });
+
+            window.addEventListener("click", function (e) {
+                if (e.target === modal) {
+                    modal.classList.add("hidden");
+                }
+            });
+
+        });
+    </script>
+}
+

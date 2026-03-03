@@ -19,6 +19,11 @@ public class HomeController(ILogger<HomeController> logger, ElementService eleme
         return View(model);
     }
 
+    public IActionResult Contact()
+    {
+        return View();
+    }
+
     public IActionResult Privacy()
     {
         return View();
