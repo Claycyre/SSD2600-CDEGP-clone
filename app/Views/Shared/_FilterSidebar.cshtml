@@ -7,7 +7,7 @@
         @await Html.PartialAsync("_FilterCheckboxes", Model)
         @await Html.PartialAsync("_ProductTypeFilter", Model.SelectedTypes)
         @await Html.PartialAsync("_SortOptions", Model)
-        <button type="button" onclick="clearFilters()"
+        <button type="button" onclick="clearFilters(event)"
                 class="rounded bg-primary-600 px-4 py-2 text-white cursor-pointer">
             Clear Filters
         </button>

@@ -60,7 +60,7 @@
     <section id="periodic-table" class="flex size-full">
         <div class="flex min-h-full w-fit flex-col justify-start bg-neutral-50 p-4">
             @*filter checkboxes*@
-            <form method="get" id="filterForm" class="flex flex-col gap-4">
+            <form method="get" id="filterForm" class="flex flex-col gap-4" onsubmit="filtersOnSubmit(event)">
 				@await Html.PartialAsync("_FilterSidebar", Model)
             </form>
 

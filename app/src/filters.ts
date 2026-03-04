@@ -1,21 +1,27 @@
-function clearFilters() {
-  // Uncheck all checkboxes
-  document
-    .querySelectorAll('input[name="Phases"]')
-    //@ts-ignore
-    .forEach((cb) => (cb.checked = false));
-  document
-    .querySelectorAll('input[name="types"]')
-    //@ts-ignore
-    .forEach((cb) => (cb.checked = false));
+function clearFilters(e: Event) {
+  const parentForm = (e.target as HTMLButtonElement).form;
 
-  // Reset sort to default (no value)
-  //@ts-ignore
-  document.querySelector('input[name="SortBy"][value=""]').checked = true;
+  const phases = parentForm.elements.namedItem("Phases") as RadioNodeList;
+  if (phases) {
+    phases.forEach((cb) => (cb.checked = false));
+  }
 
-  // Submit form
-  //@ts-ignore
-  document.getElementById("filterForm").submit();
+  const types = parentForm.elements.namedItem("types") as RadioNodeList;
+  if (types) {
+    types.forEach((cb) => (cb.checked = false));
+  }
+
+  const sortBy = parentForm.elements.namedItem("SortBy") as RadioNodeList;
+  if (sortBy) {
+    for (const [_, element] of sortBy.entries()) {
+      if (element.value !== "") continue;
+
+      element.checked = true;
+      break;
+    }
+  }
+
+  parentForm.requestSubmit();
 }
 
 function filtersOnSubmit(_: SubmitEvent) {
