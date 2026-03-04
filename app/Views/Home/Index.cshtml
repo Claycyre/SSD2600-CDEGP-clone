@@ -39,16 +39,16 @@
 @*body container*@
 <div class="m-0 flex h-full min-h-full w-full flex-col">
     <section
-        class="hero bg-primary-300/50 overflow-hidden after:bg-position-[50%_50%] after:md:bg-position-[-70em_50%] ">
+        class="hero bg-primary-300/50 overflow-hidden after:bg-position-[35%_50%] after:md:bg-position-[-70em_50%] ">
         <div
-            class="relative flex flex-col justify-center items-center gap-8 md:max-w-2xl h-full px-8 text-white isolate after:content-['_'] after:absolute after:right-0 after:-top-1/2 after:w-[200vw] after:h-[200%] after:bg-primary-900/50 after:backdrop-blur-xs after:md:rotate-12 after:-z-10">
+            class="relative flex flex-col justify-center gap-8 md:max-w-2xl h-full px-8 text-white isolate after:content-['_'] after:absolute after:right-0 after:-top-1/2 after:w-[200vw] after:h-[200%] after:bg-primary-900/50 after:backdrop-blur-xs after:md:rotate-12 after:-z-10">
+            <div class="hidden sm:block w-fit">
+                @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Size", "small" } })
+            </div>
             <h1 class="flex font-displayxp font-bold text-5xl">
-                <span class="hidden md:block">
-                    @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "NoType", true } })
-                </span>
-                The World's Atomic Authority
+                The World's<br>Atomic Authority
             </h1>
-            <p class="md:pl-24 leading-relaxed">
+            <p class="text-justify hyphens-auto leading-relaxed">
                 Prometheus Atomics curates the fundamental building blocks of the universe, delivering mission-critical
                 isotopes and high-purity elements with subatomic precision. We command the global supply chain that
                 fuels
@@ -56,7 +56,7 @@
                 progress.
             </p>
             <button
-                class="px-3 py-2 rounded font-semibold text-primary-800 bg-neutral-50 hover:bg-neutral-100 duration-100 cursor-pointer"
+                class="self-start px-3 py-2 rounded font-semibold text-primary-800 bg-neutral-50 hover:bg-neutral-100 duration-100 cursor-pointer"
                 onclick="scrollToElement('periodic-table', { behavior: 'smooth' })">
                 Explore the elements
             </button>
