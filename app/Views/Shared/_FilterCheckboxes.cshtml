@@ -14,19 +14,19 @@
             <label class="flex items-center gap-2 text-sm">
                 <input type="checkbox" id="checkboxSolids" name="Phases" value="Solid"
                 @(indexModel.Phases.Contains("Solid") ? "checked" : "")
-                       onchange="document.getElementById('filterForm').submit()" />
+                       onchange="document.getElementById('filterForm').requestSubmit()" />
                 Solids
             </label>
             <label class="flex items-center gap-2 text-sm">
                 <input type="checkbox" id="checkboxLiquids" name="Phases" value="Liquid"
                 @(indexModel.Phases.Contains("Liquid") ? "checked" : "")
-                       onchange="document.getElementById('filterForm').submit()" />
+                       onchange="document.getElementById('filterForm').requestSubmit()" />
                 Liquids
             </label>
             <label class="flex items-center gap-2 text-sm">
                 <input type="checkbox" id="checkboxGases" name="Phases" value="Gas"
                 @(indexModel.Phases.Contains("Gas") ? "checked" : "")
-                       onchange="document.getElementById('filterForm').submit()" />
+                       onchange="document.getElementById('filterForm').requestSubmit()" />
                 Gases
             </label>
         </div>
