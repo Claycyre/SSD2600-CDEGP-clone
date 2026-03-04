@@ -1,4 +1,5 @@
 @model SSD2600_CDEGP.Models.ProductViewModel
+@using SSD2600_CDEGP.Helpers
 @{
     ViewData["Title"] = Model?.Name ?? "Product Details";
 }
@@ -21,10 +22,66 @@
                 </div>
                 <div class="col-span-2">
                     <h1 class="text-2xl font-semibold">@Model.Name</h1>
-                    <p class="text-gray-600 mt-2">@Model.Description</p>
+                    <div class="flex gap-2 mt-1">
+                        <span class="text-xs text-white bg-blue-500 rounded-full px-2 py-0.5">@Model.ProductType</span>
+                        @if (!string.IsNullOrEmpty(Model.ProductSubtype))
+                        {
+                            <span class="text-xs text-white bg-blue-400 rounded-full px-2 py-0.5">@Model.ProductSubtype</span>
+                        }
+                        <span class="text-xs text-white bg-gray-500 rounded-full px-2 py-0.5">@Model.StateOfMatter</span>
+                    </div>
+                    <p class="text-gray-600 mt-3">@Model.Description</p>
+
+                    <!-- Specifications table -->
+                    <div class="mt-4 overflow-hidden rounded-lg border border-gray-200">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-600 w-1/2">Specification</th>
+                                    <th class="px-4 py-2 text-left font-semibold text-gray-600">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr>
+                                    <td class="px-4 py-2 text-gray-500">Type</td>
+                                    <td class="px-4 py-2">
+                                        @Model.ProductType@(!string.IsNullOrEmpty(Model.ProductSubtype) ? " – " + Model.ProductSubtype : "")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 text-gray-500">State of Matter</td>
+                                    <td class="px-4 py-2">@Model.StateOfMatter</td>
+                                </tr>
+                                @if (!string.IsNullOrEmpty(Model.HalfLife))
+                                {
+                                    <tr>
+                                        <td class="px-4 py-2 text-gray-500">Half-Life</td>
+                                        <td class="px-4 py-2">@Model.HalfLife</td>
+                                    </tr>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.Purity))
+                                {
+                                    <tr>
+                                        <td class="px-4 py-2 text-gray-500">Purity</td>
+                                        <td class="px-4 py-2">@Model.Purity</td>
+                                    </tr>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.SpecificActivity))
+                                {
+                                    <tr>
+                                        <td class="px-4 py-2 text-gray-500">Specific Activity</td>
+                                        <td class="px-4 py-2">@Model.SpecificActivity</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <td class="px-4 py-2 text-gray-500">Price per gram</td>
+                                    <td class="px-4 py-2 font-semibold">@PriceUtils.FormatPerGram((double)Model.Price, Model.CurrencyCode)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <div class="mt-6 flex items-center justify-between">
-                        <div class="text-lg font-bold">@Model.Price.ToString("C")</div>
                         <form method="post" asp-controller="Cart" asp-action="Add">
                             <input type="hidden" name="id" value="@Model.Id" />
                             <input type="number" name="quantity" value="1" min="1" class="w-20 border rounded px-2 py-1" />
@@ -32,7 +89,7 @@
                         </form>
                     </div>
 
-                    <a asp-action="Index" asp-controller="ProductCatalogue" class="inline-block mt-6 text-sm text-blue-600">? Back to catalogue</a>
+                    <a asp-action="Index" asp-controller="ProductCatalogue" class="inline-block mt-6 text-sm text-blue-600">← Back to catalogue</a>
                 </div>
             </div>
         </div>

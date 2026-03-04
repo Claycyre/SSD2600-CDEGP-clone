@@ -8,7 +8,12 @@ public static class DbInitializer
     {
         if (doReseed)
         {
+            context.UserTokens.ExecuteDelete();
+            context.UserLogins.ExecuteDelete();
+            context.UserClaims.ExecuteDelete();
+            context.UserRoles.ExecuteDelete();
             context.Users.ExecuteDelete();
+            context.Products.ExecuteDelete();
             context.Suppliers.ExecuteDelete();
         }
 
@@ -22,7 +27,11 @@ public static class DbInitializer
         var fakeSuppliers = new SupplierSeeder(context).Generate(10, 20);
         context.SaveChanges();
 
-        var _ = new ApplicationUserSeeder(context, fakeSuppliers).Generate(20, 50);
+        var fakeUsers = new ApplicationUserSeeder(context, fakeSuppliers).Generate(20, 50);
         context.SaveChanges();
+
+        var seededProducts = new ProductSeeder(context, fakeSuppliers).Generate();
+        context.SaveChanges();
+
     }
 }

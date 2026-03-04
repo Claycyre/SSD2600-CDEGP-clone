@@ -1,5 +1,8 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SSD2600_CDEGP.Data;
 using SSD2600_CDEGP.Models;
 
 namespace SSD2600_CDEGP.Controllers;
@@ -7,38 +10,116 @@ namespace SSD2600_CDEGP.Controllers;
 public class ProductCatalogueController : Controller
 {
     private readonly ILogger<ProductCatalogueController> _logger;
+    private readonly ApplicationDbContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public ProductCatalogueController(ILogger<ProductCatalogueController> logger)
+    public ProductCatalogueController(
+        ILogger<ProductCatalogueController> logger,
+        ApplicationDbContext db,
+        UserManager<ApplicationUser> userManager
+    )
     {
         _logger = logger;
+        _db = db;
+        _userManager = userManager;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index(string? search, List<string>? types, List<string>? states)
     {
-        return View();
+        var productsQuery = _db.Products.AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            productsQuery = productsQuery.Where(p =>
+                p.Name.Contains(search)
+                || (p.ShortName != null && p.ShortName.Contains(search))
+                || (p.Description != null && p.Description.Contains(search))
+            );
+        }
+
+        if (types?.Count > 0)
+            productsQuery = productsQuery.Where(p => types.Contains(p.ProductType));
+
+        if (states?.Count > 0)
+            productsQuery = productsQuery.Where(p => states.Contains(p.StateOfMatter));
+
+        var products = await productsQuery.ToListAsync();
+
+        // Determine user's preferred currency (defaults to CAD)
+        string preferredCurrency = "CAD";
+        List<RecentPurchaseViewModel> recentPurchases = [];
+
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            var userId = _userManager.GetUserId(User);
+            var appUser = await _userManager.FindByIdAsync(userId!);
+            if (appUser != null)
+                preferredCurrency = appUser.PreferredCurrencyCode;
+
+            //recentPurchases = await _db
+            //    .UserPurchases.AsNoTracking()
+            //    .Where(up => up.FkUserId == userId && up.Product != null)
+            //    .OrderByDescending(up => up.PurchasedAt)
+            //    .Include(up => up.Product)
+            //    .Take(3)
+            //    .Select(up => new RecentPurchaseViewModel
+            //    {
+            //        Product = up.Product!,
+            //        PriceAtPurchase = up.PriceAtPurchase,
+            //        CurrencyCode = up.CurrencyCode,
+            //        PurchasedAt = up.PurchasedAt,
+            //    })
+            //    .ToListAsync();
+        }
+
+        var vm = new ProductCatalogueIndexViewModel
+        {
+            Products = products,
+            SearchQuery = search,
+            RecentPurchases = recentPurchases,
+            SelectedTypes = types ?? [],
+            SelectedStates = states ?? [],
+            PreferredCurrencyCode = preferredCurrency,
+        };
+
+        return View(vm);
     }
 
     // GET: /ProductCatalogue/Details/{id}
-    public IActionResult Details(string id)
+    public async Task<IActionResult> Details(int id)
     {
-        if (string.IsNullOrEmpty(id))
+        var product = _db.Products.AsNoTracking().FirstOrDefault(p => p.PkSKU == id);
+
+        if (product == null)
         {
             return NotFound();
         }
 
-        // In a real app, you'd load product data from a database.
-        // Here we return a sample product based on the id for demonstration.
-        var product = new ProductViewModel
+        string currencyCode = "CAD";
+        if (User.Identity?.IsAuthenticated == true)
         {
-            Id = id,
-            Name = id == "1" ? "Helium 3 Canister" : "Lunar Soil Sample",
-            Description =
-                "Detailed description and specifications for the product. To be filled out later.",
-            Price = id == "1" ? 1999.99M : 499.50M,
+            var appUser = await _userManager.GetUserAsync(User);
+            if (appUser != null)
+                currencyCode = appUser.PreferredCurrencyCode;
+        }
+
+        var viewModel = new ProductViewModel
+        {
+            Id = product.PkSKU.ToString(),
+            Name = product.Name,
+            Description = product.Description,
+            Price = (decimal)product.UnitPrice,
             ImageUrl = null,
+            StateOfMatter = product.StateOfMatter,
+            ProductType = product.ProductType,
+            ProductSubtype = product.ProductSubtype,
+            HalfLife = product.HalfLife,
+            Purity = product.Purity,
+            SpecificActivity = product.SpecificActivity,
+            CurrencyCode = currencyCode,
         };
 
-        return View(product);
+        return View(viewModel);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

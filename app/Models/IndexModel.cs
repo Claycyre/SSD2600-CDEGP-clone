@@ -10,6 +10,12 @@ public class IndexModel(ElementService elementService)
 
     public string? SortBy { get; set; }
 
+    /// <summary>Product types currently selected for filtering, e.g. Medical, Industrial, Research.</summary>
+    public List<string> SelectedTypes { get; set; } = [];
+
+    /// <summary>Atomic numbers of elements that have a product matching the selected types (used to highlight tiles).</summary>
+    public HashSet<int> ProductAtomicNumbers { get; set; } = [];
+
     public void ApplyFilters()
     {
         Elements = new List<Element>(elementService.Elements);
@@ -18,6 +24,18 @@ public class IndexModel(ElementService elementService)
             Elements = Elements.ConvertAll(e =>
             {
                 if (!Phases.Contains(e.Phase))
+                {
+                    e = e with { Category = "filtered" };
+                }
+
+                return e;
+            });
+
+        // If product-type filter is active, dim elements that have no matching product
+        if (SelectedTypes.Count > 0 && ProductAtomicNumbers.Count > 0)
+            Elements = Elements.ConvertAll(e =>
+            {
+                if (e.Category != "filtered" && !ProductAtomicNumbers.Contains(e.Number))
                 {
                     e = e with { Category = "filtered" };
                 }

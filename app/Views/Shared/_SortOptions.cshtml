@@ -1,0 +1,22 @@
+@model IndexModel
+
+@*_SortOptions.cshtml*@
+<fieldset>
+    <legend>Sort</legend>
+    <div class="flex flex-col gap-1">
+        <label class="flex items-center gap-2 text-sm">
+            <input type="radio" name="SortBy" value="" @(string.IsNullOrEmpty(Model.SortBy) ? "checked" : "") onchange="document.getElementById('filterForm').submit()" />
+            Atomic Number
+        </label>
+        <label class="flex items-center gap-2 text-sm">
+            <input type="radio" name="SortBy" value="name" @(Model.SortBy == "name" ? "checked" : "")
+                   onchange="document.getElementById('filterForm').submit()" />
+            Name
+        </label>
+        <label class="flex items-center gap-2 text-sm">
+            <input type="radio" name="SortBy" value="mass" @(Model.SortBy == "mass" ? "checked" : "")
+                   onchange="document.getElementById('filterForm').submit()" />
+            Atomic Mass
+        </label>
+    </div>
+</fieldset>

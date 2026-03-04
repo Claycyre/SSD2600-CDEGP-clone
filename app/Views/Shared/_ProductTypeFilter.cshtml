@@ -1,0 +1,23 @@
+@model List<string>
+
+@*_ProductTypeFilter.cshtml — product-type checkboxes (Medical, Industrial, Research)
+  Included in both the Home periodic-table sidebar and the Product Catalogue filter panel.
+  Model: currently selected product types.
+  ViewData["LegendClass"]: optional extra CSS classes for the <legend> (e.g. "font-semibold").*@
+@{
+    var legendClass = ViewData["LegendClass"] as string ?? "";
+}
+<fieldset>
+    <legend class="@legendClass mb-1">Product Type</legend>
+    <div class="flex flex-col gap-1">
+        @foreach (var type in new[] { "Medical", "Industrial", "Research" })
+        {
+            <label class="flex items-center gap-2 text-sm">
+                <input type="checkbox" name="types" value="@type"
+                @(Model != null && Model.Contains(type) ? "checked" : "")
+                       onchange="this.form.submit()" />
+                @type
+            </label>
+        }
+    </div>
+</fieldset>

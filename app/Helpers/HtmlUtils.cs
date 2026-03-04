@@ -1,5 +1,39 @@
 namespace SSD2600_CDEGP.Helpers;
 
+/// <summary>Returns short badge abbreviations for product type and state-of-matter labels.</summary>
+public static class BadgeUtils
+{
+    public static string ProductTypeAbbrev(string productType) => productType switch
+    {
+        "Medical"    => "MED",
+        "Industrial" => "INDUST",
+        "Research"   => "RES",
+        _            => productType
+    };
+
+    public static string StateOfMatterAbbrev(string state) => state switch
+    {
+        "Solid"  => "SOL",
+        "Liquid" => "LIQ",
+        "Gas"    => "GAS",
+        _        => state
+    };
+}
+
+/// <summary>Formats a price with its ISO 4217 currency code, e.g. "CAD 8,500.00".</summary>
+public static class PriceUtils
+{
+    public static string Format(double price, string currencyCode = "CAD")
+    {
+        return $"{currencyCode} {price:N2}";
+    }
+
+    public static string FormatPerGram(double price, string currencyCode = "CAD")
+    {
+        return $"{Format(price, currencyCode)}/g";
+    }
+}
+
 public record CssClass
 {
     private readonly bool condition;

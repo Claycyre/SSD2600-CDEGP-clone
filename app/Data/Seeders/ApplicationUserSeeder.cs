@@ -37,6 +37,7 @@ public class ApplicationUserSeeder(DbContext _context, List<Supplier> _available
                     return s?.Id;
                 }
             )
+            .RuleFor(u => u.PreferredCurrencyCode, f => f.PickRandom("CAD", "USD", "EUR", "GBP"))
             // IdentityFW stuff
             .RuleFor(u => u.SecurityStamp, f => Guid.NewGuid().ToString())
             .RuleFor(u => u.ConcurrencyStamp, f => Guid.NewGuid().ToString());

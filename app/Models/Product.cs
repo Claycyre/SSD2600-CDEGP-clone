@@ -28,9 +28,39 @@ namespace SSD2600_CDEGP.Models
 
         public byte[]? Attributes { get; set; }
 
+        /// <summary>Atomic number of the primary isotope element (links to the periodic table).</summary>
+        public int? AtomicNumber { get; set; }
+
+        /// <summary>Physical state of the product at room temperature, e.g. Solid, Liquid, Gas.</summary>
         [Required]
-        [StringLength(10)]
-        [ForeignKey("Supplier")]
-        public string FkSupplierId { get; set; } = string.Empty;
+        [StringLength(50)]
+        public string StateOfMatter { get; set; } = string.Empty;
+
+        /// <summary>High-level product category, e.g. Medical, Industrial, Research.</summary>
+        [Required]
+        [StringLength(50)]
+        public string ProductType { get; set; } = string.Empty;
+
+        /// <summary>Subcategory within the product type, e.g. Diagnostic, Therapeutic, NDT.</summary>
+        [StringLength(60)]
+        public string? ProductSubtype { get; set; }
+
+        /// <summary>Radioactive half-life of the isotope, e.g. "6 h", "8.02 days".</summary>
+        [StringLength(30)]
+        public string? HalfLife { get; set; }
+
+        /// <summary>Radionuclidic or radiochemical purity specification, e.g. "≥99.9 %".</summary>
+        [StringLength(60)]
+        public string? Purity { get; set; }
+
+        /// <summary>Specific activity at calibration time, e.g. "≥185 GBq/mg".</summary>
+        [StringLength(80)]
+        public string? SpecificActivity { get; set; }
+
+        [Required]
+        public int FkSupplierId { get; set; }
+
+        [ForeignKey(nameof(FkSupplierId))]
+        public Supplier? Supplier { get; set; }
     }
 }

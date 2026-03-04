@@ -8,6 +8,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public DbSet<Supplier> Suppliers { get; set; } = default!;
 
+    public DbSet<Product> Products { get; set; } = default!;
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
 }

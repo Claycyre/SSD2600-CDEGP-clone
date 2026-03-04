@@ -28,56 +28,7 @@
         <section class="flex min-h-full w-fit flex-col justify-start bg-neutral-50 p-4">
             @*filter checkboxes*@
             <form method="get" id="filterForm" class="flex flex-col gap-4">
-                <fieldset>
-                    <legend>Filters</legend>
-                    <div class="m-0 grid w-full grid-cols-2 p-0">
-                        <ul class="flex flex-col">
-                            <li>
-                                <input type="checkbox" id="checkboxSolids" name="Phases" value="Solid"
-                                @(Model.Phases.Contains("Solid") ? "checked" : "")
-                                       onchange="document.getElementById('filterForm').submit()" />
-                                <label for="checkboxSolids">Solids</label>
-                            </li>
-                            <li>
-                                <input type="checkbox" id="checkboxLiquids" name="Phases" value="Liquid"
-                                @(Model.Phases.Contains("Liquid") ? "checked" : "")
-                                       onchange="document.getElementById('filterForm').submit()" />
-                                <label for="checkboxLiquids">Liquids</label>
-                            </li>
-                            <li>
-                                <input type="checkbox" id="checkboxGases" name="Phases" value="Gas"
-                                @(Model.Phases.Contains("Gas") ? "checked" : "")
-                                       onchange="document.getElementById('filterForm').submit()" />
-                                <label for="checkboxGases">Gases</label>
-                            </li>
-                        </ul>
-                    </div>
-                </fieldset>
-
-                <fieldset class="mt-4">
-                    <legend>Sort</legend>
-                    <div class="flex flex-col gap-2">
-                        <label>
-                            <input type="radio" name="SortBy" value="" @(string.IsNullOrEmpty(Model.SortBy) ? "checked" : "") onchange="document.getElementById('filterForm').submit()" />
-                            Atomic Number
-                        </label>
-                        <label>
-                            <input type="radio" name="SortBy" value="name" @(Model.SortBy == "name" ? "checked" : "")
-                                   onchange="document.getElementById('filterForm').submit()" />
-                            Name
-                        </label>
-                        <label>
-                            <input type="radio" name="SortBy" value="mass" @(Model.SortBy == "mass" ? "checked" : "")
-                                   onchange="document.getElementById('filterForm').submit()" />
-                            Atomic Mass
-                        </label>
-                    </div>
-                </fieldset>
-
-                <button type="button" onclick="clearFilters()"
-                        class="cursor-pointer rounded bg-primary-600 px-4 py-2 text-white">
-                    Clear Filters
-                </button>
+				@await Html.PartialAsync("_FilterSidebar", Model)
             </form>
 
             @*list of elements, to be filterable/sortable*@

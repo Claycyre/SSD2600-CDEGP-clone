@@ -1,0 +1,17 @@
+@model IndexModel
+
+@*_FilterSidebar.cshtml*@
+<section class="flex flex-col justify-start w-fit min-h-full bg-neutral-50 p-4">
+    @*filter checkboxes*@
+    <form method="get" id="filterForm" class="flex flex-col gap-4">
+        @await Html.PartialAsync("_FilterCheckboxes", Model)
+        @await Html.PartialAsync("_ProductTypeFilter", Model.SelectedTypes)
+        @await Html.PartialAsync("_SortOptions", Model)
+        <button type="button" onclick="clearFilters()"
+                class="rounded bg-primary-600 px-4 py-2 text-white cursor-pointer">
+            Clear Filters
+        </button>
+    </form>
+    @*list of elements, to be filterable/sortable*@
+    @await Html.PartialAsync("_ElementList", Model.Elements, new ViewDataDictionary(ViewData) { { "ClassName", "basis-0 grow" } })
+</section>

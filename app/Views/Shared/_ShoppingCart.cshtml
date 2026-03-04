@@ -44,9 +44,10 @@
         </div>
 
         <div class="mt-4">
-            <form method="post" asp-controller="Cart" asp-action="Checkout">
-                <button type="submit" class="w-full bg-blue-600 text-white rounded px-4 py-2">Checkout</button>
-            </form>
+            <a asp-controller="Checkout" asp-action="Index"
+               class="block w-full bg-blue-600 text-white rounded px-4 py-2 text-center">
+                Checkout
+            </a>
         </div>
     }
 </div>

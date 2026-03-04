@@ -22,4 +22,6 @@ public class Supplier
     public string CurrencyCode { get; set; } = "CAD";
 
     public ICollection<ApplicationUser> Users { get; } = [];
+
+    public ICollection<Product> Products { get; } = [];
 }

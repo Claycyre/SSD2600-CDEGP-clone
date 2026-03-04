@@ -1,125 +1,159 @@
-﻿@using SSD2600_CDEGP.Models
+@using SSD2600_CDEGP.Helpers
+@using SSD2600_CDEGP.Models
+@model SSD2600_CDEGP.Models.ProductCatalogueIndexViewModel
 @{
     ViewData["Title"] = "Product Catalogue";
 
-    // sample cart for preview in the partial
-    var sampleCart = new CartViewModel
-    {
-        Items = new System.Collections.Generic.List<CartItem>
-        {
-            new CartItem { Id = "1", Name = "Helium 3 Canister", Quantity = 2, Price = 1999.99M },
-            new CartItem { Id = "2", Name = "Lunar Soil Sample", Quantity = 1, Price = 499.50M }
-        }
-    };
+    var sampleCart = new CartViewModel { Items = [] };
 }
 
 <div class="min-h-screen bg-gray-100">
-
-    <div class="w-full px-10 py-10">
-
-        <!-- Main Card Wrapper -->
+    <div class="w-full px-4 py-10">
         <div class="bg-white rounded-2xl shadow-2xl p-10">
 
-            <!-- Page Title -->
             <h1 class="text-3xl font-semibold mb-10">Product Catalogue</h1>
 
-            <!-- Main Horizontal Layout -->
-			<div class="grid grid-cols-4 gap-6">
+            <div class="flex gap-6 items-start">
 
-				<div class="col-span-3">
-					<!-- LEFT PANEL (product list) -->
-					<div class="w-full xl:w-3/4 space-y-6">
+                <!-- LEFT SIDEBAR: filters (like home page) -->
+                <div class="shrink-0 w-44 bg-neutral-50 rounded-xl p-4">
+                    <form method="get" id="filterForm" asp-controller="ProductCatalogue" asp-action="Index"
+                          class="flex flex-col gap-4">
+                        @await Html.PartialAsync("_FilterCheckboxes", Model)
+                        @await Html.PartialAsync("_ProductTypeFilter", Model.SelectedTypes,
+                            new ViewDataDictionary(ViewData) { { "LegendClass", "font-semibold" } })
+                        @if (Model.SelectedTypes.Count > 0 || Model.SelectedStates.Count > 0 || !string.IsNullOrWhiteSpace(Model.SearchQuery))
+                        {
+                            <a asp-controller="ProductCatalogue" asp-action="Index"
+                               class="text-sm text-blue-600 hover:underline">
+                                Clear filters
+                            </a>
+                        }
+                    </form>
+                </div>
 
-                        <!-- Search Box -->
-                        <div>
+                <!-- CENTRE: search + product list -->
+                <div class="flex-1 space-y-6">
+
+                    <!-- Search bar -->
+                    <form method="get" asp-controller="ProductCatalogue" asp-action="Index">
+                        <!-- carry filter selections through search submissions -->
+                        @foreach (var t in Model.SelectedTypes)
+                        {
+                            <input type="hidden" name="types" value="@t" />
+                        }
+                        @foreach (var s in Model.SelectedStates)
+                        {
+                            <input type="hidden" name="states" value="@s" />
+                        }
+                        <div class="flex gap-2">
                             <input type="text"
-                                   placeholder="Search products, e.g. Helium 3"
-                                   class="w-full border border-gray-300 rounded-lg px-6 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                                   name="search"
+                                   value="@Model.SearchQuery"
+                                   placeholder="Search products, e.g. Technetium-99m"
+                                   class="flex-1 border border-gray-300 rounded-lg px-6 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                            <button type="submit"
+                                    class="bg-blue-600 text-white rounded-lg px-6 py-4 font-semibold hover:bg-blue-700 transition">
+                                Search
+                            </button>
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
+                        {
+                            <p class="mt-2 text-sm text-gray-500">
+                                @Model.Products.Count result@(Model.Products.Count == 1 ? "" : "s") for
+                                <span class="font-semibold">"@Model.SearchQuery"</span>
+                            </p>
+                        }
+                    </form>
 
+                    <!-- Product List -->
+                    <div class="space-y-4">
+                        @if (Model.Products.Count == 0)
+                        {
+                            <p class="text-gray-500 text-center py-10">No products found.</p>
+                        }
+                        else
+                        {
+                            @foreach (var product in Model.Products)
+                            {
+                                <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="@product.PkSKU"
+                                   class="block border rounded-xl p-4 bg-gray-50 shadow hover:shadow-md transition">
+                                    <div class="flex justify-between items-center">
+                                        <div>
+                                            <span class="font-medium">@product.Name</span>
+                                            @if (!string.IsNullOrEmpty(product.ShortName))
+                                            {
+                                                <span class="ml-2 text-sm text-gray-500">(@product.ShortName)</span>
+                                            }
+                                            <span title="@product.ProductType"
+                                                  class="ml-2 text-xs text-white bg-blue-500 rounded-full px-2 py-0.5">
+                                                @BadgeUtils.ProductTypeAbbrev(product.ProductType)
+                                            </span>
+                                            <span title="@product.StateOfMatter"
+                                                  class="ml-1 text-xs text-white bg-gray-500 rounded-full px-2 py-0.5">
+                                                @BadgeUtils.StateOfMatterAbbrev(product.StateOfMatter)
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center gap-4">
+                                            <span class="text-gray-700 font-semibold">@PriceUtils.FormatPerGram(product.UnitPrice, Model.PreferredCurrencyCode)</span>
+                                            <span class="text-gray-500">→</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                        }
+                    </div>
+
+                </div>
+
+                <!-- RIGHT PANEL: past purchases + shopping cart -->
+                <div class="col-span-1 flex flex-col gap-6">
+                    <div class="w-full flex flex-col gap-6">
+
+                        <!-- Past Purchases -->
+                        <div class="border rounded-xl p-6 bg-gray-50 shadow-md">
+                            <h2 class="font-semibold mb-6 border-b pb-2">Past Purchases</h2>
+
+                            @if (User.Identity?.IsAuthenticated != true)
+                            {
+                                <p class="text-sm text-gray-500">
+                                    <a asp-area="Identity" asp-page="/Account/Login" class="text-blue-600 hover:underline">Log in</a>
+                                    to see your recent purchases.
+                                </p>
+                            }
+                            else if (Model.RecentPurchases.Count == 0)
+                            {
+                                <p class="text-sm text-gray-500">No past purchases yet.</p>
+                            }
+                            else
+                            {
+                                <div class="space-y-4">
+                                    @foreach (var purchase in Model.RecentPurchases)
+                                    {
+                                        <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="@purchase.Product.PkSKU"
+                                           class="flex items-center gap-4 border rounded-lg p-3 bg-white shadow-sm hover:shadow-md transition">
+                                            <div class="w-12 h-12 bg-blue-600 text-white rounded flex items-center justify-center font-bold text-sm shrink-0">
+                                                @(purchase.Product.ShortName?.Split('-').FirstOrDefault() ?? purchase.Product.Name.Split(' ').FirstOrDefault() ?? "?")
+                                            </div>
+                                            <div class="min-w-0">
+                                                <p class="text-sm font-medium truncate">@purchase.Product.Name</p>
+                                                <p class="text-xs text-gray-500">@PriceUtils.FormatPerGram(purchase.PriceAtPurchase, purchase.CurrencyCode)</p>
+                                            </div>
+                                        </a>
+                                    }
+                                </div>
+                            }
                         </div>
 
-						<!-- Product List -->
-						<div class="space-y-4">
+                        <!-- Shopping Cart partial -->
+                        <div>
+                            @await Html.PartialAsync("_ShoppingCart", sampleCart)
+                        </div>
 
-                            <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="1" class="block border rounded-xl p-4 bg-gray-50 shadow hover:shadow-md transition">
-                                <div class="flex justify-between items-center">
-									<span>Helium 3 Product: Specs, Purity, Location, Etc.</span>
-                                    <span class="text-gray-500">→</span>
-                                </div>
-                            </a>
+                    </div>
+                </div>
 
-                            <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="2" class="block border rounded-xl p-4 bg-gray-50 shadow hover:shadow-md transition">
-                                <div class="flex justify-between items-center">
-                                    <span>Lunar Soil Sample — Regolith fragment</span>
-                                    <span class="text-gray-500">→</span>
-                                </div>
-                            </a>
-
-                            <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="3" class="block border rounded-xl p-4 bg-gray-50 shadow hover:shadow-md transition">
-                                <div class="flex justify-between items-center">
-                                    <span>Prototype Fusion Cell — Lab sample</span>
-                                    <span class="text-gray-500">→</span>
-                                </div>
-                            </a>
-
-                            <a asp-controller="ProductCatalogue" asp-action="Details" asp-route-id="4" class="block border rounded-xl p-4 bg-gray-50 shadow hover:shadow-md transition">
-                                <div class="flex justify-between items-center">
-                                    <span>Calibration Gas Pack — Research grade</span>
-                                    <span class="text-gray-500">→</span>
-                                </div>
-                            </a>
-
-						</div>
-					</div>
-				</div>
-                <!-- RIGHT PANEL (search, past purchases, shopping cart stacked) -->
-				<div class="col-span-1 flex flex-col gap-6">
-					<div class="w-full xl:w-1/4 flex flex-col gap-6">       
-						<!-- Past Purchases card -->
-						<div class="border rounded-xl p-6 bg-gray-50 shadow-md">
-
-							<h2 class="font-semibold mb-6 border-b pb-2">
-								Past Purchases
-							</h2>
-
-							<div class="space-y-4">
-
-								<div class="flex items-center gap-4 border rounded-lg p-3 bg-white shadow-sm">
-									<div class="w-12 h-12 bg-blue-600 text-white rounded flex items-center justify-center font-bold">
-										Yb
-									</div>
-									<div>info</div>
-								</div>
-
-								<div class="flex items-center gap-4 border rounded-lg p-3 bg-white shadow-sm">
-									<div class="w-12 h-12 bg-purple-600 text-white rounded flex items-center justify-center font-bold">
-										He
-									</div>
-									<div>info</div>
-								</div>
-
-								<div class="flex items-center gap-4 border rounded-lg p-3 bg-white shadow-sm">
-									<div class="w-12 h-12 bg-gray-700 text-white rounded flex items-center justify-center font-bold">
-										Ca
-									</div>
-									<div>info</div>
-								</div>
-
-							</div>
-
-						</div>
-
-						<!-- Shopping Cart partial (below past purchases) -->
-						<div>
-							@await Html.PartialAsync("_ShoppingCart", sampleCart)
-						</div>
-
-					</div>
-				</div>
             </div>
-
         </div>
-
     </div>
-
 </div>
