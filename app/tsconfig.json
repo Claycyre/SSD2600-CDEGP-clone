@@ -4,16 +4,12 @@
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
+    "allowJs": true,
     "target": "ES6",
     "outDir": "wwwroot/dist/js"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "wwwroot"
-  ],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "wwwroot"],
   "strict": true,
   "compileOnSave": true
 }
