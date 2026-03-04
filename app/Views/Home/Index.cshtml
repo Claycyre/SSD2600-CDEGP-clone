@@ -57,7 +57,7 @@
             </p>
         </div>
     </section>
-    <section id="periodic-table" class="flex size-full">
+    <section id="periodic-table" class="flex size-full min-h-screen">
         <div class="flex min-h-full w-fit flex-col justify-start bg-neutral-50 p-4">
             @*filter checkboxes*@
             <form method="get" id="filterForm" class="flex flex-col gap-4" onsubmit="filtersOnSubmit(event)">
@@ -70,7 +70,7 @@
         </div>
 
         @*main content*@
-        <div class="w-full">
+        <div class="grid place-items-center w-full h-full *:w-full p-4">
             <partial name="_PeriodicTable" model="Model.Elements" />
         </div>
     </section>
