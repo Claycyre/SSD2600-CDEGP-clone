@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Product>
+
+@{
+    ViewData["Title"] = "Manage Products";
+    var supplierId = ViewData["SupplierId"];
+}
+
+<div class="container">
+    <h1>@ViewData["SupplierName"] - Manage Products</h1>
+
+    <table class="table-striped table">
+        <thead>
+        <tr>
+            <th>SKU</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.PkSKU</td>
+                <td>@product.Name</td>
+                <td>@product.StockQuantity</td>
+                <td>@product.Description</td>
+                <td>
+                    <a asp-action="EditProduct" asp-route-id="@product.PkSKU" class="btn btn-primary btn-sm">
+                        Edit
+                    </a>
+                    <form method="post" asp-action="RemoveProduct" 
+                          asp-route-id="@product.PkSKU" 
+                          style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure you want to remove this product?');">
+                            Remove
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <a asp-action="Index" asp-controller="Home" class="btn btn-secondary">Back to Home</a>
+</div>

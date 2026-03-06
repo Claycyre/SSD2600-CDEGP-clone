@@ -7,24 +7,21 @@ using SSD2600_CDEGP.Models;
 
 namespace SSD2600_CDEGP.Controllers;
 
-public class ProductCatalogueController : Controller
+public class ProductCatalogueController(
+    ILogger<ProductCatalogueController> logger,
+    ApplicationDbContext db,
+    UserManager<ApplicationUser> userManager
+) : Controller
 {
-    private readonly ILogger<ProductCatalogueController> _logger;
-    private readonly ApplicationDbContext _db;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ILogger<ProductCatalogueController> _logger = logger;
+    private readonly ApplicationDbContext _db = db;
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
 
-    public ProductCatalogueController(
-        ILogger<ProductCatalogueController> logger,
-        ApplicationDbContext db,
-        UserManager<ApplicationUser> userManager
+    public async Task<IActionResult> Index(
+        string? search,
+        List<string>? types,
+        List<string>? states
     )
-    {
-        _logger = logger;
-        _db = db;
-        _userManager = userManager;
-    }
-
-    public async Task<IActionResult> Index(string? search, List<string>? types, List<string>? states)
     {
         var productsQuery = _db.Products.AsNoTracking();
 

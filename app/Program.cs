@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SSD2600_CDEGP.Data;
 using SSD2600_CDEGP.Models;
+using SSD2600_CDEGP.Repositories;
 using SSD2600_CDEGP.Services;
 using Tailwind;
 
@@ -24,6 +25,10 @@ public class Program
             options.UseSqlServer(connectionString)
         );
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+        //REPO INJECTION
+        builder.Services.AddScoped<SupplierRepository>();
+        builder.Services.AddScoped<ProductRepository>();
 
         builder
             .Services.AddDefaultIdentity<ApplicationUser>(options =>

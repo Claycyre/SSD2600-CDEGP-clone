@@ -21,7 +21,8 @@ public class Supplier
     [StringLength(3)]
     public string CurrencyCode { get; set; } = "CAD";
 
+    // Navigation properties
     public ICollection<ApplicationUser> Users { get; } = [];
 
-    public ICollection<Product> Products { get; } = [];
+    public ICollection<Product> Products { get; set; } = new List<Product>();
 }

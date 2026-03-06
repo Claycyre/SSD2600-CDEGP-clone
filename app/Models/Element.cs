@@ -14,7 +14,7 @@ public record Element
     public string Category
     {
         //handles verbose fields in the source json doc
-        get => field;
+        get => field ?? string.Empty;
         set => field = value?.Split(',')[0].Trim().Replace(" ", "-").ToLower() ?? string.Empty;
     }
 
