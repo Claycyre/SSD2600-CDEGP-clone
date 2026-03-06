@@ -8,11 +8,15 @@ public static class DbInitializer
     {
         if (doReseed)
         {
+            context.Orders.ExecuteDelete();
+
+            // User teardown
             context.UserTokens.ExecuteDelete();
             context.UserLogins.ExecuteDelete();
             context.UserClaims.ExecuteDelete();
             context.UserRoles.ExecuteDelete();
             context.Users.ExecuteDelete();
+
             context.Products.ExecuteDelete();
             context.Suppliers.ExecuteDelete();
         }
@@ -30,7 +34,10 @@ public static class DbInitializer
         var fakeUsers = new ApplicationUserSeeder(context, fakeSuppliers).Generate(20, 50);
         context.SaveChanges();
 
-        var seededProducts = new ProductSeeder(context, fakeSuppliers).Generate();
+        new ProductSeeder(context, fakeSuppliers).Generate();
+        context.SaveChanges();
+
+        new OrderSeeder(context, fakeUsers).Generate(100, 200);
         context.SaveChanges();
     }
 }
