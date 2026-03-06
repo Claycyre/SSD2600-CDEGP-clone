@@ -10,23 +10,19 @@ public class ProductRepository(ApplicationDbContext context)
 
     public async Task<Product?> GetByIdAsync(int id)
     {
-        return await _context.Products
-            .Include(p => p.Supplier)
+        return await _context
+            .Products.Include(p => p.Supplier)
             .FirstOrDefaultAsync(p => p.PkSKU == id);
     }
 
     public async Task<IEnumerable<Product>> GetBySupplierIdAsync(int supplierId)
     {
-        return await _context.Products
-            .Where(p => p.FkSupplierId == supplierId)
-            .ToListAsync();
+        return await _context.Products.Where(p => p.FkSupplierId == supplierId).ToListAsync();
     }
 
     public async Task<IEnumerable<Product>> GetAllAsync()
     {
-        return await _context.Products
-            .Include(p => p.Supplier)
-            .ToListAsync();
+        return await _context.Products.Include(p => p.Supplier).ToListAsync();
     }
 
     public async Task AddAsync(Product product)

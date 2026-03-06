@@ -18,7 +18,8 @@ namespace SSD2600_CDEGP.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
-                oldNullable: true);
+                oldNullable: true
+            );
         }
 
         /// <inheritdoc />
@@ -32,7 +33,8 @@ namespace SSD2600_CDEGP.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(255)",
                 oldMaxLength: 255,
-                oldNullable: true);
+                oldNullable: true
+            );
         }
     }
 }

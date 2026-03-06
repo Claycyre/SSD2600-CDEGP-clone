@@ -10,16 +10,14 @@ public class SupplierRepository(ApplicationDbContext context)
 
     public async Task<Supplier?> GetByIdAsync(int id)
     {
-        return await _context.Suppliers
-            .Include(s => s.Products)
+        return await _context
+            .Suppliers.Include(s => s.Products)
             .FirstOrDefaultAsync(s => s.Id == id);
     }
 
     public async Task<IEnumerable<Supplier>> GetAllAsync()
     {
-        return await _context.Suppliers
-            .Include(s => s.Products)
-            .ToListAsync();
+        return await _context.Suppliers.Include(s => s.Products).ToListAsync();
     }
 
     public async Task AddAsync(Supplier supplier)

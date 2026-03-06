@@ -8,7 +8,20 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
 {
     private readonly List<Supplier> suppliers = _availableSuppliers;
 
-    private static readonly List<(string Name, string ShortName, string Description, double UnitPrice, int Stock, int AtomicNumber, string StateOfMatter, string ProductType, string ProductSubtype, string HalfLife, string? Purity, string? SpecificActivity)> IsotopeProducts =
+    private static readonly List<(
+        string Name,
+        string ShortName,
+        string Description,
+        double UnitPrice,
+        int Stock,
+        int AtomicNumber,
+        string StateOfMatter,
+        string ProductType,
+        string ProductSubtype,
+        string HalfLife,
+        string? Purity,
+        string? SpecificActivity
+    )> IsotopeProducts =
     [
         // Medical – diagnostic imaging
         (
@@ -17,7 +30,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Mo-99/Tc-99m column generator for diagnostic SPECT imaging of cardiac, bone, renal and cerebral perfusion.",
             8500.00,
             20,
-            43,  // Tc
+            43, // Tc
             "Solid",
             "Medical",
             "Diagnostic",
@@ -31,7 +44,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Beta/gamma emitter supplied as sodium iodide solution for thyroid cancer ablation and hyperthyroidism treatment.",
             450.00,
             40,
-            53,  // I
+            53, // I
             "Liquid",
             "Medical",
             "Therapeutic",
@@ -45,7 +58,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "High-purity gamma emitter (159 keV) for thyroid function testing and diagnostic scintigraphy. Supplied as sodium iodide capsules.",
             320.00,
             50,
-            53,  // I
+            53, // I
             "Solid",
             "Medical",
             "Diagnostic",
@@ -59,7 +72,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "2-[¹⁸F]Fluoro-2-deoxy-D-glucose positron emitter for PET/CT imaging of oncology, neurology and cardiology.",
             1200.00,
             30,
-            9,   // F
+            9, // F
             "Liquid",
             "Medical",
             "Diagnostic",
@@ -73,7 +86,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Somatostatin receptor PET tracer for staging and restaging of neuroendocrine tumours (NETs). Produced via Ge-68/Ga-68 generator.",
             2100.00,
             25,
-            31,  // Ga
+            31, // Ga
             "Liquid",
             "Medical",
             "Diagnostic",
@@ -87,7 +100,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Targeted radionuclide therapy (PRRT) for somatostatin receptor-positive NETs. Beta emitter with low-energy gamma for imaging. GMP grade.",
             45000.00,
             8,
-            71,  // Lu
+            71, // Lu
             "Liquid",
             "Medical",
             "Therapeutic",
@@ -101,7 +114,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Resin microsphere radioembolisation kit for hepatocellular carcinoma and colorectal liver metastases. Pure beta emitter.",
             25000.00,
             12,
-            39,  // Y
+            39, // Y
             "Solid",
             "Medical",
             "Therapeutic",
@@ -115,7 +128,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Alpha emitter for the treatment of castration-resistant prostate cancer with symptomatic bone metastases.",
             55000.00,
             6,
-            88,  // Ra
+            88, // Ra
             "Liquid",
             "Medical",
             "Therapeutic",
@@ -129,7 +142,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Radioimmunoscintigraphy agent targeting PSMA for staging recurrent prostate cancer. Gamma emitter at 171 and 245 keV.",
             3400.00,
             18,
-            49,  // In
+            49, // In
             "Liquid",
             "Medical",
             "Diagnostic",
@@ -143,7 +156,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Cardiac perfusion SPECT agent and parathyroid/thyroid scintigraphy tracer. Gamma/X-ray emitter.",
             1800.00,
             35,
-            81,  // Tl
+            81, // Tl
             "Liquid",
             "Medical",
             "Diagnostic",
@@ -158,7 +171,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "High-activity gamma source (1.17 and 1.33 MeV) for radiographic inspection of welds, castings and pipelines. Encapsulated to ISO 2919.",
             3500.00,
             22,
-            27,  // Co
+            27, // Co
             "Solid",
             "Industrial",
             "NDT",
@@ -172,7 +185,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Compact gamma source for industrial non-destructive testing of steel structures and pipeline girth welds. Average energy 380 keV.",
             2800.00,
             30,
-            77,  // Ir
+            77, // Ir
             "Solid",
             "Industrial",
             "NDT",
@@ -186,7 +199,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Single 662 keV gamma source for continuous level, density and moisture measurement in process industries and mining.",
             1500.00,
             45,
-            55,  // Cs
+            55, // Cs
             "Solid",
             "Industrial",
             "Gauging",
@@ -200,7 +213,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Alpha/low-energy gamma (60 keV) source for ionisation smoke detector calibration, moisture gauging and XRF analysers.",
             950.00,
             60,
-            95,  // Am
+            95, // Am
             "Solid",
             "Industrial",
             "Calibration",
@@ -214,7 +227,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Spontaneous-fission neutron source for oil and mineral well logging, on-line bulk material analysis and reactor start-up.",
             60000.00,
             5,
-            98,  // Cf
+            98, // Cf
             "Solid",
             "Industrial",
             "Neutron Source",
@@ -228,7 +241,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Low-energy gamma source (66–401 keV) for radiographic inspection of thin-wall pipe welds and small-bore fittings.",
             1800.00,
             28,
-            34,  // Se
+            34, // Se
             "Solid",
             "Industrial",
             "NDT",
@@ -243,7 +256,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "NIST-traceable ¹⁴C reference standard for radiocarbon dating calibration and metabolic tracer studies. Supplied as benzene or oxalic acid matrix.",
             280.00,
             100,
-            6,   // C
+            6, // C
             "Liquid",
             "Research",
             "Standard",
@@ -257,7 +270,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Low-energy beta emitter for liquid scintillation counter calibration and hydrogen transport tracer research. Supplied as tritiated water.",
             150.00,
             80,
-            1,   // H
+            1, // H
             "Gas",
             "Research",
             "Calibration",
@@ -271,7 +284,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "High-energy beta emitter for DNA/RNA radiolabelling, kinase assays and autoradiography in molecular biology. Carrier-free.",
             85.00,
             70,
-            15,  // P
+            15, // P
             "Liquid",
             "Research",
             "Tracer",
@@ -285,7 +298,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
             "Fission-produced Mo-99 bulk material for hospital and commercial radiopharmacy Tc-99m generator production.",
             12000.00,
             10,
-            42,  // Mo
+            42, // Mo
             "Solid",
             "Medical",
             "Generator Precursor",

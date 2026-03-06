@@ -7,13 +7,20 @@ using SSD2600_CDEGP.Services;
 
 namespace SSD2600_CDEGP.Controllers;
 
-public class HomeController(ILogger<HomeController> logger, ElementService elementService, ApplicationDbContext db)
-    : Controller
+public class HomeController(
+    ILogger<HomeController> logger,
+    ElementService elementService,
+    ApplicationDbContext db
+) : Controller
 {
     private readonly ILogger<HomeController> _logger = logger;
 
     [HttpGet]
-    public async Task<IActionResult> Index(List<string>? phases, string? sortBy, List<string>? types)
+    public async Task<IActionResult> Index(
+        List<string>? phases,
+        string? sortBy,
+        List<string>? types
+    )
     {
         var model = new IndexModel(elementService)
         {
@@ -25,8 +32,8 @@ public class HomeController(ILogger<HomeController> logger, ElementService eleme
         // When product-type filters are active, load matching atomic numbers from the DB
         if (model.SelectedTypes.Count > 0)
         {
-            var atomicNumbers = await db.Products
-                .AsNoTracking()
+            var atomicNumbers = await db
+                .Products.AsNoTracking()
                 .Where(p => model.SelectedTypes.Contains(p.ProductType) && p.AtomicNumber != null)
                 .Select(p => p.AtomicNumber!.Value)
                 .Distinct()

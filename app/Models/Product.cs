@@ -66,4 +66,3 @@ public class Product
     // Navigation property
     public Supplier? Supplier { get; set; }
 }
-

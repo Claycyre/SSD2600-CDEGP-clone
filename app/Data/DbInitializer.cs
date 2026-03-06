@@ -32,6 +32,5 @@ public static class DbInitializer
 
         var seededProducts = new ProductSeeder(context, fakeSuppliers).Generate();
         context.SaveChanges();
-
     }
 }
