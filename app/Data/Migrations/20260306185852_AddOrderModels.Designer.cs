@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SSD2600_CDEGP.Data;
 
@@ -11,9 +12,11 @@ using SSD2600_CDEGP.Data;
 namespace SSD2600_CDEGP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260306185852_AddOrderModels")]
+    partial class AddOrderModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,6 +266,13 @@ namespace SSD2600_CDEGP.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("StatusTimeframe")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
+
                     b.HasKey("PkOrderId");
 
                     b.HasIndex("FkTransactionId");
@@ -274,6 +284,12 @@ namespace SSD2600_CDEGP.Migrations
 
             modelBuilder.Entity("SSD2600_CDEGP.Models.OrderLineItem", b =>
                 {
+                    b.Property<int>("PkOrderLineItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkOrderLineItemId"));
+
                     b.Property<int>("FkOrderId")
                         .HasColumnType("int");
 
@@ -286,7 +302,9 @@ namespace SSD2600_CDEGP.Migrations
                     b.Property<double>("UnitPrice")
                         .HasColumnType("float");
 
-                    b.HasKey("FkOrderId", "FkProductSKU");
+                    b.HasKey("PkOrderLineItemId");
+
+                    b.HasIndex("FkOrderId");
 
                     b.HasIndex("FkProductSKU");
 

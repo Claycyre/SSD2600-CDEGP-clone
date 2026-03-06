@@ -7,6 +7,9 @@ namespace SSD2600_CDEGP.Data;
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public DbSet<Supplier> Suppliers { get; set; } = default!;
+    public DbSet<Transaction> Transactions { get; set; } = default!;
+    public DbSet<Order> Orders { get; set; } = default!;
+    public DbSet<OrderLineItem> OrderLineItems { get; set; } = default!;
 
     public DbSet<Product> Products { get; set; } = default!;
 

@@ -32,10 +32,13 @@ public class Program
             .AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddControllersWithViews();
 
-        builder
-            .Services.AddDataProtection()
-            .SetApplicationName("ssd2600")
-            .PersistKeysToFileSystem(new DirectoryInfo(@"/var/dpkeys/"));
+        if (!builder.Environment.IsDevelopment())
+        {
+            builder
+                .Services.AddDataProtection()
+                .SetApplicationName("ssd2600")
+                .PersistKeysToFileSystem(new DirectoryInfo(@"/var/dpkeys/"));
+        }
 
         builder.UseTailwindCli();
 
