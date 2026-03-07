@@ -12,6 +12,8 @@ public class SupplierSeeder(DbContext _context) : BaseSeeder<Supplier>(_context)
     {
         var fakeSupplierGenerator = new Faker<Supplier>()
             .StrictMode(true)
+            .Ignore(s => s.Users)
+            .Ignore(s => s.Products)
             .RuleFor(s => s.Id, f => 0)
             .RuleFor(s => s.Name, f => TruncateString(f.Company.CompanyName(), 50))
             .RuleFor(

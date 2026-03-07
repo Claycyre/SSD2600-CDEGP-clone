@@ -22,7 +22,7 @@ public class Supplier
     public string CurrencyCode { get; set; } = "CAD";
 
     // Navigation properties
-    public ICollection<ApplicationUser> Users { get; } = [];
+    public ICollection<ApplicationUser> Users { get; set; } = [];
 
-    public ICollection<Product> Products { get; set; } = new List<Product>();
+    public ICollection<Product> Products { get; set; } = [];
 }
