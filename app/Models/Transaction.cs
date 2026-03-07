@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SSD2600_CDEGP.Models
 {
-    [Table("Transaction")]
+    [Table("OrderTransaction")]
     public class Transaction
     {
         [Key]
