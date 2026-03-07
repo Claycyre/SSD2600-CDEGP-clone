@@ -13,6 +13,4 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<OrderLineItem> OrderLineItems { get; set; } = default!;
 
     public DbSet<Product> Products { get; set; } = default!;
-      
-    public DbSet<ContactDetail> ContactDetail { get; set; }
 }

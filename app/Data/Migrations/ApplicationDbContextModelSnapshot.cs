@@ -234,55 +234,63 @@ namespace SSD2600_CDEGP.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("SSD2600_CDEGP.Models.ContactDetail", b =>
+            modelBuilder.Entity("SSD2600_CDEGP.Models.Order", b =>
                 {
-                    b.Property<int>("PkContactId")
+                    b.Property<int>("PkOrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkContactId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkOrderId"));
 
-                    b.Property<string>("AdministrativeArea")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int?>("FkTransactionId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("CountryCode")
+                    b.Property<string>("FkUserId")
                         .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("EmailAddress")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("NameFirst")
+                    b.Property<string>("OrderNumber")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("NameLast")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.HasKey("PkOrderId");
 
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.HasIndex("FkTransactionId");
 
-                    b.Property<string>("StreetAddress")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.HasIndex("FkUserId");
 
-                    b.HasKey("PkContactId");
+                    b.ToTable("Order");
+                });
 
-                    b.ToTable("ContactDetail");
+            modelBuilder.Entity("SSD2600_CDEGP.Models.OrderLineItem", b =>
+                {
+                    b.Property<int>("FkOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FkProductSKU")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<double>("UnitPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("FkOrderId", "FkProductSKU");
+
+                    b.HasIndex("FkProductSKU");
+
+                    b.ToTable("OrderLineItem");
                 });
 
             modelBuilder.Entity("SSD2600_CDEGP.Models.Product", b =>
