@@ -24,5 +24,5 @@ public class Supplier
     // Navigation properties
     public ICollection<ApplicationUser> Users { get; } = [];
 
-    public ICollection<Product> Products { get; } = [];
+    public ICollection<Product> Products { get; set; } = new List<Product>();
 }
