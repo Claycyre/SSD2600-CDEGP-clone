@@ -8,6 +8,7 @@ public static class DbInitializer
     {
         if (doReseed)
         {
+            context.Transactions.ExecuteDelete();
             context.OrderLineItems.ExecuteDelete();
             context.Orders.ExecuteDelete();
 
@@ -42,6 +43,9 @@ public static class DbInitializer
         context.SaveChanges();
 
         new OrderLineItemSeeder(context, fakeOrders, fakeProducts).Generate(100, 200);
+        context.SaveChanges();
+
+        new TransactionSeeder(context, fakeOrders).Generate();
         context.SaveChanges();
     }
 }
