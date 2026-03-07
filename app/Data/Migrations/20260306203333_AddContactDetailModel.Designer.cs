@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SSD2600_CDEGP.Data;
 
@@ -11,9 +12,11 @@ using SSD2600_CDEGP.Data;
 namespace SSD2600_CDEGP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260306203333_AddContactDetailModel")]
+    partial class AddContactDetailModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,11 +303,9 @@ namespace SSD2600_CDEGP.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FkSupplierId")
-                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.Property<string>("HalfLife")
@@ -385,43 +386,6 @@ namespace SSD2600_CDEGP.Migrations
                     b.ToTable("Suppliers");
                 });
 
-            modelBuilder.Entity("SSD2600_CDEGP.Models.Transaction", b =>
-                {
-                    b.Property<int>("PkTransactionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PkTransactionId"));
-
-                    b.Property<double?>("CombinedTax")
-                        .HasColumnType("float");
-
-                    b.Property<string>("CurrencyCode")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)");
-
-                    b.Property<string>("GatewayName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("GatewayTransactionId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<double>("Subtotal")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
-
-                    b.HasKey("PkTransactionId");
-
-                    b.ToTable("Transaction");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -482,42 +446,6 @@ namespace SSD2600_CDEGP.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("SSD2600_CDEGP.Models.Order", b =>
-                {
-                    b.HasOne("SSD2600_CDEGP.Models.Transaction", "Transaction")
-                        .WithMany()
-                        .HasForeignKey("FkTransactionId");
-
-                    b.HasOne("SSD2600_CDEGP.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("FkUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Transaction");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SSD2600_CDEGP.Models.OrderLineItem", b =>
-                {
-                    b.HasOne("SSD2600_CDEGP.Models.Order", "Order")
-                        .WithMany("OrderLineItems")
-                        .HasForeignKey("FkOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SSD2600_CDEGP.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("FkProductSKU")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("SSD2600_CDEGP.Models.Product", b =>
                 {
                     b.HasOne("SSD2600_CDEGP.Models.Supplier", "Supplier")
@@ -527,11 +455,6 @@ namespace SSD2600_CDEGP.Migrations
                         .IsRequired();
 
                     b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("SSD2600_CDEGP.Models.Order", b =>
-                {
-                    b.Navigation("OrderLineItems");
                 });
 
             modelBuilder.Entity("SSD2600_CDEGP.Models.Supplier", b =>
