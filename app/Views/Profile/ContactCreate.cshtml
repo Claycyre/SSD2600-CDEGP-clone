@@ -1,0 +1,76 @@
+﻿@model SSD2600_CDEGP.Models.ContactDetail
+
+@{
+    ViewData["Title"] = "Create Contact Details";
+}
+
+<div class="min-h-screen bg-gray-100">
+
+    <!-- Header with Banner -->
+    <div class="bg-blue-900 text-white text-center py-6 shadow">
+        <h1 class="text-3xl font-bold">Create Contact Details</h1>
+        <div class="mt-4">
+            <img src="~/images/banner.jpg" alt="Banner"
+                 class="mx-auto h-24 object-cover rounded shadow">
+        </div>
+    </div>
+
+    <div class="max-w-4xl mx-auto p-8">
+
+        <!-- Contact Create Card -->
+        <div class="bg-white rounded shadow p-8">
+
+            <h2 class="text-xl font-semibold mb-6 text-center">Enter Your Contact Information</h2>
+
+            <form asp-action="ContactCreate" method="post" class="space-y-4">
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Full Name</label>
+                    <input asp-for="NameFirst"
+                           type="text"
+                           class="w-full border p-2 rounded bg-gray-50 focus:bg-white"
+                           placeholder="First Name" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Full Name</label>
+                    <input asp-for="NameLast"
+                           type="text"
+                           class="w-full border p-2 rounded bg-gray-50 focus:bg-white"
+                           placeholder="Last Name" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Email</label>
+                    <input asp-for="EmailAddress"
+                           type="email"
+                           class="w-full border p-2 rounded bg-gray-50 focus:bg-white"
+                           placeholder="Email Address" />
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Phone Number</label>
+                    <input asp-for="PhoneNumber"
+                           type="text"
+                           class="w-full border p-2 rounded bg-gray-50 focus:bg-white"
+                           placeholder="Phone Number" />
+                </div>
+
+                <div class="flex flex-col items-center mt-8">
+                    <button type="submit"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-t hover:bg-blue-700">
+                        Save Contact Details
+                    </button>
+
+                    <a asp-action="Index"
+                       class="bg-red-600 text-white px-6 py-2 rounded-b hover:bg-red-700 text-center w-full">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
