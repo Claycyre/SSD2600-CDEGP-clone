@@ -25,6 +25,7 @@ public class Program
             options.UseSqlServer(connectionString)
         );
         builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+        builder.Services.AddScoped<ContactDetailRepository>();
 
         //REPO INJECTION
         builder.Services.AddScoped<SupplierRepository>();

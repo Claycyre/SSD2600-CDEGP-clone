@@ -1,34 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SSD2600_CDEGP.Data;
 using SSD2600_CDEGP.Models;
+using SSD2600_CDEGP.Repositories;
 
 namespace SSD2600_CDEGP.Controllers;
 
 public class ProfileController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ContactDetailRepository _contactRepo;
 
-    public ProfileController(ApplicationDbContext context)
+    public ProfileController(ContactDetailRepository contactRepo)
     {
-        _context = context;
+        _contactRepo = contactRepo;
     }
 
-    // ===============================
-    // PROFILE INDEX
-    // ===============================
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        // Placeholder. Loads the first contact record in the system.
+        // Later this will be replaced with the logged‑in user's contact.
+        var contact = (await _contactRepo.GetAllAsync()).FirstOrDefault();
+
+        if (contact == null)
+        {
+            return RedirectToAction(nameof(ContactCreate));
+        }
+
+        return View(contact);
     }
 
-    // ==========================================
-    // CONTACT CONTROLLER WITH CRUD (MOVED HERE)
-    // ==========================================
-
+    //Contact controller start
     public async Task<IActionResult> ContactIndex()
     {
-        return View(await _context.ContactDetail.ToListAsync());
+        var contacts = await _contactRepo.GetAllAsync();
+        return View(contacts);
     }
 
     public async Task<IActionResult> ContactDetails(int? id)
@@ -36,7 +39,7 @@ public class ProfileController : Controller
         if (id == null)
             return NotFound();
 
-        var contact = await _context.ContactDetail.FirstOrDefaultAsync(m => m.PkContactId == id);
+        var contact = await _contactRepo.GetByIdAsync(id.Value);
 
         if (contact == null)
             return NotFound();
@@ -53,13 +56,11 @@ public class ProfileController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ContactCreate(ContactDetail contact)
     {
-        if (ModelState.IsValid)
-        {
-            _context.Add(contact);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(ContactIndex));
-        }
-        return View(contact);
+        if (!ModelState.IsValid)
+            return View(contact);
+
+        await _contactRepo.AddAsync(contact);
+        return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> ContactEdit(int? id)
@@ -67,7 +68,8 @@ public class ProfileController : Controller
         if (id == null)
             return NotFound();
 
-        var contact = await _context.ContactDetail.FindAsync(id);
+        var contact = await _contactRepo.GetByIdAsync(id.Value);
+
         if (contact == null)
             return NotFound();
 
@@ -81,23 +83,12 @@ public class ProfileController : Controller
         if (id != contact.PkContactId)
             return NotFound();
 
-        if (ModelState.IsValid)
-        {
-            try
-            {
-                _context.Update(contact);
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.ContactDetail.Any(e => e.PkContactId == id))
-                    return NotFound();
-                else
-                    throw;
-            }
-            return RedirectToAction(nameof(ContactIndex));
-        }
+        if (!ModelState.IsValid)
+            return View(contact);
 
-        return View(contact);
+        await _contactRepo.UpdateAsync(contact);
+
+        // After editing, return to Profile dashboard
+        return RedirectToAction(nameof(Index));
     }
 }
