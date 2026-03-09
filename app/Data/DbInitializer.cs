@@ -8,9 +8,9 @@ public static class DbInitializer
     {
         if (doReseed)
         {
-            context.Transactions.ExecuteDelete();
             context.OrderLineItems.ExecuteDelete();
             context.Orders.ExecuteDelete();
+            context.Transactions.ExecuteDelete();
 
             // User teardown
             context.UserTokens.ExecuteDelete();
