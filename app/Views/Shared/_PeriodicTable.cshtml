@@ -1,9 +1,21 @@
-﻿@model IEnumerable<SSD2600_CDEGP.Models.Element>
+﻿@using SSD2600_CDEGP.Controllers
+@model IEnumerable<SSD2600_CDEGP.Models.Element>
+@inject LinkGenerator LinkGenerator
 
 @*Periodic table JSON from github.com/Bowserinator/Periodic-Table-JSON*@
 <section class="grid grid-cols-18 grid-rows-10 items-center gap-1">
     @foreach (var element in Model)
     {
-        <partial name="_ElementTile" model="element" />
+        string? href = null;
+        @if (element.Category != "unknown")
+        {
+            href = LinkGenerator.GetPathByAction(
+                Context,
+                action: nameof(ProductCatalogueController.Index),
+                controller: nameof(ProductCatalogueController).Replace("Controller", ""),
+                values: new { an = element.Number }
+            );
+        }
+        <partial name="_ElementTile" model="element" view-data='new ViewDataDictionary(ViewData) { { "Href", href } }' />
     }
 </section>

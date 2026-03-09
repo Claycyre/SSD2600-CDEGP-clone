@@ -1,14 +1,14 @@
 function clearFilters(e: Event) {
   const parentForm = (e.target as HTMLButtonElement).form;
 
-  const phases = parentForm.elements.namedItem("Phases") as RadioNodeList;
+  const phases = parentForm.elements.namedItem("ph") as RadioNodeList;
   if (phases) {
     phases.forEach((cb) => (cb.checked = false));
   }
 
-  const types = parentForm.elements.namedItem("types") as RadioNodeList;
-  if (types) {
-    types.forEach((cb) => (cb.checked = false));
+  const applications = parentForm.elements.namedItem("ap") as RadioNodeList;
+  if (applications) {
+    applications.forEach((cb) => (cb.checked = false));
   }
 
   const sortBy = parentForm.elements.namedItem("SortBy") as RadioNodeList;

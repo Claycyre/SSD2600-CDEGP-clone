@@ -4,26 +4,35 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SSD2600_CDEGP.Data;
 using SSD2600_CDEGP.Models;
+using SSD2600_CDEGP.Services;
 
 namespace SSD2600_CDEGP.Controllers;
 
 public class ProductCatalogueController(
     ILogger<ProductCatalogueController> logger,
     ApplicationDbContext db,
-    UserManager<ApplicationUser> userManager
+    UserManager<ApplicationUser> userManager,
+    ElementService elementService
 ) : Controller
 {
     private readonly ILogger<ProductCatalogueController> _logger = logger;
     private readonly ApplicationDbContext _db = db;
     private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly ElementService _elementService = elementService;
 
     public async Task<IActionResult> Index(
-        string? search,
-        List<string>? types,
-        List<string>? states
+        [FromQuery(Name = "an")] int? element,
+        [FromQuery(Name = "q")] string? search,
+        [FromQuery(Name = "ap")] List<string>? applications,
+        [FromQuery(Name = "ph")] List<string>? phases
     )
     {
         var productsQuery = _db.Products.AsNoTracking();
+
+        if (element.HasValue)
+        {
+            productsQuery = productsQuery.Where(p => p.AtomicNumber == element.Value);
+        }
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -34,11 +43,11 @@ public class ProductCatalogueController(
             );
         }
 
-        if (types?.Count > 0)
-            productsQuery = productsQuery.Where(p => types.Contains(p.ProductType));
+        if (applications?.Count > 0)
+            productsQuery = productsQuery.Where(p => applications.Contains(p.ProductType));
 
-        if (states?.Count > 0)
-            productsQuery = productsQuery.Where(p => states.Contains(p.StateOfMatter));
+        if (phases?.Count > 0)
+            productsQuery = productsQuery.Where(p => phases.Contains(p.StateOfMatter));
 
         var products = await productsQuery.ToListAsync();
 
@@ -69,13 +78,13 @@ public class ProductCatalogueController(
             //    .ToListAsync();
         }
 
-        var vm = new ProductCatalogueIndexViewModel
+        var vm = new FilterCatalogueModel(_elementService)
         {
             Products = products,
-            SearchQuery = search,
+            Query = search,
             RecentPurchases = recentPurchases,
-            SelectedTypes = types ?? [],
-            SelectedStates = states ?? [],
+            SelectedApplications = applications ?? [],
+            SelectedPhases = phases ?? [],
             PreferredCurrencyCode = preferredCurrency,
         };
 

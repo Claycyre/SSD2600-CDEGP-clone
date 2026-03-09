@@ -1,0 +1,20 @@
+@model FilterModel
+
+@{
+    var legendClass = ViewData["LegendClass"] as string ?? "";
+}
+<fieldset>
+    <legend class="@legendClass mb-1">Application</legend>
+    <div class="flex flex-col gap-1">
+        @foreach (var application in Model.AvailableApplications)
+        {
+            var isChecked = Model != null && Model.SelectedApplications.Contains(application);
+
+            <label class="flex items-center gap-2 text-sm">
+                <input type="checkbox" name="ap" value="@application" @(isChecked ? "checked" : "")
+                       onchange="this.form.requestSubmit()" />
+                @application
+            </label>
+        }
+    </div>
+</fieldset>

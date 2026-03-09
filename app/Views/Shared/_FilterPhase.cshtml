@@ -1,0 +1,25 @@
+@model object
+
+@{
+    var filterModel = Model as SSD2600_CDEGP.Models.FilterModel;
+
+    var legendClass = ViewData["LegendClass"] as string ?? "";
+}
+
+<fieldset>
+    <legend class="@legendClass mb-1">
+        Phase<sup>*</sup>
+        </legend>
+    <div class="flex flex-col gap-1">
+        @foreach (var phase in filterModel.AvailablePhases)
+        {
+            <label class="flex items-center gap-2 text-sm">
+                <input type="checkbox" name="ph" value="@phase"
+                @(filterModel.SelectedPhases.Contains(phase) ? "checked" : "")
+                       onchange="this.form.requestSubmit()" />
+                @phase
+            </label>
+        }
+    </div>
+    <sub>* at STP (20&deg;C)</sub>
+</fieldset>

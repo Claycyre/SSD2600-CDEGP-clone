@@ -1,5 +1,6 @@
 ﻿@model Element
 @{
+    var href = ViewData["Href"] as string ?? null;
     const string baseActiveTileStyle = "text-white hover:bg-alpha-50! hover:text-black! transition-colors duration-500 hover:duration-0 ";
 
     var tileStyle = "";
@@ -35,8 +36,9 @@
     var symbolSize = Model.Symbol.Length <= 2 ? "text-[40cqw]" : "text-[33cqw]";
 }
 
-<div class="tile @tileStyle m-0 p-2 grid aspect-square h-full grid-cols-6 grid-rows-6 items-center justify-between rounded-md leading-none select-none"
-     style="grid-column: @Model.Column; grid-row: @Model.Row;">
+<a href="@href"
+       class="tile @tileStyle m-0 p-2 grid aspect-square h-full grid-cols-6 grid-rows-6 items-center justify-between rounded-md leading-none select-none"
+       style="grid-column: @Model.Column; grid-row: @Model.Row;">
     <div class="element-number size-full overflow-hidden text-end">@Model.Number</div>
     <div class="element-symbol container-[size] -mt-1 size-full overflow-hidden font-semibold">
         <div class="@symbolSize">@Model.Symbol</div>
@@ -44,4 +46,4 @@
     <div class="element-name size-full text-center font-bold">@Model.Name</div>
     <div class="element-weight size-full">
         @Model.AtomicMass.ToString("F3").TrimEnd('0').TrimEnd('.')</div>
-    </div>
+    </a>

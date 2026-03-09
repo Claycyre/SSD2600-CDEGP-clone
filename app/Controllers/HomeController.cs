@@ -17,28 +17,30 @@ public class HomeController(
 
     [HttpGet]
     public async Task<IActionResult> Index(
-        List<string>? phases,
-        string? sortBy,
-        List<string>? types
+        [FromQuery(Name = "ap")] List<string>? applications,
+        [FromQuery(Name = "ph")] List<string>? phases,
+        string? sortBy
     )
     {
-        var model = new IndexModel(elementService)
+        var model = new FilterModel(elementService)
         {
-            Phases = phases ?? [],
+            SelectedPhases = phases ?? [],
             SortBy = sortBy,
-            SelectedTypes = types ?? [],
+            SelectedApplications = applications ?? [],
         };
 
         // When product-type filters are active, load matching atomic numbers from the DB
-        if (model.SelectedTypes.Count > 0)
+        if (model.SelectedApplications.Count > 0)
         {
             var atomicNumbers = await db
                 .Products.AsNoTracking()
-                .Where(p => model.SelectedTypes.Contains(p.ProductType) && p.AtomicNumber != null)
+                .Where(p =>
+                    model.SelectedApplications.Contains(p.ProductType) && p.AtomicNumber != null
+                )
                 .Select(p => p.AtomicNumber!.Value)
                 .Distinct()
                 .ToListAsync();
-            model.ProductAtomicNumbers = [.. atomicNumbers];
+            model.AvailableAtomicNumbers = [.. atomicNumbers];
         }
 
         model.ApplyFilters();
