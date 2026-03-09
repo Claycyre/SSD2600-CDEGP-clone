@@ -21,6 +21,8 @@ public static class DbInitializer
 
             context.Products.ExecuteDelete();
             context.Suppliers.ExecuteDelete();
+
+            context.ContactDetail.ExecuteDelete();
         }
 
         context.Database.EnsureCreated();
@@ -34,6 +36,9 @@ public static class DbInitializer
         context.SaveChanges();
 
         var fakeUsers = new ApplicationUserSeeder(context, fakeSuppliers).Generate(20, 50);
+        context.SaveChanges();
+
+        new ContactDetailSeeder(context, fakeUsers).Generate();
         context.SaveChanges();
 
         var fakeProducts = new ProductSeeder(context, fakeSuppliers).Generate();
