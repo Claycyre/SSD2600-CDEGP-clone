@@ -39,5 +39,7 @@ namespace SSD2600_CDEGP.Models
         [Required]
         [StringLength(2)]
         public string CountryCode { get; set; } = string.Empty;
+
+        public ApplicationUser? User { get; set; }
     }
 }

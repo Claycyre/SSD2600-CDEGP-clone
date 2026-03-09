@@ -11,6 +11,11 @@ public class ApplicationUser : IdentityUser
     [ForeignKey(nameof(FkSupplierId))]
     public Supplier? Supplier { get; set; }
 
+    public int? FkContactId { get; set; }
+
+    [ForeignKey(nameof(FkContactId))]
+    public ContactDetail? ContactDetail { get; set; }
+
     /// <summary>ISO 4217 currency code the user prefers, e.g. CAD, USD, EUR. Defaults to CAD.</summary>
     [StringLength(3)]
     public string PreferredCurrencyCode { get; set; } = "CAD";
