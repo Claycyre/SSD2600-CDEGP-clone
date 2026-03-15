@@ -7,35 +7,24 @@ using SSD2600_CDEGP.Repositories;
 namespace SSD2600_CDEGP.Controllers;
 
 [Authorize]
-public class SupplierController : Controller
+public class SupplierController(
+    SupplierRepository supplierRepository,
+    ProductRepository productRepository,
+    UserManager<ApplicationUser> userManager
+) : Controller
 {
-    private readonly SupplierRepository _supplierRepository;
-    private readonly ProductRepository _productRepository;
-    private readonly UserManager<ApplicationUser> _userManager;
-
-    public SupplierController(
-        SupplierRepository supplierRepository,
-        ProductRepository productRepository,
-        UserManager<ApplicationUser> userManager
-    )
-    {
-        _supplierRepository = supplierRepository;
-        _productRepository = productRepository;
-        _userManager = userManager;
-    }
-
     // GET: Supplier/Index
     public async Task<IActionResult> Index()
     {
         // Check if user is associated with a supplier
-        var user = await _userManager.GetUserAsync(User);
+        var user = await userManager.GetUserAsync(User);
 
         if (user?.FkSupplierId == null)
             return Unauthorized("You are not associated with a supplier.");
 
-        var products = await _productRepository.GetBySupplierIdAsync(user.FkSupplierId.Value);
+        var products = await productRepository.GetBySupplierIdAsync(user.FkSupplierId.Value);
         // Get supplier info for display
-        var supplier = await _supplierRepository.GetByIdAsync(user.FkSupplierId.Value);
+        var supplier = await supplierRepository.GetByIdAsync(user.FkSupplierId.Value);
 
         ViewData["SupplierId"] = user.FkSupplierId.Value;
         ViewData["SupplierName"] = supplier?.Name ?? "Unknown Supplier";
@@ -46,12 +35,12 @@ public class SupplierController : Controller
     // GET: Supplier/EditProduct/5
     public async Task<IActionResult> EditProduct(int id)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await productRepository.GetByIdAsync(id);
         if (product == null)
             return NotFound();
 
         // Get current user
-        var user = await _userManager.GetUserAsync(User);
+        var user = await userManager.GetUserAsync(User);
 
         // Verify user can edit this product
         if (user?.FkSupplierId != product.FkSupplierId)
@@ -72,7 +61,7 @@ public class SupplierController : Controller
             return NotFound();
 
         // Get current user
-        var user = await _userManager.GetUserAsync(User);
+        var user = await userManager.GetUserAsync(User);
 
         // Verify user can edit this product
         if (user?.FkSupplierId != product.FkSupplierId)
@@ -80,7 +69,7 @@ public class SupplierController : Controller
 
         if (ModelState.IsValid)
         {
-            await _productRepository.UpdateAsync(product);
+            await productRepository.UpdateAsync(product);
             return RedirectToAction(nameof(Index));
         }
 
@@ -92,12 +81,12 @@ public class SupplierController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> RemoveProduct(int id)
     {
-        var product = await _productRepository.GetByIdAsync(id);
+        var product = await productRepository.GetByIdAsync(id);
         if (product == null)
             return NotFound();
 
         // Get current user
-        var user = await _userManager.GetUserAsync(User);
+        var user = await userManager.GetUserAsync(User);
 
         // Verify user can remove this product
         if (user?.FkSupplierId != product.FkSupplierId)
@@ -105,7 +94,7 @@ public class SupplierController : Controller
 
         // Soft delete by removing supplier association
         product.FkSupplierId = 0;
-        await _productRepository.UpdateAsync(product);
+        await productRepository.UpdateAsync(product);
 
         return RedirectToAction(nameof(Index));
     }

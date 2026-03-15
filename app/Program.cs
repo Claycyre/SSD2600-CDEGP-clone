@@ -1,10 +1,15 @@
+using brevo_csharp.Client;
+using DotNetEnv;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using SSD2600_CDEGP.Data;
 using SSD2600_CDEGP.Models;
+using SSD2600_CDEGP.Options;
 using SSD2600_CDEGP.Repositories;
 using SSD2600_CDEGP.Services;
+using SSD2600_CDEGP.Services.Interfaces;
 using Tailwind;
 
 namespace SSD2600_CDEGP;
@@ -13,6 +18,10 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        // This is a safety check, but doesn't really harm anything
+        //Env.Load(Path.Combine(AppContext.BaseDirectory, ".env"));
+        Env.Load(); // Fallback to default
+
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
@@ -51,7 +60,28 @@ public class Program
         //Implement Singleton service for periodic table data
         builder.Services.AddSingleton<ElementService>();
 
+        // Register, Bind, and Validate strongly typed Options class
+        // This ensures [Required] is checked on launch and will fail fast if null
+        builder
+            .Services.AddOptions<BrevoOptions>()
+            .Bind(builder.Configuration.GetSection(BrevoOptions.SectionName))
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        builder.Services.AddTransient<IEmailService, EmailService>();
+
         var app = builder.Build();
+
+        // Configure the Brevo SDK using the validated settings
+        using (var scope = app.Services.CreateScope())
+        {
+            var brevoSettings = scope
+                .ServiceProvider.GetRequiredService<IOptions<BrevoOptions>>()
+                .Value;
+
+            // Set the global SDK key
+            Configuration.Default.ApiKey["api-key"] = brevoSettings.ApiKey;
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
