@@ -58,8 +58,10 @@ public class Product
     [StringLength(80)]
     public string? SpecificActivity { get; set; }
 
+    /// <summary>True when a site admin has approved this product for public display.</summary>
+    public bool IsAdminVerified { get; set; } = false;
+
     [Required]
-    [StringLength(10)]
     [ForeignKey("Supplier")]
     public int? FkSupplierId { get; set; }
 

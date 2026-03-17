@@ -1,4 +1,5 @@
 @model ViewOrdersViewModel
+@using SSD2600_CDEGP.Helpers
 @{
     ViewData["Title"] = "Your Orders";
     var groups = Model.OrderGroups;
@@ -352,7 +353,10 @@
                 {
                     var item = groups.First().Items[i];
                     <div class="item-card @(i == 0 ? "selected" : "")" onclick="selectItem(@i)" data-item="@i">
-                        <img class="item-card-img" src="@item.ProductImage" alt="@item.ProductName" />
+                        @* <img class="item-card-img" src="@item.ProductImage" alt="@item.ProductName" /> *@
+                        <div class="item-card-img bg-neutral-200 flex items-center justify-center rounded">
+                            <span class="text-xs text-neutral-500">No image</span>
+                        </div>
                         <div class="item-card-body">
                             <p class="item-card-title">@item.ProductName</p>
                             <p class="item-card-price">$@item.Price.ToString("N2")</p>
@@ -375,7 +379,7 @@
             <!-- Name -->
             <h3 class="text-sm font-semibold text-neutral-800">@Model.UserName</h3>
             <!-- Role -->
-            <p class="mt-1 text-xs text-neutral-500">@Model.UserRole</p>
+            <p class="mt-1 text-xs text-neutral-500">@Model.UserRole.GetUserRoleDisplayName()</p>
         </div>
     </aside>
 

@@ -27,7 +27,7 @@ public class ProductCatalogueController(
         [FromQuery(Name = "ph")] List<string>? phases
     )
     {
-        var productsQuery = _db.Products.AsNoTracking();
+        IQueryable<Product> productsQuery = _db.Products.AsNoTracking().Include(p => p.Supplier);
 
         if (element.HasValue)
         {
@@ -94,7 +94,10 @@ public class ProductCatalogueController(
     // GET: /ProductCatalogue/Details/{id}
     public async Task<IActionResult> Details(int id)
     {
-        var product = _db.Products.AsNoTracking().FirstOrDefault(p => p.PkSKU == id);
+        var product = _db
+            .Products.AsNoTracking()
+            .Include(p => p.Supplier)
+            .FirstOrDefault(p => p.PkSKU == id);
 
         if (product == null)
         {
@@ -111,7 +114,7 @@ public class ProductCatalogueController(
 
         var viewModel = new ProductViewModel
         {
-            Id = product.PkSKU.ToString(),
+            Id = product.PkSKU,
             Name = product.Name,
             Description = product.Description,
             Price = (decimal)product.UnitPrice,
@@ -123,6 +126,7 @@ public class ProductCatalogueController(
             Purity = product.Purity,
             SpecificActivity = product.SpecificActivity,
             CurrencyCode = currencyCode,
+            SupplierName = product.Supplier?.Name,
         };
 
         return View(viewModel);

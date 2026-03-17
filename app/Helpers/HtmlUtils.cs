@@ -1,4 +1,33 @@
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
+using SSD2600_CDEGP.Models;
+
 namespace SSD2600_CDEGP.Helpers;
+
+/// <summary>Extension methods for working with enum display names.</summary>
+public static class EnumExtensions
+{
+    /// <summary>Returns the <see cref="DisplayAttribute.Name"/> of an enum value, falling back to <c>value.ToString()</c>.</summary>
+    public static string GetDisplayName(this Enum value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        if (field is null)
+            return value.ToString();
+        var attr = field.GetCustomAttribute<DisplayAttribute>();
+        return attr?.Name ?? value.ToString();
+    }
+
+    /// <summary>
+    /// Parses a <see cref="UserRole"/> string value and returns its human-readable display name.
+    /// Falls back to the raw string if the value cannot be parsed.
+    /// </summary>
+    public static string GetUserRoleDisplayName(this string roleValue)
+    {
+        if (Enum.TryParse<UserRole>(roleValue, out var role))
+            return role.GetDisplayName();
+        return roleValue;
+    }
+}
 
 /// <summary>Returns short badge abbreviations for product type and state-of-matter labels.</summary>
 public static class BadgeUtils

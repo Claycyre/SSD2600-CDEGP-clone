@@ -1,5 +1,5 @@
+@using SSD2600_CDEGP.Helpers;
 @model SSD2600_CDEGP.Models.ProductViewModel
-@using SSD2600_CDEGP.Helpers
 @{
     ViewData["Title"] = Model?.Name ?? "Product Details";
 }
@@ -10,6 +10,7 @@
             <div class="grid grid-cols-3 gap-6">
                 <div class="col-span-1">
                     <div class="w-full h-48 bg-gray-200 rounded flex items-center justify-center">
+                        @* img block commented out — no image support.
                         @if (!string.IsNullOrEmpty(Model.ImageUrl))
                         {
                             <img src="@Model.ImageUrl" alt="@Model.Name" class="w-full h-full object-cover rounded" />
@@ -18,6 +19,8 @@
                         {
                             <span class="text-gray-500">No image</span>
                         }
+                        *@
+                        <span class="text-gray-500">No image</span>
                     </div>
                 </div>
                 <div class="col-span-2">
@@ -77,11 +80,19 @@
                                     <td class="px-4 py-2 text-gray-500">Price per gram</td>
                                     <td class="px-4 py-2 font-semibold">@PriceUtils.FormatPerGram((double)Model.Price, Model.CurrencyCode)</td>
                                 </tr>
+                                @if (!string.IsNullOrEmpty(Model.SupplierName))
+                                {
+                                    <tr>
+                                        <td class="px-4 py-2 text-gray-500">Supplier</td>
+                                        <td class="px-4 py-2">@Model.SupplierName</td>
+                                    </tr>
+                                }
                             </tbody>
                         </table>
                     </div>
 
                     <div class="mt-6 flex items-center justify-between">
+                        <div class="text-lg font-bold">@Model.Price.ToString("C")</div>
                         <form method="post" asp-controller="Cart" asp-action="Add">
                             <input type="hidden" name="id" value="@Model.Id" />
                             <input type="number" name="quantity" value="1" min="1" class="w-20 border rounded px-2 py-1" />
@@ -89,7 +100,7 @@
                         </form>
                     </div>
 
-                    <a asp-action="Index" asp-controller="ProductCatalogue" class="inline-block mt-6 text-sm text-blue-600">← Back to catalogue</a>
+                    <a asp-action="Index" asp-controller="ProductCatalogue" class="inline-block mt-6 text-sm text-blue-600">? Back to catalogue</a>
                 </div>
             </div>
         </div>

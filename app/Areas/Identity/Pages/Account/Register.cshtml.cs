@@ -46,58 +46,26 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
             _emailService = emailService;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string ReturnUrl { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required]
-            [StringLength(
-                100,
-                ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.",
-                MinimumLength = 6
-            )]
+            [StringLength(100)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare(
@@ -105,6 +73,15 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
                 ErrorMessage = "The password and confirmation password do not match."
             )]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "Please select an account type.")]
+            [Display(Name = "Account Type")]
+            // SiteAdmin cannot be self-selected during registration; admin accounts are provisioned separately.
+            [RegularExpression(
+                "^(PrivateCitizen|Supplier|PurchaseManager)$",
+                ErrorMessage = "Invalid account type."
+            )]
+            public string UserRole { get; set; } = "PrivateCitizen";
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -121,9 +98,13 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
             ExternalLogins = (
                 await _signInManager.GetExternalAuthenticationSchemesAsync()
             ).ToList();
+
             if (!ModelState.IsValid)
                 return Page();
+
             var user = CreateUser();
+            user.UserRole = Input.UserRole ?? "PrivateCitizen";
+            user.RegisteredAt = DateTime.UtcNow;
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -132,6 +113,12 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
+
+                // Assign the corresponding Identity role for Supplier accounts
+                if (user.UserRole == "Supplier")
+                {
+                    await _userManager.AddToRoleAsync(user, "Supplier");
+                }
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

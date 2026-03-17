@@ -1,5 +1,6 @@
 @page
 @model IndexModel
+@using SSD2600_CDEGP.Helpers
 @{
     ViewData["Title"] = "Profile";
     ViewData["ActivePage"] = ManageNavPages.Index;
@@ -22,9 +23,76 @@
             </div>
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>
+
+        <!-- Account Info -->
+        <div class="mt-6 border rounded-xl p-5 bg-gray-50">
+            <h4 class="font-semibold mb-3 text-sm text-gray-700 uppercase tracking-wide">Account Information</h4>
+            <dl class="space-y-2 text-sm">
+                <div class="flex gap-2">
+                    <dt class="font-semibold w-36">Account Type:</dt>
+                    <dd>@Model.UserRole.GetUserRoleDisplayName()</dd>
+                </div>
+                <div class="flex gap-2">
+                    <dt class="font-semibold w-36">Registered:</dt>
+                    <dd>@Model.RegisteredAt.ToString("yyyy-MM-dd HH:mm") UTC</dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Verification Section (for non-private users) -->
+        @if (Model.UserRole != "PrivateCitizen")
+        {
+            <div class="mt-5 border rounded-xl p-5 @(Model.VerificationApproved ? "bg-green-50 border-green-300" : Model.VerificationSubmitted ? "bg-yellow-50 border-yellow-300" : "bg-gray-50")">
+                <h4 class="font-semibold mb-3 text-sm text-gray-700 uppercase tracking-wide">Identity Verification</h4>
+
+                @if (Model.VerificationApproved)
+                {
+                    <p class="text-green-700 font-semibold mb-3">&#10003; Your identity has been verified.</p>
+                }
+                else if (Model.VerificationSubmitted)
+                {
+                    <p class="text-yellow-700 font-semibold mb-3">Your verification is pending admin review.</p>
+                }
+                else
+                {
+					<p class="text-gray-600 mb-3 text-sm">Your verification is pending admin review.</p>
+                    @* <p class="text-gray-600 mb-3 text-sm">You have not submitted a verification document yet.</p> *@
+                    @* Submit Verification link commented out — document upload is not available.
+                    <a asp-page="/Account/Verification" asp-area="Identity"
+                       class="inline-block px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white rounded-lg text-sm font-semibold transition-colors">
+                        Submit Verification
+                    </a>
+                    *@
+                }
+
+                @* View Submitted Document block commented out — verification document storage not in use.
+                @if (!string.IsNullOrEmpty(Model.VerificationDocumentPath))
+                {
+                    <div class="mt-4">
+                        <p class="text-sm font-semibold mb-2">Submitted Document:</p>
+                        <a asp-page="/Account/Verification" asp-area="Identity"
+                           asp-page-handler="Document"
+                           target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 transition-colors">
+                            &#128196; View Submitted Document
+                        </a>
+
+                        @if (!Model.VerificationApproved)
+                        {
+                            <p class="mt-2 text-xs text-gray-500">
+                                To replace your document, submit a new one on the
+                                <a asp-page="/Account/Verification" asp-area="Identity" class="text-amber-600 underline">Verification page</a>.
+                            </p>
+                        }
+                    </div>
+                }
+                *@
+            </div>
+        }
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+

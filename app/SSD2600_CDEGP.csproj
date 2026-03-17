@@ -19,8 +19,14 @@
     <PackageReference Include="Bogus" Version="35.6.5" />
     <PackageReference Include="brevo_csharp" Version="1.1.2" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.4" />
+    <PackageReference
+      Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore"
+      Version="10.0.4"
+    />
+    <PackageReference
+      Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"
+      Version="10.0.4"
+    />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.4">
@@ -44,12 +50,21 @@
     <Error Condition="'$(ErrorCode)' != '0'" Text="You must install NPM to build this project" />
   </Target>
 
-  <Target Name="NpmInstall" BeforeTargets="Compile" Inputs="package.json" Outputs="$(NpmLastInstall)">
+  <Target
+    Name="NpmInstall"
+    BeforeTargets="Compile"
+    Inputs="package.json"
+    Outputs="$(NpmLastInstall)"
+  >
     <Exec Command="npm install" />
     <Touch Files="$(NpmLastInstall)" AlwaysCreate="true" />
   </Target>
 
-  <Target Name="TailwindBuild" BeforeTargets="PrepareForPublish" Condition="'$(Configuration)' == 'Release'">
+  <Target
+    Name="TailwindBuild"
+    BeforeTargets="PrepareForPublish"
+    Condition="'$(Configuration)' == 'Release'"
+  >
     <Message Importance="high" Text="Running Tailwind CSS CLI production build..." />
     <Exec Command="node node_modules/@tailwindcss/cli/dist/index.mjs -i ./wwwroot/css/site.css -o ./wwwroot/dist/site.css --minify" />
   </Target>

@@ -1,0 +1,343 @@
+@model SSD2600_CDEGP.Models.UserDetailViewModel
+@using SSD2600_CDEGP.Helpers
+@{
+    ViewData["Title"] = $"User: {Model.User.UserName}";
+    var u = Model.User;
+    var contactDetail = u.ContactDetail;
+    var isSelf = u.Id == Model.CurrentAdminId;
+    var isSiteAdmin = u.UserRole == "SiteAdmin";
+    var canModerate = !isSelf && !isSiteAdmin;
+    var returnUrl = Url.Action("User", new { userId = u.Id });
+    var currency = u.Supplier?.CurrencyCode ?? u.PreferredCurrencyCode;
+}
+
+<div class="min-h-screen bg-gray-100">
+    <div class="w-full px-10 py-10">
+        <div class="bg-white rounded-2xl shadow-2xl p-10">
+
+            <a asp-action="Index" class="text-sm text-slate-600 hover:underline">&#8592; User Management</a>
+
+            <!-- Header -->
+            <div class="mt-6 flex items-start gap-6 flex-wrap">
+                <div class="flex-shrink-0 w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center text-2xl font-bold text-slate-600">
+                    @(u.UserName?.Length > 0 ? char.ToUpper(u.UserName[0]).ToString() : "?")
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <h1 class="text-2xl font-semibold">@(u.UserName ?? "—")</h1>
+                        @if (u.UserBanned)
+                        {
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700">Banned</span>
+                        }
+                        else if (u.UserSuspended)
+                        {
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">On Hold</span>
+                        }
+                        else
+                        {
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">Active</span>
+                        }
+                        @if (u.VerificationApproved)
+                        {
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">&#10003; Verified</span>
+                        }
+                        @foreach (var role in Model.Roles)
+                        {
+                            <span class="text-xs bg-slate-100 text-slate-600 rounded px-2 py-0.5">@role</span>
+                        }
+                    </div>
+                    <p class="text-gray-500 text-sm mt-1">@(u.Email ?? "—")</p>
+                </div>
+            </div>
+
+            <!-- Info + Actions -->
+            <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- Account Info -->
+                <div class="lg:col-span-2 border rounded-xl p-6 bg-gray-50 shadow-sm">
+                    <h2 class="font-semibold mb-4 border-b pb-2">Account Information</h2>
+                    <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
+                        <div>
+                            <dt class="text-gray-500">Username</dt>
+                            <dd class="font-medium">@(u.UserName ?? "—")</dd>
+                        </div>
+                        <div>
+                            <dt class="text-gray-500">Email</dt>
+                            <dd class="font-medium">@(u.Email ?? "—")</dd>
+                        </div>
+                        <div>
+                            <dt class="text-gray-500">Account Type</dt>
+                            <dd class="font-medium">@u.UserRole.GetUserRoleDisplayName()</dd>
+                        </div>
+                        <div>
+                            <dt class="text-gray-500">Organization</dt>
+                            <dd class="font-medium">@(u.Supplier?.Name ?? "—")</dd>
+                        </div>
+                        <div>
+                            <dt class="text-gray-500">Country</dt>
+                            <dd class="font-medium">@(contactDetail?.CountryCode ?? "—")</dd>
+                        </div>
+                        <div>
+                            <dt class="text-gray-500">Preferred Currency</dt>
+                            <dd class="font-medium font-mono">@u.PreferredCurrencyCode</dd>
+                        </div>
+                        <div>
+                            <dt class="text-gray-500">Registered</dt>
+                            <dd class="font-medium">@u.RegisteredAt.ToString("yyyy-MM-dd HH:mm") UTC</dd>
+                        </div>
+                        <div>
+                            <dt class="text-gray-500">Email Confirmed</dt>
+                            <dd class="font-medium @(u.EmailConfirmed ? "text-green-600" : "text-red-500")">
+								@(u.EmailConfirmed ? "✓ Yes" : "✗ No")
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="text-gray-500">Verification</dt>
+                            <dd class="font-medium">
+                                @if (u.UserRole == "PrivateCitizen")
+                                {
+                                    <span class="text-gray-400">N/A</span>
+                                }
+                                else if (u.VerificationApproved)
+                                {
+                                    <span class="text-green-600">&#10003; Approved</span>
+                                }
+                                else if (u.VerificationSubmitted)
+                                {
+                                    <span class="text-yellow-600">&#9888; Pending Review</span>
+                                }
+                                else
+                                {
+                                    <span class="text-gray-400">Not submitted</span>
+                                }
+                            </dd>
+                        </div>
+                        @if (u.UserBanned)
+                        {
+                            <div>
+                                <dt class="text-gray-500">Account Status</dt>
+                                <dd class="font-medium text-red-600">Permanently Banned</dd>
+                            </div>
+                        }
+                        else if (u.UserSuspended)
+                        {
+                            <div>
+                                <dt class="text-gray-500">Account Status</dt>
+                                <dd class="font-medium text-amber-600">
+                                    User Suspended — expires @(u.LockoutEnd?.ToString("yyyy-MM-dd HH:mm") ?? "—") UTC
+                                </dd>
+                            </div>
+                        }
+                    </dl>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="border rounded-xl p-6 bg-gray-50 shadow-sm">
+                    <h2 class="font-semibold mb-4 border-b pb-2">Actions</h2>
+                    <div class="flex flex-col gap-2">
+
+                        @if (u.VerificationSubmitted && !u.VerificationApproved)
+                        {
+                            <form method="post" asp-action="ApproveVerification">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="userId" value="@u.Id" />
+                                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                <button type="submit"
+                                        class="w-full text-sm px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                                    &#10003; Approve Verification
+                                </button>
+                            </form>
+                        }
+
+                        <a asp-action="MessageUser" asp-route-userId="@u.Id"
+                           class="block text-center text-sm px-4 py-2 rounded-lg bg-slate-600 text-white hover:bg-slate-500 transition-colors">
+                            &#9993; Send Message
+                        </a>
+
+                        @if (canModerate)
+                        {
+                            @if (u.UserBanned)
+                            {
+                                <form method="post" asp-action="UnbanUser">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="userId" value="@u.Id" />
+                                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <button type="submit"
+                                            class="w-full text-sm px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors">
+                                        &#8629; Unban Account
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                @if (u.UserSuspended)
+                                {
+                                    <form method="post" asp-action="LiftHold">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="userId" value="@u.Id" />
+                                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                        <button type="submit"
+                                                class="w-full text-sm px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors">
+                                            &#8629; Lift Suspension
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form method="post" asp-action="PutOnHold">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="userId" value="@u.Id" />
+                                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                        <button type="submit"
+                                                class="w-full text-sm px-4 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition-colors">
+                                            &#9646;&#9646; Suspend User (7 days)
+                                        </button>
+                                    </form>
+                                }
+                                <form method="post" asp-action="BanUser">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="userId" value="@u.Id" />
+                                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <button type="submit"
+                                            onclick="return confirm('Permanently ban @(u.UserName ?? u.Email)? They will be immediately locked out.')"
+                                            class="w-full text-sm px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">
+                                        &#9940; Ban Account
+                                    </button>
+                                </form>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+            @* <!-- Purchase History -->
+            <div class="mt-10">
+                <h2 class="text-lg font-semibold mb-4">Purchase History (@Model.Purchases.Count)</h2>
+                @if (!Model.Purchases.Any())
+                {
+                    <p class="text-gray-500 text-sm">No purchases on record.</p>
+                }
+                else
+                {
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-700 uppercase text-xs">
+                                    <th class="px-4 py-3 border-b">Product</th>
+                                    <th class="px-4 py-3 border-b">Price / g</th>
+                                    <th class="px-4 py-3 border-b">Currency</th>
+                                    <th class="px-4 py-3 border-b">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var purchase in Model.Purchases)
+                                {
+                                    <tr class="border-b hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-3 font-medium">@(purchase.Product?.Name ?? "—")</td>
+                                        <td class="px-4 py-3">@PriceUtils.Format(purchase.PriceAtPurchase, purchase.CurrencyCode)</td>
+                                        <td class="px-4 py-3 font-mono">@purchase.CurrencyCode</td>
+                                        <td class="px-4 py-3 text-gray-600">@purchase.PurchasedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+
+            @if (Model.Products.Any())
+            {
+                <!-- Listed Products -->
+                <div class="mt-10">
+                    <h2 class="text-lg font-semibold mb-4">Listed Products (@Model.Products.Count)</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-700 uppercase text-xs">
+                                    <th class="px-4 py-3 border-b">Name</th>
+                                    <th class="px-4 py-3 border-b">Type</th>
+                                    <th class="px-4 py-3 border-b">Price / g</th>
+                                    <th class="px-4 py-3 border-b">Stock</th>
+                                    <th class="px-4 py-3 border-b">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model.Products)
+                                {
+                                    <tr class="border-b hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-3 font-medium">@product.Name</td>
+                                        <td class="px-4 py-3">@product.ProductType</td>
+                                        <td class="px-4 py-3">@PriceUtils.Format(product.UnitPrice, currency)</td>
+                                        <td class="px-4 py-3">@product.StockQuantity</td>
+                                        <td class="px-4 py-3">
+                                            @if (product.IsAdminVerified)
+                                            {
+                                                <span class="text-green-600 font-semibold">&#10003; Verified</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-yellow-600 font-semibold">&#9888; Pending</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            } *@
+
+            <!-- Admin Messages -->
+            <div class="mt-10">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Admin Messages (@Model.Messages.Count)</h2>
+                    <a asp-action="MessageUser" asp-route-userId="@u.Id"
+                       class="text-sm px-3 py-1.5 rounded-lg bg-slate-600 text-white hover:bg-slate-500 transition-colors">
+                        + New Message
+                    </a>
+                </div>
+                @if (!Model.Messages.Any())
+                {
+                    <p class="text-gray-500 text-sm">No messages sent to this user.</p>
+                }
+                else
+                {
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-700 uppercase text-xs">
+                                    <th class="px-4 py-3 border-b">Subject</th>
+                                    <th class="px-4 py-3 border-b">From</th>
+                                    <th class="px-4 py-3 border-b">Sent</th>
+                                    <th class="px-4 py-3 border-b">Read</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var msg in Model.Messages)
+                                {
+                                    <tr class="border-b hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-3 font-medium">@msg.Subject</td>
+                                        <td class="px-4 py-3 text-gray-600">@(msg.Sender.UserName ?? msg.Sender.Email ?? "—")</td>
+                                        <td class="px-4 py-3 text-gray-500">@msg.SentAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td class="px-4 py-3">
+                                            @if (msg.IsRead)
+                                            {
+                                                <span class="text-green-600">&#10003; Read</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-amber-600">&#9679; Unread</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>

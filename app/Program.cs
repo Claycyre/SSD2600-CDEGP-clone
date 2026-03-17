@@ -42,8 +42,16 @@ public class Program
 
         builder
             .Services.AddDefaultIdentity<ApplicationUser>(options =>
-                options.SignIn.RequireConfirmedAccount = true
-            )
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 1;
+                options.Password.RequiredUniqueChars = 0;
+            })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
         builder.Services.AddControllersWithViews();
 
@@ -99,7 +107,9 @@ public class Program
                 var shouldReseed =
                     args.Contains("--reseed") || app.Configuration.GetValue<bool>("RESEED_DB");
                 var context = services.GetRequiredService<ApplicationDbContext>();
-                DbInitializer.Seed(context, shouldReseed);
+                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                DbInitializer.Seed(context, userManager, roleManager, shouldReseed);
             }
             catch (Exception ex)
             {

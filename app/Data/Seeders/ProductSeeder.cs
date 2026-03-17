@@ -328,6 +328,7 @@ public class ProductSeeder(DbContext _context, List<Supplier> _availableSupplier
                         Purity = p.Purity,
                         SpecificActivity = p.SpecificActivity,
                         FkSupplierId = suppliers[i % suppliers.Count].Id,
+                        IsAdminVerified = true,
                     }
             )
             .ToList();

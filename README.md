@@ -86,6 +86,31 @@ mock data. To rerun database seeders, use `dotnet run -- --reseed`.
 
 ---
 
+#### Test Accounts
+
+By default, the database is currently seeded for two default administrative accounts.
+
+Account one username/email: admin@admin.com
+Account one password: admin
+
+Account two username/email: admin@prometheusatomics.local
+Account two password: admin
+
+These admin accounts have permission to verify new accounts, verify new products, and verify changes to existing products.
+
+By default, the database is currently seeded for three default supplier accounts.
+
+Account one username/email: supplier1@example.com
+Account one password: supplier
+
+Account two username/email: supplier2@example.com
+Account two password: supplier
+
+Account three username/email: supplier3@example.com
+Account three password: supplier
+
+Please note that banning a user doesn't actually delete the user, just flags them as banned. UserMessages retains a FK reference to the user that sent or received it, and if we needed the ability to permanently delete a user, we would need to purge the user messages that reference them.
+
 # Contributing
 
 ## Branching policy

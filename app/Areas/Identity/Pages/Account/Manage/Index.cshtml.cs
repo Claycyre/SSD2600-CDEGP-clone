@@ -27,36 +27,32 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string Username { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+        /// <summary>The account type (UserRole) of the current user.</summary>
+        public string UserRole { get; set; }
+
+        /// <summary>When the account was registered.</summary>
+        public DateTime RegisteredAt { get; set; }
+
+        // VerificationDocumentPath commented out — document storage not in use.
+        // /// <summary>Path to the uploaded verification document, if any.</summary>
+        // public string VerificationDocumentPath { get; set; }
+
+        /// <summary>Whether the verification has been submitted by the user.</summary>
+        public bool VerificationSubmitted { get; set; }
+
+        /// <summary>Whether the admin has approved the verification.</summary>
+        public bool VerificationApproved { get; set; }
+
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -68,6 +64,11 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            UserRole = user.UserRole;
+            RegisteredAt = user.RegisteredAt;
+            // VerificationDocumentPath = user.VerificationDocumentPath; // commented out — document storage not in use
+            VerificationSubmitted = user.VerificationSubmitted;
+            VerificationApproved = user.VerificationApproved;
 
             Input = new InputModel { PhoneNumber = phoneNumber };
         }

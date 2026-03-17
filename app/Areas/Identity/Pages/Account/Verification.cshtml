@@ -1,0 +1,59 @@
+@page
+@model SSD2600_CDEGP.Areas.Identity.Pages.Account.VerificationModel
+@using SSD2600_CDEGP.Helpers
+@{
+    ViewData["Title"] = "Identity Verification";
+    var isError = (TempData["StatusMessage"]?.ToString() ?? "").StartsWith("Error");
+}
+
+<div class="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+    <div class="bg-white rounded-2xl shadow-xl p-10 w-full max-w-lg">
+
+        <h1 class="text-2xl font-bold mb-2">Identity Verification</h1>
+        <p class="text-gray-600 mb-8 text-sm">
+            As a <strong>@((Model.CurrentUser?.UserRole ?? "organization").GetUserRoleDisplayName())</strong> account, you must wait for a site admin to officially verify your identity.
+        </p>
+
+        @if (!string.IsNullOrEmpty(TempData["StatusMessage"] as string))
+        {
+            <div class="mb-4 px-4 py-3 rounded-lg @(isError ? "bg-red-50 border border-red-400 text-red-700" : "bg-green-50 border border-green-400 text-green-700")">
+                @TempData["StatusMessage"]
+            </div>
+        }
+
+        @* Document upload form commented out — verification document upload is not available.
+        <form method="post" asp-page-handler="Upload" enctype="multipart/form-data" class="mb-6">
+            @Html.AntiForgeryToken()
+            <div class="mb-4">
+                <label class="block font-semibold mb-2 text-sm" for="verificationDocument">
+                    Verification Document
+                </label>
+                <input type="file" id="verificationDocument" name="verificationDocument"
+                       accept=".pdf,.jpg,.jpeg,.png"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500" />
+                <p class="text-xs text-gray-500 mt-1">Accepted: PDF, JPG, PNG (max 10 MB)</p>
+            </div>
+            <button type="submit"
+                    class="w-full bg-amber-500 hover:bg-amber-400 text-white font-semibold py-3 rounded-lg shadow transition-colors">
+                Submit Verification
+            </button>
+        </form>
+
+        <div class="text-center text-gray-400 text-sm mb-4">— or —</div>
+        *@
+
+        <!-- Skip Button -->
+        <form method="post" asp-page-handler="Skip">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+                    class="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-3 rounded-lg border border-gray-300 transition-colors">
+                Skip Verification (for testing)
+            </button>
+        </form>
+
+        <p class="text-xs text-gray-400 mt-4 text-center">
+            You can message an admin additional details for verification later from your profile.
+        </p>
+
+    </div>
+</div>

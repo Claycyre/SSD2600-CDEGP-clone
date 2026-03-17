@@ -37,6 +37,12 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
 
             Email = email;
 
+            // Redirect org users to verification page
+            if (user.UserRole != "PrivateCitizen")
+            {
+                return RedirectToPage("/Account/Verification", new { area = "Identity" });
+            }
+
             return Page();
         }
     }

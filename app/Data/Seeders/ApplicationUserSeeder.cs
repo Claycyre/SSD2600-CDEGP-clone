@@ -28,13 +28,18 @@ public class ApplicationUserSeeder(DbContext _context, List<Supplier> _available
             .RuleFor(s => s.PhoneNumberConfirmed, f => true)
             // Simple password for testing purposes
             .RuleFor(s => s.PasswordHash, (f, u) => passHasher.HashPassword(u, "password"))
-            // Chance for user to be associated with supplier
+            // Assign role — only Supplier role users are linked to a supplier entity
+            .RuleFor(
+                u => u.UserRole,
+                f => f.PickRandom("PrivateCitizen", "PurchaseManager", "Supplier")
+            )
             .RuleFor(
                 u => u.FkSupplierId,
-                f =>
+                (f, u) =>
                 {
-                    var s = f.PickRandom(suppliers).OrNull(f, 0.5f);
-                    return s?.Id;
+                    if (u.UserRole != "Supplier")
+                        return null;
+                    return f.PickRandom(suppliers).Id;
                 }
             )
             .RuleFor(u => u.PreferredCurrencyCode, f => f.PickRandom("CAD", "USD", "EUR", "GBP"))

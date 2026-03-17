@@ -1,0 +1,127 @@
+@model IEnumerable<SSD2600_CDEGP.Models.Product>
+@using SSD2600_CDEGP.Helpers
+@{
+    ViewData["Title"] = "Product Verification";
+    var sortBy = ViewBag.SortBy as string;
+
+    string SortLink(string column) =>
+        Url.Action("Products", "Admin", new { sortBy = column })!;
+
+    string SortClass(string column) =>
+        sortBy == column ? "underline font-bold" : "hover:underline cursor-pointer";
+}
+
+<div class="min-h-screen bg-gray-100">
+    <div class="w-full px-10 py-10">
+        <div class="bg-white rounded-2xl shadow-2xl p-10">
+
+            <h1 class="text-3xl font-semibold mb-8">Product Verification</h1>
+
+            @{
+                var pending = Model.Where(p => !p.IsAdminVerified).ToList();
+                var verified = Model.Where(p => p.IsAdminVerified).ToList();
+            }
+
+            @if (pending.Any())
+            {
+                <div class="mb-6 flex items-center gap-2 border border-yellow-400 bg-yellow-50 text-yellow-800 px-4 py-3 rounded-lg">
+                    <span class="font-bold text-xl">&#9888;</span>
+                    <span><strong>@pending.Count</strong> product@(pending.Count == 1 ? "" : "s") awaiting verification.</span>
+                </div>
+            }
+
+            <h2 class="text-lg font-semibold mb-4">Pending Verification</h2>
+            @if (!pending.Any())
+            {
+                <p class="text-gray-500 mb-8">No products pending verification.</p>
+            }
+            else
+            {
+                <div class="overflow-x-auto mb-10">
+                    <table class="w-full text-sm text-left border-collapse">
+                        <thead>
+                            <tr class="bg-yellow-50 text-gray-700 uppercase text-xs">
+                                <th class="px-4 py-3 border-b"><a href="@SortLink("name")" class="@SortClass("name")">Name</a></th>
+                                <th class="px-4 py-3 border-b"><a href="@SortLink("supplier")" class="@SortClass("supplier")">Supplier</a></th>
+                                <th class="px-4 py-3 border-b"><a href="@SortLink("type")" class="@SortClass("type")">Type</a></th>
+                                <th class="px-4 py-3 border-b">Price</th>
+                                <th class="px-4 py-3 border-b">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in pending)
+                            {
+                                <tr class="border-b hover:bg-gray-50 transition-colors">
+                                    <td class="px-4 py-3">
+                                        <div class="font-medium">@product.Name</div>
+                                        @if (!string.IsNullOrEmpty(product.ShortName))
+                                        {
+                                            <div class="text-gray-500 text-xs">@product.ShortName</div>
+                                        }
+                                    </td>
+                                    <td class="px-4 py-3">@(product.Supplier?.Name ?? "—")</td>
+                                    <td class="px-4 py-3">@product.ProductType</td>
+                                    <td class="px-4 py-3">@PriceUtils.Format(product.UnitPrice, product.Supplier?.CurrencyCode ?? "CAD")</td>
+                                    <td class="px-4 py-3">
+                                        <div class="flex gap-2">
+                                            <form method="post" asp-action="ApproveProduct" class="inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="productId" value="@product.PkSKU" />
+                                                <button type="submit"
+                                                        class="text-xs px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                                                    &#10003; Approve
+                                                </button>
+                                            </form>
+                                            <form method="post" asp-action="RejectProduct" class="inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="productId" value="@product.PkSKU" />
+                                                <button type="submit"
+                                                        class="text-xs px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                                                        onclick="return confirm('Reject and delete this product?')">
+                                                    &#10007; Reject
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+
+            <h2 class="text-lg font-semibold mb-4">Verified Products</h2>
+            @if (!verified.Any())
+            {
+                <p class="text-gray-500">No verified products.</p>
+            }
+            else
+            {
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-700 uppercase text-xs">
+                                <th class="px-4 py-3 border-b"><a href="@SortLink("name")" class="@SortClass("name")">Name</a></th>
+                                <th class="px-4 py-3 border-b"><a href="@SortLink("supplier")" class="@SortClass("supplier")">Supplier</a></th>
+                                <th class="px-4 py-3 border-b"><a href="@SortLink("type")" class="@SortClass("type")">Type</a></th>
+                                <th class="px-4 py-3 border-b">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in verified)
+                            {
+                                <tr class="border-b hover:bg-gray-50 transition-colors">
+                                    <td class="px-4 py-3 font-medium">@product.Name</td>
+                                    <td class="px-4 py-3">@(product.Supplier?.Name ?? "—")</td>
+                                    <td class="px-4 py-3">@product.ProductType</td>
+                                    <td class="px-4 py-3">@PriceUtils.Format(product.UnitPrice, product.Supplier?.CurrencyCode ?? "CAD")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

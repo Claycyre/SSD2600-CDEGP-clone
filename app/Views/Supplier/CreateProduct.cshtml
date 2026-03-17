@@ -1,20 +1,21 @@
+@* CreateProduct.cshtml *@
 @model SSD2600_CDEGP.Models.ProductAddOrEditViewModel
+
 @{
-    ViewData["Title"] = "Edit Product";
+    ViewData["Title"] = "Add Product";
 }
 
 <div class="min-h-screen bg-gray-100">
     <div class="w-full px-10 py-10">
         <div class="bg-white rounded-2xl shadow-2xl p-10 max-w-2xl mx-auto">
 
-            <h1 class="text-3xl font-semibold mb-8">Edit Product</h1>
+            <h1 class="text-3xl font-semibold mb-8">Add Product</h1>
             <p class="mb-6 text-sm text-yellow-700 bg-yellow-50 border border-yellow-300 rounded px-4 py-2">
-                &#9888; Saving changes will require admin re-verification before the updated product appears in the catalogue.
+                &#9888; New products require admin verification before they appear in the public catalogue.
             </p>
 
-			<form asp-action="EditProduct" asp-route-id="@ViewBag.ProductId" method="post">
+            <form asp-action="CreateProduct" method="post">
                 @Html.AntiForgeryToken()
-
                 <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
 
                 @await Html.PartialAsync("_ProductFormFields", Model)
@@ -22,7 +23,7 @@
                 <div class="flex gap-4 mt-8">
                     <button type="submit"
                             class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow transition-colors">
-                        Save &amp; Submit for Re-Verification
+                        Submit for Verification
                     </button>
                     <a asp-action="Products"
                        class="px-6 py-3 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors">Cancel</a>

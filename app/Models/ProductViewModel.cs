@@ -2,7 +2,7 @@ namespace SSD2600_CDEGP.Models;
 
 public class ProductViewModel
 {
-    public string Id { get; set; } = string.Empty;
+    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
     public decimal Price { get; set; }
@@ -14,4 +14,5 @@ public class ProductViewModel
     public string? Purity { get; set; }
     public string? SpecificActivity { get; set; }
     public string CurrencyCode { get; set; } = "CAD";
+    public string? SupplierName { get; set; }
 }
