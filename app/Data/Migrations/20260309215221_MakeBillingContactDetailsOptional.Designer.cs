@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SSD2600_CDEGP.Data;
 
@@ -11,9 +12,11 @@ using SSD2600_CDEGP.Data;
 namespace SSD2600_CDEGP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260309215221_MakeBillingContactDetailsOptional")]
+    partial class MakeBillingContactDetailsOptional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,46 +162,6 @@ namespace SSD2600_CDEGP.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("SSD2600_CDEGP.Models.AdminMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Body")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FkRecipientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("FkSenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("SentAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FkRecipientId");
-
-                    b.HasIndex("FkSenderId");
-
-                    b.ToTable("AdminMessages");
-                });
-
             modelBuilder.Entity("SSD2600_CDEGP.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -252,35 +215,15 @@ namespace SSD2600_CDEGP.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("nvarchar(3)");
 
-                    b.Property<DateTime>("RegisteredAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("UserBanned")
-                        .HasColumnType("bit");
-
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("UserRole")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("UserSuspended")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("VerificationApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("VerificationSubmitted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -432,9 +375,6 @@ namespace SSD2600_CDEGP.Migrations
                     b.Property<string>("HalfLife")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<bool>("IsAdminVerified")
-                        .HasColumnType("bit");
 
                     b.Property<byte[]>("Media")
                         .HasColumnType("varbinary(max)");
@@ -596,25 +536,6 @@ namespace SSD2600_CDEGP.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SSD2600_CDEGP.Models.AdminMessage", b =>
-                {
-                    b.HasOne("SSD2600_CDEGP.Models.ApplicationUser", "Recipient")
-                        .WithMany()
-                        .HasForeignKey("FkRecipientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SSD2600_CDEGP.Models.ApplicationUser", "Sender")
-                        .WithMany()
-                        .HasForeignKey("FkSenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Recipient");
-
-                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("SSD2600_CDEGP.Models.ApplicationUser", b =>

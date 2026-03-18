@@ -5,21 +5,48 @@
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
     var currentUser = await UserManager.GetUserAsync(User);
     var showVerification = currentUser != null && currentUser.UserRole != "PrivateCitizen";
+
+    var baseClass = "flex items-center justify-between rounded-xl px-3 py-2 text-sm font-semibold transition";
+    var activeClass = "bg-primary-600 text-white shadow-sm";
+    var inactiveClass = "text-neutral-700 hover:bg-neutral-100";
 }
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+<ul class="flex flex-col gap-1">
+    <li>
+        <a class="@baseClass @(ManageNavPages.IndexNavClass(ViewContext) == "active" ? activeClass : inactiveClass)"
+           id="profile" asp-page="./Index">Profile</a>
+    </li>
+    <li>
+        <a class="@baseClass @(ManageNavPages.DeliveryNavClass(ViewContext) == "active" ? activeClass : inactiveClass)"
+           id="profile" asp-page="./Delivery">Delivery Information</a>
+    </li>
+    <li>
+        <a class="@baseClass @(ManageNavPages.EmailNavClass(ViewContext) == "active" ? activeClass : inactiveClass)"
+           id="email" asp-page="./Email">Email</a>
+    </li>
+    <li>
+        <a class="@baseClass @(ManageNavPages.ChangePasswordNavClass(ViewContext) == "active" ? activeClass : inactiveClass)"
+           id="change-password" asp-page="./ChangePassword">Password</a>
+    </li>
     @if (hasExternalLogins)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+        <li id="external-logins">
+            <a id="external-login"
+               class="@baseClass @(ManageNavPages.ExternalLoginsNavClass(ViewContext) == "active" ? activeClass : inactiveClass)"
+               asp-page="./ExternalLogins">External logins</a>
+        </li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
+    <li>
+        <a class="@baseClass @(ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext) == "active" ? activeClass : inactiveClass)"
+           id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a>
+    </li>
+    <li>
+        <a class="@baseClass @(ManageNavPages.PersonalDataNavClass(ViewContext) == "active" ? activeClass : inactiveClass)"
+           id="personal-data" asp-page="./PersonalData">Personal data</a>
+    </li>
     @if (showVerification)
     {
-        <li class="nav-item">
-            <a class="nav-link @ManageNavPages.VerificationNavClass(ViewContext)" id="verification"
+        <li>
+            <a class="@baseClass @(ManageNavPages.VerificationNavClass(ViewContext) == "active" ? activeClass : inactiveClass)" id="verification"
                asp-page="/Account/Verification" asp-area="Identity">Verification</a>
         </li>
     }

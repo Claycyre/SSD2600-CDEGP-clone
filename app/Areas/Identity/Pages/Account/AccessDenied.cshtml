@@ -4,7 +4,14 @@
     ViewData["Title"] = "Access denied";
 }
 
-<header>
-    <h1 class="text-danger">@ViewData["Title"]</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+<div class="min-h-[calc(100vh-var(--header-height))] bg-neutral-50 px-4 py-10 sm:px-6 lg:px-10">
+    <div class="mx-auto w-full max-w-xl">
+        <div class="rounded-2xl border border-beta-200 bg-beta-50 p-6 shadow-xl shadow-primary-900/10 sm:p-8">
+            <div class="space-y-2">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-beta-700">Security</p>
+                <h1 class="font-displayxp text-2xl text-beta-900">@ViewData["Title"]</h1>
+                <p class="text-sm text-beta-800">You do not have access to this resource.</p>
+            </div>
+        </div>
+    </div>
+</div>

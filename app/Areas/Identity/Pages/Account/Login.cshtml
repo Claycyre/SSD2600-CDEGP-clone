@@ -5,69 +5,59 @@
     ViewData["Title"] = "Log in";
 }
 
-<style>
-    .form-floating {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .form-control {
-        padding: 0.25rem;
-        border: 1px var(--color-neutral-500) solid;
-    }
-
-    .form-control+label {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-        border-width: 0;
-    }
-</style>
-
-<div class="flex flex-col lg:flex-row h-full gap-4 lg:gap-0">
-    @await Html.PartialAsync("_AuthFlowSplash", new ViewDataDictionary(ViewData) { { "ClassName", "basis-48 lg:basis-1/2" } })
-    <div class="basis-full lg:basis-1/2 flex flex-col lg:place-content-center items-center gap-4">
-        <h1 class="text-2xl">Login</h1>
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary border border-slate-400 rounded-lg p-xl-3 py-1.5">Log in</button>
-                <div>
+<div class="bg-splash mx-auto flex w-full min-h-[calc(100vh-var(--header-height))] flex-col lg:gap-16 overflow-hidden lg:flex-row
+    after:lg:bg-size-[150%] after:bg-position-[0%_200%] after:lg:bg-position-[70%]
+    ">
+    @await Html.PartialAsync("_AuthFlowSplash", new ViewDataDictionary(ViewData) { { "ClassName", "w-full lg:basis-[45%]" }, { "Side", "left"} })
+    <div class="flex basis-full lg:mx-auto lg:max-w-3xl justify-self-center flex-col justify-center px-6 py-10 lg:px-10">
+        <div class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Account</p>
+            <h1 class="font-displayxp text-3xl text-primary-900">Log in</h1>
+            <p class="text-sm text-neutral-600"></p>
+        </div>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-8 space-y-5">
+            <div asp-validation-summary="ModelOnly"
+                 class="rounded-lg border border-beta-200 bg-beta-50 px-3 py-2 text-sm text-beta-800" role="alert"></div>
+            <div class="space-y-2">
+                <label asp-for="Input.Email" class="text-sm font-semibold text-neutral-700">Email</label>
+                <input asp-for="Input.Email"
+                       class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                       autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <span asp-validation-for="Input.Email" class="text-sm text-beta-600"></span>
+            </div>
+            <div class="space-y-2">
+                <label asp-for="Input.Password" class="text-sm font-semibold text-neutral-700">Password</label>
+                <input asp-for="Input.Password"
+                       class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30"
+                       autocomplete="current-password" aria-required="true" placeholder="password" />
+                <span asp-validation-for="Input.Password" class="text-sm text-beta-600"></span>
+            </div>
+            <label asp-for="Input.RememberMe" class="flex items-center gap-2 text-sm text-neutral-600">
+                <input class="h-4 w-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500/40"
+                       asp-for="Input.RememberMe" />
+                @Html.DisplayNameFor(m => m.Input.RememberMe)
+            </label>
+            <button id="login-submit" type="submit"
+                    class="inline-flex w-full items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">Log
+                in</button>
+                <div class="space-y-2 text-sm text-neutral-600">
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        <a id="forgot-password" class="font-semibold text-primary-700 hover:text-primary-600"
+                           asp-page="./ForgotPassword">Forgot your password?</a>
                     </p>
                     <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Don't have an account? Register now.</a>
+                        <a class="font-semibold text-primary-700 hover:text-primary-600" asp-page="./Register"
+                           asp-route-returnUrl="@Model.ReturnUrl">Don't have an account? Register now.</a>
                     </p>
                     <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                        <a id="resend-confirmation" class="font-semibold text-primary-700 hover:text-primary-600"
+                           asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
                     </p>
                 </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }

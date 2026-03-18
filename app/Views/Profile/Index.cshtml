@@ -25,10 +25,11 @@
             <div class="bg-white rounded shadow p-6">
                 <div class="space-y-0 text-center">
 
-                    <button id="openPasswordModal"
-                            class="w-full border p-4 text-left bg-gray-50 hover:bg-gray-100">
-                        Edit Password
-                    </button>
+                    <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword">
+                        <button class="w-full border p-4 text-left bg-gray-50 hover:bg-gray-100">
+                            Edit Password
+                        </button>
+                    </a>
 
                     <button id="openBillingModal"
                             class="w-full border border-t-0 p-4 text-left bg-gray-50 hover:bg-gray-100">
@@ -96,8 +97,8 @@
             <h2 class="text-lg font-semibold mb-4">Profile Summary</h2>
 
             <p class="text-sm text-gray-600">
-                <strong>Name:</strong> @Model?.NameFirst <br />
-                <strong>Name:</strong> @Model?.NameLast <br />
+                <strong>First Name:</strong> @Model?.NameFirst <br />
+                <strong>Last Name:</strong> @Model?.NameLast <br />
                 <strong>Email:</strong> @Model?.EmailAddress <br />
                 <strong>Phone:</strong> @Model?.PhoneNumber <br />
             </p>
@@ -125,30 +126,6 @@
                     Confirm Changes
                 </button>
                 <button type="button" id="closeBillingModal"
-                        class="bg-red-600 text-white px-6 py-2 rounded-b hover:bg-red-700">
-                    Cancel
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- Edit Password Modal (unchanged) -->
-<div id="passwordModal"
-     class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-center">
-    <div class="bg-white rounded shadow p-6 w-96">
-
-        <h2 class="text-lg font-semibold mb-4 text-center">Edit Password</h2>
-        <form>
-            <input type="password" placeholder="Old Password" class="w-full border p-2 mb-2 rounded">
-            <input type="password" placeholder="New Password" class="w-full border p-2 mb-2 rounded">
-            <input type="password" placeholder="Confirm New Password" class="w-full border p-2 mb-4 rounded">
-
-            <div class="flex flex-col items-center">
-                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-t hover:bg-blue-700">
-                    Confirm Changes
-                </button>
-                <button type="button" id="closePasswordModal"
                         class="bg-red-600 text-white px-6 py-2 rounded-b hover:bg-red-700">
                     Cancel
                 </button>
@@ -201,10 +178,6 @@
             const openBtn = document.getElementById("openBillingModal");
             const closeBtn = document.getElementById("closeBillingModal");
 
-            const passwordModal = document.getElementById("passwordModal");
-            const openPasswordBtn = document.getElementById("openPasswordModal");
-            const closePasswordBtn = document.getElementById("closePasswordModal");
-
             // NEW Contact modal
             const contactModal = document.getElementById("contactModal");
             const openContactBtn = document.getElementById("openContactModal");
@@ -222,23 +195,6 @@
                 window.addEventListener("click", function (e) {
                     if (e.target === contactModal) {
                         contactModal.classList.add("hidden");
-                    }
-                });
-            }
-
-            if (passwordModal && openPasswordBtn && closePasswordBtn) {
-
-                openPasswordBtn.addEventListener("click", function () {
-                    passwordModal.classList.remove("hidden");
-                });
-
-                closePasswordBtn.addEventListener("click", function () {
-                    passwordModal.classList.add("hidden");
-                });
-
-                window.addEventListener("click", function (e) {
-                    if (e.target === passwordModal) {
-                        passwordModal.classList.add("hidden");
                     }
                 });
             }

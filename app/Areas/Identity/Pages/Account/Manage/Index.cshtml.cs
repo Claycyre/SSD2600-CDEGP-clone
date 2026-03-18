@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SSD2600_CDEGP.Models;
+using SSD2600_CDEGP.Repositories;
 
 namespace SSD2600_CDEGP.Areas.Identity.Pages.Account.Manage
 {
@@ -17,14 +18,17 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ContactDetailRepository _contactRepo;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager
+            SignInManager<ApplicationUser> signInManager,
+            ContactDetailRepository contactDetailRepository
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _contactRepo = contactDetailRepository;
         }
 
         public string Username { get; set; }
@@ -53,6 +57,15 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            [Display(Name = "First Name")]
+            public string NameFirst { get; set; }
+
+#nullable enable
+            [Display(Name = "Last Name")]
+            public string? NameLast { get; set; } = string.Empty;
+
+#nullable disable
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
@@ -63,6 +76,8 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
+            var contactDetail = await _contactRepo.GetByUserAsync(user, true);
+
             Username = userName;
             UserRole = user.UserRole;
             RegisteredAt = user.RegisteredAt;
@@ -70,7 +85,12 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account.Manage
             VerificationSubmitted = user.VerificationSubmitted;
             VerificationApproved = user.VerificationApproved;
 
-            Input = new InputModel { PhoneNumber = phoneNumber };
+            Input = new InputModel
+            {
+                NameFirst = contactDetail.NameFirst,
+                NameLast = contactDetail.NameLast,
+                PhoneNumber = phoneNumber,
+            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -98,6 +118,12 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+
+            var contactDetail = await _contactRepo.GetByUserAsync(user);
+            contactDetail.NameFirst = Input.NameFirst;
+            contactDetail.NameLast = Input.NameLast;
+
+            await _contactRepo.UpdateAsync(contactDetail);
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)

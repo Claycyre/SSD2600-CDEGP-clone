@@ -13,9 +13,36 @@ public class ContactDetailRepository
         _context = context;
     }
 
-    public async Task<ContactDetail?> GetByIdAsync(int id)
+    public async Task<ContactDetail?> GetByIdAsync(int? id)
     {
-        return await _context.ContactDetail.FirstOrDefaultAsync(c => c.PkContactId == id);
+        return await _context.ContactDetail.FirstOrDefaultAsync(c => c.PkContactId == (id ?? -1));
+    }
+
+    public async Task<ContactDetail?> GetByIdAsync(int? id, bool returnEmpty)
+    {
+        var contactDetail = await GetByIdAsync(id);
+        if (contactDetail == null && returnEmpty)
+        {
+            return new ContactDetail();
+        }
+
+        return contactDetail;
+    }
+
+    public async Task<ContactDetail?> GetByUserAsync(ApplicationUser user)
+    {
+        return await GetByIdAsync(user.FkContactId);
+    }
+
+    public async Task<ContactDetail?> GetByUserAsync(ApplicationUser user, bool returnEmpty)
+    {
+        var contactDetail = await GetByUserAsync(user);
+        if (contactDetail == null && returnEmpty)
+        {
+            return new ContactDetail();
+        }
+
+        return contactDetail;
     }
 
     public async Task<IEnumerable<ContactDetail>> GetAllAsync()

@@ -6,91 +6,99 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
-                <label asp-for="Username" class="form-label"></label>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
-
-        <!-- Account Info -->
-        <div class="mt-6 border rounded-xl p-5 bg-gray-50">
-            <h4 class="font-semibold mb-3 text-sm text-gray-700 uppercase tracking-wide">Account Information</h4>
-            <dl class="space-y-2 text-sm">
-                <div class="flex gap-2">
-                    <dt class="font-semibold w-36">Account Type:</dt>
-                    <dd>@Model.UserRole.GetUserRoleDisplayName()</dd>
-                </div>
-                <div class="flex gap-2">
-                    <dt class="font-semibold w-36">Registered:</dt>
-                    <dd>@Model.RegisteredAt.ToString("yyyy-MM-dd HH:mm") UTC</dd>
-                </div>
-            </dl>
+<div class="space-y-2">
+    <h2 class="font-displayxp text-2xl text-primary-900">@ViewData["Title"]</h2>
+    <p class="text-sm text-neutral-600">Keep your contact details current for secure account access.</p>
+</div>
+<div class="mt-4">
+    <partial name="_StatusMessage" for="StatusMessage" />
+</div>
+<div class="mt-6 border rounded-xl p-5 bg-gray-50">
+    <h4 class="font-semibold mb-3 text-sm text-gray-700 uppercase tracking-wide">Account Information</h4>
+    <dl class="space-y-2 text-sm">
+        <div class="flex gap-2">
+            <dt class="font-semibold w-36">Account Type:</dt>
+            <dd>@Model.UserRole.GetUserRoleDisplayName()</dd>
         </div>
+        <div class="flex gap-2">
+            <dt class="font-semibold w-36">Registered:</dt>
+            <dd>@Model.RegisteredAt.ToString("yyyy-MM-dd HH:mm") UTC</dd>
+        </div>
+    </dl>
+</div>
 
-        <!-- Verification Section (for non-private users) -->
-        @if (Model.UserRole != "PrivateCitizen")
+<!-- Verification Section (for non-private users) -->
+@if (Model.UserRole != "PrivateCitizen")
+{
+    <div class="mt-5 border rounded-xl p-5 @(Model.VerificationApproved ? "bg-green-50 border-green-300" : Model.VerificationSubmitted ? "bg-yellow-50 border-yellow-300" : "bg-gray-50")">
+        <h4 class="font-semibold mb-3 text-sm text-gray-700 uppercase tracking-wide">Identity Verification</h4>
+
+        @if (Model.VerificationApproved)
         {
-            <div class="mt-5 border rounded-xl p-5 @(Model.VerificationApproved ? "bg-green-50 border-green-300" : Model.VerificationSubmitted ? "bg-yellow-50 border-yellow-300" : "bg-gray-50")">
-                <h4 class="font-semibold mb-3 text-sm text-gray-700 uppercase tracking-wide">Identity Verification</h4>
+            <p class="text-green-700 font-semibold mb-3">&#10003; Your identity has been verified.</p>
+        }
+        else if (Model.VerificationSubmitted)
+        {
+            <p class="text-yellow-700 font-semibold mb-3">Your verification is pending admin review.</p>
+        }
+        else
+        {
+            <p class="text-gray-600 mb-3 text-sm">Your verification is pending admin review.</p>
+            @* <p class="text-gray-600 mb-3 text-sm">You have not submitted a verification document yet.</p> *@
+            @* Submit Verification link commented out — document upload is not available.
+            <a asp-page="/Account/Verification" asp-area="Identity"
+               class="inline-block px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white rounded-lg text-sm font-semibold transition-colors">
+                Submit Verification
+            </a>
+            *@
+        }
 
-                @if (Model.VerificationApproved)
-                {
-                    <p class="text-green-700 font-semibold mb-3">&#10003; Your identity has been verified.</p>
-                }
-                else if (Model.VerificationSubmitted)
-                {
-                    <p class="text-yellow-700 font-semibold mb-3">Your verification is pending admin review.</p>
-                }
-                else
-                {
-					<p class="text-gray-600 mb-3 text-sm">Your verification is pending admin review.</p>
-                    @* <p class="text-gray-600 mb-3 text-sm">You have not submitted a verification document yet.</p> *@
-                    @* Submit Verification link commented out — document upload is not available.
-                    <a asp-page="/Account/Verification" asp-area="Identity"
-                       class="inline-block px-4 py-2 bg-amber-500 hover:bg-amber-400 text-white rounded-lg text-sm font-semibold transition-colors">
-                        Submit Verification
-                    </a>
-                    *@
-                }
+        @* View Submitted Document block commented out — verification document storage not in use.
+        @if (!string.IsNullOrEmpty(Model.VerificationDocumentPath))
+        {
+            <div class="mt-4">
+                <p class="text-sm font-semibold mb-2">Submitted Document:</p>
+                <a asp-page="/Account/Verification" asp-area="Identity"
+                   asp-page-handler="Document"
+                   target="_blank"
+                   class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 transition-colors">
+                    &#128196; View Submitted Document
+                </a>
 
-                @* View Submitted Document block commented out — verification document storage not in use.
-                @if (!string.IsNullOrEmpty(Model.VerificationDocumentPath))
+                @if (!Model.VerificationApproved)
                 {
-                    <div class="mt-4">
-                        <p class="text-sm font-semibold mb-2">Submitted Document:</p>
-                        <a asp-page="/Account/Verification" asp-area="Identity"
-                           asp-page-handler="Document"
-                           target="_blank"
-                           class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 transition-colors">
-                            &#128196; View Submitted Document
-                        </a>
-
-                        @if (!Model.VerificationApproved)
-                        {
-                            <p class="mt-2 text-xs text-gray-500">
-                                To replace your document, submit a new one on the
-                                <a asp-page="/Account/Verification" asp-area="Identity" class="text-amber-600 underline">Verification page</a>.
-                            </p>
-                        }
-                    </div>
+                    <p class="mt-2 text-xs text-gray-500">
+                        To replace your document, submit a new one on the
+                        <a asp-page="/Account/Verification" asp-area="Identity" class="text-amber-600 underline">Verification page</a>.
+                    </p>
                 }
-                *@
             </div>
         }
+        *@
     </div>
-</div>
+}
+
+<form id="profile-form" method="post" class="mt-6 space-y-5 max-w-xl">
+    <div asp-validation-summary="ModelOnly" class="rounded-lg border border-beta-200 bg-beta-50 px-3 py-2 text-sm text-beta-800" role="alert"></div>
+    <div class="space-y-2">
+        <label asp-for="Username" class="text-sm font-semibold text-neutral-700"></label>
+        <input asp-for="Username" class="w-full rounded-md border border-neutral-200 bg-neutral-100 px-3 py-2 text-sm text-neutral-700 shadow-sm" placeholder="Please choose your username." disabled />
+    </div>
+    <div class="space-y-2">
+        <label asp-for="Input.NameFirst" class="text-sm font-semibold text-neutral-700"></label>
+        <input asp-for="Input.NameFirst" class="w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-700 shadow-sm" placeholder="Please choose your username." />
+    </div>
+    <div class="space-y-2">
+        <label asp-for="Input.NameLast" class="text-sm font-semibold text-neutral-700"></label>
+        <input asp-for="Input.NameLast" class="w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-700 shadow-sm" placeholder="Please choose your username." />
+    </div>
+    <div class="space-y-2">
+        <label asp-for="Input.PhoneNumber" class="text-sm font-semibold text-neutral-700"></label>
+        <input asp-for="Input.PhoneNumber" class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30" placeholder="Please enter your phone number." />
+        <span asp-validation-for="Input.PhoneNumber" class="text-sm text-beta-600"></span>
+    </div>
+    <button id="update-profile-button" type="submit" class="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">Save changes</button>
+</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

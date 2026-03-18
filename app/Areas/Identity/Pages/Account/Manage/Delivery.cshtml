@@ -1,0 +1,45 @@
+@page
+@model DeliveryModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Delivery;
+}
+
+<div class="space-y-2">
+    <h2 class="font-displayxp text-2xl text-primary-900">@ViewData["Title"]</h2>
+    <p class="text-sm text-neutral-600">Where should we send your orders?</p>
+</div>
+<div class="mt-4">
+    <partial name="_StatusMessage" for="StatusMessage" />
+</div>
+<form id="profile-form" method="post" class="mt-6 space-y-5 max-w-xl">
+    <div asp-validation-summary="ModelOnly"
+         class="rounded-lg border border-beta-200 bg-beta-50 px-3 py-2 text-sm text-beta-800" role="alert"></div>
+    <div class="space-y-2">
+        <label asp-for="Input.StreetAddress" class="text-sm font-semibold text-neutral-700"></label>
+        <input asp-for="Input.StreetAddress"
+               class="w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-700 shadow-sm" />
+    </div>
+    <div class="space-y-2">
+        <label asp-for="Input.PostalCode" class="text-sm font-semibold text-neutral-700"></label>
+        <input asp-for="Input.PostalCode"
+               class="w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-700 shadow-sm" />
+    </div>
+    <div class="space-y-2">
+        <label asp-for="Input.AdministrativeArea" class="text-sm font-semibold text-neutral-700"></label>
+        <input asp-for="Input.AdministrativeArea"
+               class="w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-700 shadow-sm" />
+    </div>
+    <div class="space-y-2">
+        <label asp-for="Input.CountryCode" class="text-sm font-semibold text-neutral-700"></label>
+        <input asp-for="Input.CountryCode"
+               class="w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-700 shadow-sm" />
+    </div>
+    <button id="update-profile-button" type="submit"
+            class="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">Save
+        changes</button>
+    </form>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }

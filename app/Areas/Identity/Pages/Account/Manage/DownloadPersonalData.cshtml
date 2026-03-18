@@ -5,7 +5,10 @@
     ViewData["ActivePage"] = ManageNavPages.PersonalData;
 }
 
-<h3>@ViewData["Title"]</h3>
+<div class="space-y-2">
+    <h2 class="font-displayxp text-2xl text-primary-900">@ViewData["Title"]</h2>
+    <p class="text-sm text-neutral-600">Your data download will begin shortly.</p>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

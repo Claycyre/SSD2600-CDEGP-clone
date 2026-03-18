@@ -1,23 +1,40 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SSD2600_CDEGP.Models;
 using SSD2600_CDEGP.Repositories;
 
 namespace SSD2600_CDEGP.Controllers;
 
+[Authorize]
 public class ProfileController : Controller
 {
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly ContactDetailRepository _contactRepo;
 
-    public ProfileController(ContactDetailRepository contactRepo)
+    public ProfileController(
+        UserManager<ApplicationUser> userManager,
+        ContactDetailRepository contactRepo
+    )
     {
+        _userManager = userManager;
         _contactRepo = contactRepo;
+    }
+
+    private async Task<ApplicationUser?> GetAuthUserAsync()
+    {
+        return await _userManager.GetUserAsync(User);
+    }
+
+    private async Task<ContactDetail?> GetAuthUserContactDetailAsync()
+    {
+        var user = await GetAuthUserAsync();
+        return await _contactRepo.GetByIdAsync(user?.FkContactId);
     }
 
     public async Task<IActionResult> Index()
     {
-        // Placeholder. Loads the first contact record in the system.
-        // Later this will be replaced with the logged‑in user's contact.
-        var contact = (await _contactRepo.GetAllAsync()).FirstOrDefault();
+        var contact = await GetAuthUserContactDetailAsync();
 
         if (contact == null)
         {

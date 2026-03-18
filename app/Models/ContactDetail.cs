@@ -16,29 +16,27 @@ namespace SSD2600_CDEGP.Models
 
         [Required]
         [StringLength(50)]
-        public string PhoneNumber { get; set; } = string.Empty;
-
-        [Required]
-        [StringLength(50)]
         public string NameFirst { get; set; } = string.Empty;
 
-        [Required]
         [StringLength(50)]
-        public string NameLast { get; set; } = string.Empty;
+        public string? NameLast { get; set; } = string.Empty;
 
-        [Required]
+        // Optional contact method
         [StringLength(50)]
-        public string StreetAddress { get; set; } = string.Empty;
+        public string? PhoneNumber { get; set; } = string.Empty;
+
+        // Billing/Delivery - may be unset
+        [StringLength(50)]
+        public string? StreetAddress { get; set; } = string.Empty;
 
         [StringLength(50)]
-        public string? AdministrativeArea { get; set; }
+        public string? AdministrativeArea { get; set; } = string.Empty;
 
         [StringLength(20)]
-        public string? PostalCode { get; set; }
+        public string? PostalCode { get; set; } = string.Empty;
 
-        [Required]
         [StringLength(2)]
-        public string CountryCode { get; set; } = string.Empty;
+        public string? CountryCode { get; set; } = string.Empty;
 
         public ApplicationUser? User { get; set; }
     }

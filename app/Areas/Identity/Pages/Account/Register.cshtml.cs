@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SSD2600_CDEGP.Models;
+using SSD2600_CDEGP.Repositories;
 using SSD2600_CDEGP.Services.Interfaces;
 
 namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
@@ -29,13 +30,15 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailService _emailService;
+        private readonly ContactDetailRepository _contactDetailRepo;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailService emailService
+            IEmailService emailService,
+            ContactDetailRepository contactDetailRepo
         )
         {
             _userManager = userManager;
@@ -44,6 +47,7 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailService = emailService;
+            _contactDetailRepo = contactDetailRepo;
         }
 
         [BindProperty]
@@ -59,6 +63,13 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Required]
+            [Display(Name = "First Name")]
+            public string NameFirst { get; set; }
+
+            [Display(Name = "Last Name")]
+            public string NameLast { get; set; }
 
             [Required]
             [StringLength(100)]
@@ -158,6 +169,15 @@ namespace SSD2600_CDEGP.Areas.Identity.Pages.Account
                             + $"clicking here</a>.",
                     }
                 );
+
+                var contactDetail = new ContactDetail
+                {
+                    EmailAddress = Input.Email,
+                    NameFirst = Input.NameFirst,
+                    NameLast = Input.NameLast,
+                    User = user,
+                };
+                await _contactDetailRepo.AddAsync(contactDetail);
 
                 return RedirectToPage(
                     "RegisterConfirmation",

@@ -4,23 +4,27 @@
     ViewData["Title"] = "Recovery code verification";
 }
 
-<h1>@ViewData["Title"]</h1>
-<hr />
-<p>
-    You have requested to log in with a recovery code. This login will not be remembered until you provide
-    an authenticator app code at log in or disable 2FA and log in again.
-</p>
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.RecoveryCode" class="form-control" autocomplete="off" placeholder="RecoveryCode" />
-                <label asp-for="Input.RecoveryCode" class="form-label"></label>
-                <span asp-validation-for="Input.RecoveryCode" class="text-danger"></span>
+<div class="min-h-[calc(100vh-var(--header-height))] bg-neutral-50 px-4 py-10 sm:px-6 lg:px-10">
+    <div class="mx-auto w-full max-w-xl">
+        <div class="rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl shadow-primary-900/10 sm:p-8">
+            <div class="space-y-2">
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Security</p>
+                <h1 class="font-displayxp text-2xl text-primary-900">@ViewData["Title"]</h1>
+                <p class="text-sm text-neutral-600">
+                    You have requested to log in with a recovery code. This login will not be remembered until you provide
+                    an authenticator app code at log in or disable 2FA and log in again.
+                </p>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-        </form>
+            <form method="post" class="mt-6 space-y-5">
+                <div asp-validation-summary="ModelOnly" class="rounded-lg border border-beta-200 bg-beta-50 px-3 py-2 text-sm text-beta-800" role="alert"></div>
+                <div class="space-y-2">
+                    <label asp-for="Input.RecoveryCode" class="text-sm font-semibold text-neutral-700">Recovery code</label>
+                    <input asp-for="Input.RecoveryCode" class="w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30" autocomplete="off" placeholder="RecoveryCode" />
+                    <span asp-validation-for="Input.RecoveryCode" class="text-sm text-beta-600"></span>
+                </div>
+                <button type="submit" class="inline-flex w-full items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">Log in</button>
+            </form>
+        </div>
     </div>
 </div>
 

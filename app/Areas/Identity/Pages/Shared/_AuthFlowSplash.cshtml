@@ -2,9 +2,21 @@
 
 @{
     var className = @ViewData["ClassName"] as string ?? "";
+    var side = @ViewData["Side"] as string ?? "";
+
+    var sideClasses = side == "right" ? "right-0 lg:right-[calc(100%-4.25rem)] lg:top-0 origin-top-right" : "left-0 lg:left-[calc(100%-5rem)] lg:-top-full origin-bottom-left";
 }
-<div class="@className flex justify-center items-center bg-neutral-300">
-    <div class="flex flex-col gap-8 px-12">
+<div class="@className overflow-visible -z-10">
+    <div
+        class="absolute top-0 left-0 w-screen h-full bg-primary-300/50 backdrop-brightness-75 backdrop-contrast-150 backdrop-blur-xs backdrop-grayscale-100">
+    </div>
+    <div class="absolute top-0 left-0 w-screen h-full bg-primary-900/50">
+    </div>
+    <div class="relative flex flex-col justify-center gap-8 py-4 lg:py-0 lg:max-w-2xl h-full px-8 text-white">
+        <div class="@sideClasses absolute w-[200vw] h-[max(200vh,1000px)] lg:rotate-12 isolate top-full
+            before:content-['_'] before:absolute before:inset-0 before:bg-white">
+        </div>
+
         @await Html.PartialAsync("_LogoType", new ViewDataDictionary(ViewData) { { "Center", true } })
         <div class="hidden lg:block">
             <p>
