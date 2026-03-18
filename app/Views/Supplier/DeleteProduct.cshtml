@@ -3,43 +3,43 @@
     ViewData["Title"] = "Delete Product";
 }
 
-<div class="min-h-screen bg-gray-100">
-    <div class="w-full px-10 py-10">
-        <div class="bg-white rounded-2xl shadow-2xl p-10 max-w-xl mx-auto">
+<div class="mx-auto w-full min-h-[calc(100vh-var(--header-height))] px-6 py-10 lg:px-10">
+    <div class="mx-auto w-full max-w-xl space-y-6">
 
-            <h1 class="text-3xl font-semibold mb-6">Delete Product</h1>
-
-            <div class="mb-6 border border-red-300 bg-red-50 text-red-800 px-4 py-3 rounded-lg">
-                Are you sure you want to permanently delete <strong>@Model.Name</strong>? This action cannot be undone.
-            </div>
-
-            <dl class="mb-6 space-y-2 text-sm">
-                <div class="flex gap-4">
-                    <dt class="w-32 text-gray-500">Name</dt>
-                    <dd>@Model.Name</dd>
-                </div>
-                <div class="flex gap-4">
-                    <dt class="w-32 text-gray-500">Type</dt>
-                    <dd>@Model.ProductType</dd>
-                </div>
-                <div class="flex gap-4">
-                    <dt class="w-32 text-gray-500">Price</dt>
-                    <dd>@Model.UnitPrice.ToString("C")</dd>
-                </div>
-            </dl>
-
-            <form asp-action="DeleteProduct" asp-route-id="@Model.PkSKU" method="post">
-                @Html.AntiForgeryToken()
-                <div class="flex gap-4">
-                    <button type="submit"
-                            class="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 shadow transition-colors">
-                        Confirm Delete
-                    </button>
-                    <a asp-action="Index"
-                       class="px-6 py-3 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors">Cancel</a>
-                </div>
-            </form>
-
+        <div class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Supplier</p>
+            <h1 class="font-displayxp text-3xl text-primary-900">Delete Product</h1>
+            <p class="text-sm text-neutral-600">This action cannot be undone.</p>
         </div>
+
+        <div class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800">
+            Are you sure you want to permanently delete <strong>@Model.Name</strong>? This action cannot be undone.
+        </div>
+
+        <dl class="space-y-2 text-sm">
+            <div class="flex gap-4">
+                <dt class="w-32 text-neutral-500">Name</dt>
+                <dd class="text-neutral-900">@Model.Name</dd>
+            </div>
+            <div class="flex gap-4">
+                <dt class="w-32 text-neutral-500">Type</dt>
+                <dd class="text-neutral-900">@Model.ProductType</dd>
+            </div>
+            <div class="flex gap-4">
+                <dt class="w-32 text-neutral-500">Price</dt>
+                <dd class="text-neutral-900">@Model.UnitPrice.ToString("C")</dd>
+            </div>
+        </dl>
+
+        <form asp-action="DeleteProduct" asp-route-id="@Model.PkSKU" method="post" class="flex flex-wrap gap-3">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+                    class="inline-flex items-center justify-center rounded-md bg-rose-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40">
+                Confirm Delete
+            </button>
+            <a asp-action="Index"
+               class="inline-flex items-center justify-center rounded-md bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-700 hover:bg-neutral-200 transition-colors">Cancel</a>
+        </form>
+
     </div>
 </div>

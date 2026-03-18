@@ -5,32 +5,35 @@
     ViewData["Title"] = "Add Product";
 }
 
-<div class="min-h-screen bg-gray-100">
-    <div class="w-full px-10 py-10">
-        <div class="bg-white rounded-2xl shadow-2xl p-10 max-w-2xl mx-auto">
+<div class="mx-auto w-full min-h-[calc(100vh-var(--header-height))] px-6 py-10 lg:px-10">
+    <div class="mx-auto w-full max-w-2xl space-y-6">
 
-            <h1 class="text-3xl font-semibold mb-8">Add Product</h1>
-            <p class="mb-6 text-sm text-yellow-700 bg-yellow-50 border border-yellow-300 rounded px-4 py-2">
-                &#9888; New products require admin verification before they appear in the public catalogue.
-            </p>
-
-            <form asp-action="CreateProduct" method="post">
-                @Html.AntiForgeryToken()
-                <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
-
-                @await Html.PartialAsync("_ProductFormFields", Model)
-
-                <div class="flex gap-4 mt-8">
-                    <button type="submit"
-                            class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow transition-colors">
-                        Submit for Verification
-                    </button>
-                    <a asp-action="Index"
-                       class="px-6 py-3 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors">Cancel</a>
-                </div>
-            </form>
-
+        <div class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Supplier</p>
+            <h1 class="font-displayxp text-3xl text-primary-900">Add Product</h1>
+            <p class="text-sm text-neutral-600">Create a listing for admin review.</p>
         </div>
+
+        <p class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            &#9888; New products require admin verification before they appear in the public catalogue.
+        </p>
+
+        <form asp-action="CreateProduct" method="post" class="space-y-6">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800"></div>
+
+            @await Html.PartialAsync("_ProductFormFields", Model)
+
+            <div class="flex flex-wrap gap-3">
+                <button type="submit"
+                        class="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
+                    Submit for Verification
+                </button>
+                <a asp-action="Index"
+                   class="inline-flex items-center justify-center rounded-md bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-700 hover:bg-neutral-200 transition-colors">Cancel</a>
+            </div>
+        </form>
+
     </div>
 </div>
 
