@@ -53,23 +53,7 @@ public class SupplierController(
         if (!ModelState.IsValid)
             return View(vm);
 
-        var product = new Product
-        {
-            Name = vm.Name,
-            ShortName = vm.ShortName,
-            Description = vm.Description,
-            UnitPrice = (double)vm.UnitPrice,
-            StockQuantity = vm.StockQuantity,
-            AtomicNumber = vm.AtomicNumber,
-            StateOfMatter = vm.StateOfMatter,
-            ProductType = vm.ProductType,
-            ProductSubtype = vm.ProductSubtype,
-            HalfLife = vm.HalfLife,
-            Purity = vm.Purity,
-            SpecificActivity = vm.SpecificActivity,
-            FkSupplierId = supplierId.Value,
-            IsAdminVerified = false,
-        };
+        var product = VMToModel(vm, supplierId);
 
         _db.Products.Add(product);
         await _db.SaveChangesAsync();
@@ -91,7 +75,9 @@ public class SupplierController(
         if (user?.FkSupplierId != product.FkSupplierId)
             return Unauthorized("You can only edit products for your supplier.");
 
-        return View(product);
+        var vm = ModelToVM(product);
+
+        return View(vm);
     }
 
     // POST: Supplier/EditProduct/5
@@ -118,21 +104,7 @@ public class SupplierController(
             return RedirectToAction(nameof(Index));
         }
 
-        var vm = new ProductAddOrEditViewModel
-        {
-            Name = product.Name,
-            ShortName = product.ShortName,
-            Description = product.Description,
-            UnitPrice = product.UnitPrice,
-            StockQuantity = product.StockQuantity,
-            AtomicNumber = product.AtomicNumber,
-            StateOfMatter = product.StateOfMatter,
-            ProductType = product.ProductType,
-            ProductSubtype = product.ProductSubtype,
-            HalfLife = product.HalfLife,
-            Purity = product.Purity,
-            SpecificActivity = product.SpecificActivity,
-        };
+        var vm = ModelToVM(product);
         // necessary for <form asp-action="EditProduct" asp-route-id="@ViewBag.ProductId" method="post">
         ViewBag.ProductId = id;
         return View(vm);
@@ -195,16 +167,55 @@ public class SupplierController(
             return NotFound();
 
         // Get current user
-        var user = await userManager.GetUserAsync(User);
+        var supplierId = await GetCurrentSupplierIdAsync();
 
         // Verify user can remove this product
-        if (user?.FkSupplierId != product.FkSupplierId)
+        if (supplierId != product.FkSupplierId)
             return Unauthorized("You can only manage products for your supplier.");
 
-        // Soft delete by removing supplier association
-        product.FkSupplierId = 0;
-        await productRepository.UpdateAsync(product);
+        await productRepository.DeleteAsync(id);
+        TempData["Success"] = "Product deleted.";
 
         return RedirectToAction(nameof(Index));
+    }
+
+    public static Product VMToModel(ProductAddOrEditViewModel vm, int? supplierId)
+    {
+        return new Product
+        {
+            Name = vm.Name,
+            ShortName = vm.ShortName,
+            Description = vm.Description,
+            UnitPrice = (double)vm.UnitPrice,
+            StockQuantity = vm.StockQuantity,
+            AtomicNumber = vm.AtomicNumber,
+            StateOfMatter = vm.StateOfMatter,
+            ProductType = vm.ProductType,
+            ProductSubtype = vm.ProductSubtype,
+            HalfLife = vm.HalfLife,
+            Purity = vm.Purity,
+            SpecificActivity = vm.SpecificActivity,
+            FkSupplierId = supplierId.Value,
+            IsAdminVerified = false,
+        };
+    }
+
+    public static ProductAddOrEditViewModel ModelToVM(Product p)
+    {
+        return new ProductAddOrEditViewModel
+        {
+            Name = p.Name,
+            ShortName = p.ShortName,
+            Description = p.Description,
+            UnitPrice = p.UnitPrice,
+            StockQuantity = p.StockQuantity,
+            AtomicNumber = p.AtomicNumber,
+            StateOfMatter = p.StateOfMatter,
+            ProductType = p.ProductType,
+            ProductSubtype = p.ProductSubtype,
+            HalfLife = p.HalfLife,
+            Purity = p.Purity,
+            SpecificActivity = p.SpecificActivity,
+        };
     }
 }
