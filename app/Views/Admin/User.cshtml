@@ -11,23 +11,24 @@
     var currency = u.Supplier?.CurrencyCode ?? u.PreferredCurrencyCode;
 }
 
-<div class="min-h-screen bg-gray-100">
-    <div class="w-full px-10 py-10">
-        <div class="bg-white rounded-2xl shadow-2xl p-10">
+<div class="mx-auto w-full min-h-[calc(100vh-var(--header-height))] px-6 py-10 lg:px-10">
+    <div class="space-y-10">
 
-            <a asp-action="Index" class="text-sm text-slate-600 hover:underline">&#8592; User Management</a>
+        <a asp-action="Index" class="text-sm font-semibold text-primary-700 hover:text-primary-600">&#8592; User Management</a>
 
-            <!-- Header -->
-            <div class="mt-6 flex items-start gap-6 flex-wrap">
-                <div class="flex-shrink-0 w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center text-2xl font-bold text-slate-600">
+        <!-- Header -->
+        <div class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">Admin</p>
+            <div class="flex items-start gap-6 flex-wrap">
+                <div class="flex-shrink-0 w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center text-2xl font-bold text-neutral-600">
                     @(u.UserName?.Length > 0 ? char.ToUpper(u.UserName[0]).ToString() : "?")
                 </div>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-3 flex-wrap">
-                        <h1 class="text-2xl font-semibold">@(u.UserName ?? "—")</h1>
+                        <h1 class="font-displayxp text-2xl text-primary-900">@(u.UserName ?? "—")</h1>
                         @if (u.UserBanned)
                         {
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700">Banned</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">Banned</span>
                         }
                         else if (u.UserSuspended)
                         {
@@ -35,94 +36,94 @@
                         }
                         else
                         {
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">Active</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Active</span>
                         }
                         @if (u.VerificationApproved)
                         {
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">&#10003; Verified</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-sky-100 text-sky-700">&#10003; Verified</span>
                         }
                         @foreach (var role in Model.Roles)
                         {
-                            <span class="text-xs bg-slate-100 text-slate-600 rounded px-2 py-0.5">@role</span>
+                            <span class="text-xs bg-neutral-100 text-neutral-600 rounded px-2 py-0.5">@role</span>
                         }
                     </div>
-                    <p class="text-gray-500 text-sm mt-1">@(u.Email ?? "—")</p>
+                    <p class="text-neutral-500 text-sm mt-1">@(u.Email ?? "—")</p>
                 </div>
             </div>
-
-            <!-- Info + Actions -->
-            <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        </div>
+        <!-- Info + Actions -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
                 <!-- Account Info -->
-                <div class="lg:col-span-2 border rounded-xl p-6 bg-gray-50 shadow-sm">
-                    <h2 class="font-semibold mb-4 border-b pb-2">Account Information</h2>
+                <div class="lg:col-span-2 border border-neutral-200 rounded-lg p-6">
+                    <h2 class="font-semibold text-neutral-900 mb-4 border-b border-neutral-200 pb-2">Account Information</h2>
                     <dl class="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
                         <div>
-                            <dt class="text-gray-500">Username</dt>
+                            <dt class="text-neutral-500">Username</dt>
                             <dd class="font-medium">@(u.UserName ?? "—")</dd>
                         </div>
                         <div>
-                            <dt class="text-gray-500">Email</dt>
+                            <dt class="text-neutral-500">Email</dt>
                             <dd class="font-medium">@(u.Email ?? "—")</dd>
                         </div>
                         <div>
-                            <dt class="text-gray-500">Account Type</dt>
+                            <dt class="text-neutral-500">Account Type</dt>
                             <dd class="font-medium">@u.UserRole.GetUserRoleDisplayName()</dd>
                         </div>
                         <div>
-                            <dt class="text-gray-500">Organization</dt>
+                            <dt class="text-neutral-500">Organization</dt>
                             <dd class="font-medium">@(u.Supplier?.Name ?? "—")</dd>
                         </div>
                         <div>
-                            <dt class="text-gray-500">Country</dt>
+                            <dt class="text-neutral-500">Country</dt>
                             <dd class="font-medium">@(contactDetail?.CountryCode ?? "—")</dd>
                         </div>
                         <div>
-                            <dt class="text-gray-500">Preferred Currency</dt>
+                            <dt class="text-neutral-500">Preferred Currency</dt>
                             <dd class="font-medium font-mono">@u.PreferredCurrencyCode</dd>
                         </div>
                         <div>
-                            <dt class="text-gray-500">Registered</dt>
+                            <dt class="text-neutral-500">Registered</dt>
                             <dd class="font-medium">@u.RegisteredAt.ToString("yyyy-MM-dd HH:mm") UTC</dd>
                         </div>
                         <div>
-                            <dt class="text-gray-500">Email Confirmed</dt>
-                            <dd class="font-medium @(u.EmailConfirmed ? "text-green-600" : "text-red-500")">
+                            <dt class="text-neutral-500">Email Confirmed</dt>
+                            <dd class="font-medium @(u.EmailConfirmed ? "text-emerald-600" : "text-rose-600")">
 								@(u.EmailConfirmed ? "✓ Yes" : "✗ No")
                             </dd>
                         </div>
                         <div>
-                            <dt class="text-gray-500">Verification</dt>
+                            <dt class="text-neutral-500">Verification</dt>
                             <dd class="font-medium">
                                 @if (u.UserRole == "PrivateCitizen")
                                 {
-                                    <span class="text-gray-400">N/A</span>
+                                    <span class="text-neutral-400">N/A</span>
                                 }
                                 else if (u.VerificationApproved)
                                 {
-                                    <span class="text-green-600">&#10003; Approved</span>
+                                    <span class="text-emerald-600">&#10003; Approved</span>
                                 }
                                 else if (u.VerificationSubmitted)
                                 {
-                                    <span class="text-yellow-600">&#9888; Pending Review</span>
+                                    <span class="text-amber-600">&#9888; Pending Review</span>
                                 }
                                 else
                                 {
-                                    <span class="text-gray-400">Not submitted</span>
+                                    <span class="text-neutral-400">Not submitted</span>
                                 }
                             </dd>
                         </div>
                         @if (u.UserBanned)
                         {
                             <div>
-                                <dt class="text-gray-500">Account Status</dt>
-                                <dd class="font-medium text-red-600">Permanently Banned</dd>
+                                <dt class="text-neutral-500">Account Status</dt>
+                                <dd class="font-medium text-rose-600">Permanently Banned</dd>
                             </div>
                         }
                         else if (u.UserSuspended)
                         {
                             <div>
-                                <dt class="text-gray-500">Account Status</dt>
+                                <dt class="text-neutral-500">Account Status</dt>
                                 <dd class="font-medium text-amber-600">
                                     User Suspended — expires @(u.LockoutEnd?.ToString("yyyy-MM-dd HH:mm") ?? "—") UTC
                                 </dd>
@@ -132,8 +133,8 @@
                 </div>
 
                 <!-- Quick Actions -->
-                <div class="border rounded-xl p-6 bg-gray-50 shadow-sm">
-                    <h2 class="font-semibold mb-4 border-b pb-2">Actions</h2>
+                <div class="border border-neutral-200 rounded-lg p-6">
+                    <h2 class="font-semibold text-neutral-900 mb-4 border-b border-neutral-200 pb-2">Actions</h2>
                     <div class="flex flex-col gap-2">
 
                         @if (u.VerificationSubmitted && !u.VerificationApproved)
@@ -143,14 +144,14 @@
                                 <input type="hidden" name="userId" value="@u.Id" />
                                 <input type="hidden" name="returnUrl" value="@returnUrl" />
                                 <button type="submit"
-                                        class="w-full text-sm px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                                        class="w-full text-sm px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 transition-colors">
                                     &#10003; Approve Verification
                                 </button>
                             </form>
                         }
 
                         <a asp-action="MessageUser" asp-route-userId="@u.Id"
-                           class="block text-center text-sm px-4 py-2 rounded-lg bg-slate-600 text-white hover:bg-slate-500 transition-colors">
+                           class="block text-center text-sm px-4 py-2 rounded-md bg-neutral-900 text-white hover:bg-neutral-800 transition-colors">
                             &#9993; Send Message
                         </a>
 
@@ -163,7 +164,7 @@
                                     <input type="hidden" name="userId" value="@u.Id" />
                                     <input type="hidden" name="returnUrl" value="@returnUrl" />
                                     <button type="submit"
-                                            class="w-full text-sm px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors">
+                                            class="w-full text-sm px-4 py-2 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
                                         &#8629; Unban Account
                                     </button>
                                 </form>
@@ -177,7 +178,7 @@
                                         <input type="hidden" name="userId" value="@u.Id" />
                                         <input type="hidden" name="returnUrl" value="@returnUrl" />
                                         <button type="submit"
-                                                class="w-full text-sm px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors">
+                                                class="w-full text-sm px-4 py-2 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
                                             &#8629; Lift Suspension
                                         </button>
                                     </form>
@@ -189,7 +190,7 @@
                                         <input type="hidden" name="userId" value="@u.Id" />
                                         <input type="hidden" name="returnUrl" value="@returnUrl" />
                                         <button type="submit"
-                                                class="w-full text-sm px-4 py-2 rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition-colors">
+                                                class="w-full text-sm px-4 py-2 rounded-md bg-amber-500 text-white hover:bg-amber-600 transition-colors">
                                             &#9646;&#9646; Suspend User (7 days)
                                         </button>
                                     </form>
@@ -200,7 +201,7 @@
                                     <input type="hidden" name="returnUrl" value="@returnUrl" />
                                     <button type="submit"
                                             onclick="return confirm('Permanently ban @(u.UserName ?? u.Email)? They will be immediately locked out.')"
-                                            class="w-full text-sm px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">
+                                            class="w-full text-sm px-4 py-2 rounded-md bg-rose-600 text-white hover:bg-rose-700 transition-colors">
                                         &#9940; Ban Account
                                     </button>
                                 </form>
@@ -289,24 +290,24 @@
             } *@
 
             <!-- Admin Messages -->
-            <div class="mt-10">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-semibold">Admin Messages (@Model.Messages.Count)</h2>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-neutral-900">Admin Messages (@Model.Messages.Count)</h2>
                     <a asp-action="MessageUser" asp-route-userId="@u.Id"
-                       class="text-sm px-3 py-1.5 rounded-lg bg-slate-600 text-white hover:bg-slate-500 transition-colors">
+                       class="text-sm px-3 py-1.5 rounded-md bg-neutral-900 text-white hover:bg-neutral-800 transition-colors">
                         + New Message
                     </a>
                 </div>
                 @if (!Model.Messages.Any())
                 {
-                    <p class="text-gray-500 text-sm">No messages sent to this user.</p>
+                    <p class="text-neutral-500 text-sm">No messages sent to this user.</p>
                 }
                 else
                 {
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left border-collapse">
                             <thead>
-                                <tr class="bg-gray-100 text-gray-700 uppercase text-xs">
+                                <tr class="bg-neutral-50 text-neutral-600 uppercase text-xs">
                                     <th class="px-4 py-3 border-b">Subject</th>
                                     <th class="px-4 py-3 border-b">From</th>
                                     <th class="px-4 py-3 border-b">Sent</th>
@@ -316,14 +317,14 @@
                             <tbody>
                                 @foreach (var msg in Model.Messages)
                                 {
-                                    <tr class="border-b hover:bg-gray-50 transition-colors">
+                                    <tr class="border-b hover:bg-neutral-50 transition-colors">
                                         <td class="px-4 py-3 font-medium">@msg.Subject</td>
-                                        <td class="px-4 py-3 text-gray-600">@(msg.Sender.UserName ?? msg.Sender.Email ?? "—")</td>
-                                        <td class="px-4 py-3 text-gray-500">@msg.SentAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td class="px-4 py-3 text-neutral-600">@(msg.Sender.UserName ?? msg.Sender.Email ?? "—")</td>
+                                        <td class="px-4 py-3 text-neutral-500">@msg.SentAt.ToString("yyyy-MM-dd HH:mm")</td>
                                         <td class="px-4 py-3">
                                             @if (msg.IsRead)
                                             {
-                                                <span class="text-green-600">&#10003; Read</span>
+                                                <span class="text-emerald-600">&#10003; Read</span>
                                             }
                                             else
                                             {
@@ -338,6 +339,5 @@
                 }
             </div>
 
-        </div>
     </div>
 </div>
