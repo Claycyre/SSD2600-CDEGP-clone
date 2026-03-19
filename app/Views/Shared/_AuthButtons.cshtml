@@ -40,13 +40,19 @@
                         </a>
                     </div>
                 }
-                <form asp-area="Identity" asp-page="/Account/Logout"
-                      asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                    <button type="submit"
-                            class="w-full outline outline-neutral-300 rounded-lg px-3 py-1 text-sm font-semibold cursor-pointer text-neutral-700 hover:bg-slate-50 transition-colors">
-                        Log out
-                    </button>
-                </form>
+                <div class="flex flex-col gap-1">
+                    <a asp-area="Identity" asp-page="/Account/Manage/Index"
+                        class="w-full text-start outline outline-neutral-300 rounded-lg px-3 py-1 text-sm font-semibold cursor-pointer text-neutral-700 hover:bg-neutral-50 transition-colors">
+                        Account
+                    </a>
+                    <form asp-area="Identity" asp-page="/Account/Logout"
+                          asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                        <button type="submit"
+                                class="w-full text-start outline outline-neutral-300 rounded-lg px-3 py-1 text-sm font-semibold cursor-pointer text-neutral-700 hover:text-beta-700 hover:bg-beta-100 hover:outline-beta-300 transition-colors">
+                            Log out
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </details>
