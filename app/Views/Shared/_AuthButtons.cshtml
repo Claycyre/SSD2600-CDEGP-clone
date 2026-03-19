@@ -3,13 +3,53 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <form asp-area="Identity" asp-page="/Account/Logout"
-          asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-        <button type="submit"
-                class="border border-slate-400 rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
-            Log out
-        </button>
-    </form>
+    <a data-loading-overlay asp-controller="Messages" asp-action="Index"
+       class="text-sm font-medium text-slate-600 hover:text-slate-900 border border-slate-300 rounded-lg px-3 py-1.5 transition-colors">
+        Inbox
+    </a>
+    <div class="relative">
+    </div>
+    <details class="relative z-50">
+        <summary class="list-none cursor-pointer px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+            <div>
+                <p class="text-xs text-neutral-500 font-semibold">Logged in as</p>
+                <p class="">@User.Identity.Name</p>
+            </div>
+        </summary>
+        <div class="absolute right-0 mt-2 w-fit max-w-96 min-w-56 rounded-xl border border-neutral-200 bg-white p-3 shadow-xl">
+            <div class="flex flex-col divide-y divide-neutral-500 *:py-2 *:first:pt-0 *:last:pb-0">
+                @if (User.IsInRole("Admin")) {
+                    <div class="flex flex-col gap-1">
+                        <a data-loading-overlay asp-area="" asp-controller="Admin" asp-action="Index"
+                           class="flex items-center px-3 py-1.5 rounded-lg text-sm text-white font-semibold bg-neutral-600 hover:bg-neutral-500 shadow-lg transition-colors">
+                            &#9881; User Admin
+                        </a>
+                        <a asp-area="" asp-controller="Admin" asp-action="Products"
+                           data-loading-overlay
+                           class="flex items-center px-3 py-1.5 rounded-lg text-sm text-white font-semibold bg-neutral-600 hover:bg-neutral-500 shadow-lg transition-colors">
+                            &#9881; Products
+                        </a>
+                    </div>
+                }
+                @if (User.IsInRole("Supplier")) {
+                    <div class="flex flex-col gap-1">
+                        <a asp-controller="Supplier" asp-action="Index"
+                           data-loading-overlay
+                           class="px-3 py-1.5 rounded-lg text-sm text-white font-semibold bg-neutral-600 hover:bg-neutral-500 shadow-lg transition-colors">
+                            Manage Products
+                        </a>
+                    </div>
+                }
+                <form asp-area="Identity" asp-page="/Account/Logout"
+                      asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+                    <button type="submit"
+                            class="w-full outline outline-neutral-300 rounded-lg px-3 py-1 text-sm font-semibold cursor-pointer text-neutral-700 hover:bg-slate-50 transition-colors">
+                        Log out
+                    </button>
+                </form>
+            </div>
+        </div>
+    </details>
 }
 else
 {
