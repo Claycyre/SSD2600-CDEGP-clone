@@ -1,0 +1,109 @@
+@model SSD2600_CDEGP.Models.CartViewModel
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<div class="min-h-screen bg-gray-100 p-6">
+    <div class="mb-6">
+        <img src="~/images/banner.jpg" alt="Banner" class="w-full rounded-2xl shadow-md" />
+    </div>
+    <h1 class="text-3xl font-bold text-center text-blue-900 mb-8">Shopping Cart</h1>
+
+    @if (!Model.Items.Any())
+    {
+        <div class="max-w-6xl mx-auto text-center py-16 text-gray-500">
+            <p class="text-xl">Your cart is empty.</p>
+            <a asp-controller="ProductCatalogue" asp-action="Index"
+               class="inline-block mt-4 text-blue-600 hover:underline">Browse the catalogue →</a>
+        </div>
+    }
+    else
+    {
+        <div class="flex max-w-6xl mx-auto gap-6">
+            <!-- Cart items -->
+            <div class="flex-1 flex flex-col space-y-2">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="relative flex items-center bg-white rounded-2xl shadow hover:shadow-lg transition duration-300 p-4">
+                        <!-- Remove button -->
+                        <form method="post" asp-controller="Cart" asp-action="Remove" class="absolute top-2 right-2">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit"
+                                    class="w-6 h-6 flex items-center justify-center bg-gray-200 rounded-full text-gray-700 hover:bg-red-600 hover:text-white">
+                                &times;
+                            </button>
+                        </form>
+
+                        <div class="w-20 h-20 bg-gray-100 rounded-full mr-4 flex items-center justify-center text-gray-400 text-xs shrink-0">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="@item.ImageUrl" alt="@item.Name" class="w-full h-full object-cover rounded-full" />
+                            }
+                            else
+                            {
+                                <span>No image</span>
+                            }
+                        </div>
+
+                        <div class="flex-1 text-center">
+                            <h2 class="font-semibold text-lg">@item.Name</h2>
+                        </div>
+
+                        <!-- Quantity + line total -->
+                        <div class="text-right flex flex-col items-end space-y-1">
+                            <span class="font-semibold">@item.Price.ToString("C")</span>
+                            <form method="post" asp-controller="Cart" asp-action="Update" class="flex items-center gap-1">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <label class="text-sm text-gray-500">Qty:</label>
+                                <input type="number" name="quantity" value="@item.Quantity" min="0"
+                                       class="w-16 border rounded px-1 py-0.5 text-sm"
+                                       onchange="debounceSubmit(this.form)" />
+                            </form>
+                            <span class="text-sm text-gray-500">= @item.LineTotal.ToString("C")</span>
+                        </div>
+                    </div>
+                }
+
+                <div class="flex justify-end space-x-0 mt-4">
+                    <a asp-controller="Cart" asp-action="Checkout"
+                       class="bg-blue-600 text-white px-6 py-2 rounded-l-full hover:bg-blue-700 text-sm">
+                        Checkout
+                    </a>
+                    <a asp-controller="ProductCatalogue" asp-action="Index"
+                       class="bg-red-600 text-white px-6 py-2 rounded-r-full hover:bg-red-700 text-sm">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+
+            <!-- Order summary -->
+            <div class="w-64 bg-white rounded-2xl shadow p-4 flex flex-col justify-between">
+                <h2 class="font-semibold text-lg mb-4 text-center">Order Summary</h2>
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span>Items (@Model.ItemCount):</span>
+                        <span>@Model.Total.ToString("C")</span>
+                    </div>
+                    <div class="border-t border-gray-300 mt-2 pt-2 font-bold flex justify-between">
+                        <span>Total:</span>
+                        <span>@Model.Total.ToString("C")</span>
+                    </div>
+                </div>
+                <a asp-controller="Cart" asp-action="Checkout"
+                   class="mt-4 bg-blue-600 text-white text-center py-2 rounded-xl hover:bg-blue-700 text-sm">
+                    Proceed to Checkout
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        let _debounceTimer = null;
+        function debounceSubmit(form) {
+            clearTimeout(_debounceTimer);
+            _debounceTimer = setTimeout(() => form.submit(), 300);
+        }
+    </script>
+}

@@ -39,6 +39,7 @@ public class Program
         //REPO INJECTION
         builder.Services.AddScoped<SupplierRepository>();
         builder.Services.AddScoped<ProductRepository>();
+        builder.Services.AddScoped<OrderRepository>();
 
         builder
             .Services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -67,6 +68,23 @@ public class Program
 
         //Implement Singleton service for periodic table data
         builder.Services.AddSingleton<ElementService>();
+
+        // PayPal
+        builder.Services.Configure<PayPalSettings>(builder.Configuration.GetSection("PayPal"));
+        builder.Services.AddMemoryCache();
+        builder.Services.AddHttpClient("paypal");
+        builder.Services.AddScoped<PayPalService>();
+
+        // Session + cart
+        builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromHours(2);
+            options.Cookie.HttpOnly = true;
+            options.Cookie.IsEssential = true;
+        });
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<CartService>();
 
         // Register, Bind, and Validate strongly typed Options class
         // This ensures [Required] is checked on launch and will fail fast if null
@@ -134,6 +152,7 @@ public class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
+        app.UseSession();
         app.UseRouting();
 
         app.UseAuthorization();
