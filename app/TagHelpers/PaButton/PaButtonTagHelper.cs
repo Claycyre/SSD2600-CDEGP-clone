@@ -45,6 +45,9 @@ public class PaButtonTagHelper : ViewTagHelper
     [HtmlAttributeName]
     public string Attributes { get; set; } = string.Empty;
 
+    [HtmlAttributeName("tag")]
+    public string TagName { get; set; } = "a";
+
     [HtmlAttributeName("asp-area")]
     public string? AspArea { get; set; }
 
