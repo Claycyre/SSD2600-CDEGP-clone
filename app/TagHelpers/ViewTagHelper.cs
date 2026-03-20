@@ -32,6 +32,15 @@ public class ViewTagHelper : TagHelper
 
     public TagHelperContent? ChildContent { get; set; }
 
+    [HtmlAttributeName]
+    public string Classes { get; set; } = string.Empty;
+
+    [HtmlAttributeName]
+    public string Attributes { get; set; } = string.Empty;
+
+    [HtmlAttributeName("tag")]
+    public string TagName { get; set; } = "a";
+
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
         throw new Exception("Use ProcessAsync()");
