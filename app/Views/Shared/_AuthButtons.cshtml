@@ -4,10 +4,15 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <a data-loading-overlay asp-controller="Messages" asp-action="Index"
-       class="text-sm font-medium text-slate-600 hover:text-slate-900 border border-slate-300 rounded-lg px-3 py-1.5 transition-colors">
+    <PaButton
+        asp-controller="Messages"
+        asp-action="Index"
+        Style="PaButtonTagHelper.Styles.Outline"
+        Size="PaButtonTagHelper.Sizes.Small"
+        Classes="text-slate-600 font-medium"
+        Attributes="data-loading-overlay">
         Inbox
-    </a>
+    </PaButton>
     <div class="relative">
     </div>
     <details class="relative z-50">
@@ -21,24 +26,39 @@
             <div class="flex flex-col divide-y divide-neutral-500 *:py-2 *:first:pt-0 *:last:pb-0">
                 @if (User.IsInRole("Admin")) {
                     <div class="flex flex-col gap-1">
-                        <a data-loading-overlay asp-area="" asp-controller="Admin" asp-action="Index"
-                           class="flex items-center px-3 py-1.5 rounded-lg text-sm text-white font-semibold bg-neutral-600 hover:bg-neutral-500 shadow-lg transition-colors">
+                        <PaButton
+                            asp-area=""
+                            asp-controller="Admin"
+                            asp-action="Index"
+                            Style="PaButtonTagHelper.Styles.Fill"
+                            Size="PaButtonTagHelper.Sizes.Small"
+                            Classes="flex items-center justify-start w-full text-start shadow-lg"
+                            Attributes="data-loading-overlay">
                             &#9881; User Admin
-                        </a>
-                        <a asp-area="" asp-controller="Admin" asp-action="Products"
-                           data-loading-overlay
-                           class="flex items-center px-3 py-1.5 rounded-lg text-sm text-white font-semibold bg-neutral-600 hover:bg-neutral-500 shadow-lg transition-colors">
+                        </PaButton>
+                        <PaButton
+                            asp-area=""
+                            asp-controller="Admin"
+                            asp-action="Products"
+                            Style="PaButtonTagHelper.Styles.Fill"
+                            Size="PaButtonTagHelper.Sizes.Small"
+                            Classes="flex items-center justify-start w-full text-start shadow-lg"
+                            Attributes="data-loading-overlay">
                             &#9881; Products
-                        </a>
+                        </PaButton>
                     </div>
                 }
                 @if (User.IsInRole("Supplier")) {
                     <div class="flex flex-col gap-1">
-                        <a asp-controller="Supplier" asp-action="Index"
-                           data-loading-overlay
-                           class="px-3 py-1.5 rounded-lg text-sm text-white font-semibold bg-neutral-600 hover:bg-neutral-500 shadow-lg transition-colors">
+                        <PaButton
+                            asp-controller="Supplier"
+                            asp-action="Index"
+                            Style="PaButtonTagHelper.Styles.Fill"
+                            Size="PaButtonTagHelper.Sizes.Small"
+                            Classes="w-full text-start shadow-lg"
+                            Attributes="data-loading-overlay">
                             Manage Products
-                        </a>
+                        </PaButton>
                     </div>
                 }
                 <div class="flex flex-col gap-1">
@@ -65,13 +85,19 @@
 else
 {
     <div class="flex items-center gap-2">
-        <a asp-area="Identity" asp-page="/Account/Register"
-           class="border border-slate-400 rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+        <PaButton
+            asp-area="Identity"
+            asp-page="/Account/Register"
+            Style="PaButtonTagHelper.Styles.Outline"
+            Size="PaButtonTagHelper.Sizes.Small">
             Register
-        </a>
-        <a asp-area="Identity" asp-page="/Account/Login"
-           class="border border-slate-400 rounded-lg px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+        </PaButton>
+        <PaButton
+            asp-area="Identity"
+            asp-page="/Account/Login"
+            Style="PaButtonTagHelper.Styles.Outline"
+            Size="PaButtonTagHelper.Sizes.Small">
             Log in
-        </a>
+        </PaButton>
     </div>
 }
