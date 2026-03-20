@@ -35,10 +35,16 @@
         <input asp-for="Input.CountryCode"
                class="w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-700 shadow-sm" />
     </div>
-    <button id="update-profile-button" type="submit"
-            class="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">Save
-        changes</button>
-    </form>
+    <PaButton
+        tag="button"
+        Attributes="type=submit id=update-profile-button"
+        Theme="PaButtonTagHelper.Themes.Primary"
+        Style="PaButtonTagHelper.Styles.Fill"
+        Size="PaButtonTagHelper.Sizes.Base"
+        Classes="inline-flex items-center justify-center text-sm font-semibold shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
+        Save changes
+    </PaButton>
+</form>
 
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />

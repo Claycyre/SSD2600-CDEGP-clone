@@ -13,31 +13,34 @@
             <p class="text-sm text-neutral-600">Manage users, verification, and account status.</p>
         </div>
 
-            @if (TempData["Success"] != null)
-            {
-                <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
-                    @TempData["Success"]
-                </div>
-            }
+        @if (TempData["Success"] != null)
+        {
+            <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+                @TempData["Success"]
+            </div>
+        }
 
-            @if (Model.PendingProductCount > 0)
-            {
-                <div class="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-xl">&#9888;</span>
-                        <span>
-                            <strong>@Model.PendingProductCount</strong>
-                            product@(Model.PendingProductCount == 1 ? "" : "s")
-                            awaiting verification.
-                        </span>
-                    </div>
-                    <a asp-action="Products" class="ml-4 text-sm font-semibold text-primary-700 hover:text-primary-600">Review →</a>
+        @if (Model.PendingProductCount > 0)
+        {
+            <div
+                class="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-xl">&#9888;</span>
+                    <span>
+                        <strong>@Model.PendingProductCount</strong>
+                        product@(Model.PendingProductCount == 1 ? "" : "s")
+                        awaiting verification.
+                    </span>
+                </div>
+                <a asp-action="Products" class="ml-4 text-sm font-semibold text-primary-700 hover:text-primary-600">Review
+                    →</a>
                 </div>
             }
 
             @if (Model.PendingVerificationCount > 0)
             {
-                <div class="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                <div
+                    class="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
                     <div class="flex items-center gap-2">
                         <span class="font-bold text-xl">&#9888;</span>
                         <span>
@@ -54,17 +57,15 @@
                 <input type="text" name="search" value="@Model.SearchQuery"
                        placeholder="Search by ID, email, username, or phone number"
                        class="flex-1 rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30" />
-                <button type="submit"
-                        class="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
+                <PaButton tag="button" Attributes="type=submit" Theme="PaButtonTagHelper.Themes.Primary"
+                          Style="PaButtonTagHelper.Styles.Fill" Size="PaButtonTagHelper.Sizes.Base"
+                          Classes="inline-flex items-center justify-center text-sm font-semibold shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
                     Search
-                </button>
+                </PaButton>
                 @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
                 {
-                    <PaButton
-                        asp-action="Index"
-                        Style="PaButtonTagHelper.Styles.Outline"
-                        Size="PaButtonTagHelper.Sizes.Base"
-                        Classes="inline-flex items-center justify-center bg-neutral-100 hover:bg-neutral-200">
+                    <PaButton asp-action="Index" Style="PaButtonTagHelper.Styles.Outline" Size="PaButtonTagHelper.Sizes.Base"
+                              Classes="inline-flex items-center justify-center bg-neutral-100 hover:bg-neutral-200">
                         Clear
                     </PaButton>
                 }
@@ -146,15 +147,18 @@
                                     <td class="px-4 py-3">
                                         @if (user.UserBanned)
                                         {
-                                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">Banned</span>
+                                            <span
+                                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">Banned</span>
                                         }
                                         else if (user.UserSuspended)
                                         {
-                                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">Suspended</span>
+                                            <span
+                                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">Suspended</span>
                                         }
                                         else
                                         {
-                                            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Active</span>
+                                            <span
+                                            class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">Active</span>
                                         }
                                     </td>
 
@@ -181,20 +185,28 @@
                                     <!-- Actions -->
                                     <td class="px-4 py-3">
                                         <div class="flex flex-col gap-1 min-w-[90px]">
-                                            <a asp-action="User" asp-route-userId="@user.Id"
-                                               class="text-xs px-3 py-1 rounded-md bg-neutral-100 text-neutral-700 hover:bg-neutral-200 transition-colors text-center">
+                                            <PaButton tag="a" asp-action="User" asp-route-userId="@user.Id"
+                                                      Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Outline"
+                                                      Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
                                                 View →
-                                            </a>
+                                            </PaButton>
+
+                                            <PaButton tag="button" asp-action="MessageUser" asp-route-userId="@user.Id"
+                                                      Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
+                                                      Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                Message
+                                            </PaButton>
 
                                             @if (user.VerificationSubmitted && !user.VerificationApproved)
                                             {
                                                 <form method="post" asp-action="ApproveVerification">
                                                     @Html.AntiForgeryToken()
                                                     <input type="hidden" name="userId" value="@user.Id" />
-                                                    <button type="submit"
-                                                            class="w-full text-xs px-3 py-1 rounded-md bg-primary-600 text-white hover:bg-primary-700 transition-colors">
-                                                        &#10003; Approve
-                                                    </button>
+                                                    <PaButton tag="button" Attributes="type=submit"
+                                                              Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
+                                                              Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                        Approve
+                                                    </PaButton>
                                                 </form>
                                             }
 
@@ -205,10 +217,11 @@
                                                     <form method="post" asp-action="UnbanUser">
                                                         @Html.AntiForgeryToken()
                                                         <input type="hidden" name="userId" value="@user.Id" />
-                                                        <button type="submit"
-                                                                class="w-full text-xs px-3 py-1 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
-                                                            &#8629; Unban
-                                                        </button>
+                                                        <PaButton tag="button" Attributes="type=submit"
+                                                                  Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
+                                                                  Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                            Unban
+                                                        </PaButton>
                                                     </form>
                                                 }
                                                 else
@@ -218,10 +231,11 @@
                                                         <form method="post" asp-action="LiftHold">
                                                             @Html.AntiForgeryToken()
                                                             <input type="hidden" name="userId" value="@user.Id" />
-                                                            <button type="submit"
-                                                                    class="w-full text-xs px-3 py-1 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
-                                                                &#8629; Lift Suspension
-                                                            </button>
+                                                            <PaButton tag="button" Attributes="type=submit"
+                                                                      Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
+                                                                      Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                                Reinstate
+                                                            </PaButton>
                                                         </form>
                                                     }
                                                     else
@@ -229,26 +243,24 @@
                                                         <form method="post" asp-action="PutOnHold">
                                                             @Html.AntiForgeryToken()
                                                             <input type="hidden" name="userId" value="@user.Id" />
-                                                            <button type="submit"
-                                                                    class="w-full text-xs px-3 py-1 rounded-md bg-amber-500 text-white hover:bg-amber-600 transition-colors">
-                                                                &#9646;&#9646; Suspend
-                                                            </button>
+                                                            <PaButton tag="button" Attributes="type=submit"
+                                                                      Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
+                                                                      Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                                Suspend
+                                                            </PaButton>
                                                         </form>
                                                     }
                                                     <form method="post" asp-action="BanUser">
                                                         @Html.AntiForgeryToken()
                                                         <input type="hidden" name="userId" value="@user.Id" />
-                                                        <button type="submit"
-                                                                onclick="return confirm('Permanently ban this user? They will be immediately locked out.')"
-                                                                class="w-full text-xs px-3 py-1 rounded-md bg-rose-600 text-white hover:bg-rose-700 transition-colors">
-                                                            &#9940; Ban
-                                                        </button>
+                                                        <PaButton tag="button" Attributes="type=submit onclick=\" return
+                                                                  confirm('Permanently ban this user? They will be immediately locked out.')\""
+                                                                  Theme="PaButtonTagHelper.Themes.Danger" Style="PaButtonTagHelper.Styles.Fill"
+                                                                  Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                            Ban
+                                                        </PaButton>
                                                     </form>
                                                 }
-                                                <a asp-action="MessageUser" asp-route-userId="@user.Id"
-                                                   class="text-xs px-3 py-1 rounded-md bg-neutral-900 text-white hover:bg-neutral-800 transition-colors text-center block">
-                                                    &#9993; Message
-                                                </a>
                                             }
                                         </div>
                                     </td>
@@ -259,5 +271,5 @@
                 </div>
             }
 
+        </div>
     </div>
-</div>

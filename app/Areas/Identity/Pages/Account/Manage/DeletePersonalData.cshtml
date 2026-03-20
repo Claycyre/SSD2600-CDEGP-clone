@@ -24,7 +24,15 @@
             <span asp-validation-for="Input.Password" class="text-sm text-beta-600"></span>
         </div>
     }
-    <button class="inline-flex w-full items-center justify-center rounded-md bg-beta-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-beta-700" type="submit">Delete data and close my account</button>
+    <PaButton
+        tag="button"
+        Attributes="type=submit"
+        Theme="PaButtonTagHelper.Themes.Danger"
+        Style="PaButtonTagHelper.Styles.Fill"
+        Size="PaButtonTagHelper.Sizes.Base"
+        Classes="inline-flex w-full items-center justify-center text-sm font-semibold shadow-sm">
+        Delete data and close my account
+    </PaButton>
 </form>
 
 @section Scripts {

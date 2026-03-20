@@ -14,75 +14,78 @@
                 <h1 class="font-displayxp text-3xl text-primary-900">@ViewData["Title"]</h1>
                 <p class="text-sm text-neutral-600">Create and manage your product listings.</p>
             </div>
-            <a asp-action="CreateProduct"
-               class="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
+            <PaButton asp-action="CreateProduct" Theme="PaButtonTagHelper.Themes.Primary">
                 + Add Product
-            </a>
+            </PaButton>
         </div>
 
-            @if (TempData["Success"] != null)
-            {
-                <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
-                    @TempData["Success"]
-                </div>
-            }
+        @if (TempData["Success"] != null)
+        {
+            <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+                @TempData["Success"]
+            </div>
+        }
 
-            @if (!Model.Any())
-            {
-                <p class="text-neutral-500 text-center py-10 text-sm">You have no products yet.</p>
-            }
-            else
-            {
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left border-collapse">
-                        <thead>
-                            <tr class="bg-neutral-50 text-neutral-600 uppercase text-xs">
-                                <th class="px-4 py-3 border-b">Name</th>
-                                <th class="px-4 py-3 border-b">Type</th>
-                                <th class="px-4 py-3 border-b">Price</th>
-                                <th class="px-4 py-3 border-b">Stock</th>
-                                <th class="px-4 py-3 border-b">Status</th>
-                                <th class="px-4 py-3 border-b">Actions</th>
+        @if (!Model.Any())
+        {
+            <p class="text-neutral-500 text-center py-10 text-sm">You have no products yet.</p>
+        }
+        else
+        {
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead>
+                        <tr class="bg-neutral-50 text-neutral-600 uppercase text-xs">
+                            <th class="px-4 py-3 border-b">Name</th>
+                            <th class="px-4 py-3 border-b">Type</th>
+                            <th class="px-4 py-3 border-b">Price</th>
+                            <th class="px-4 py-3 border-b">Stock</th>
+                            <th class="px-4 py-3 border-b">Status</th>
+                            <th class="px-4 py-3 border-b">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model)
+                        {
+                            <tr class="border-b hover:bg-neutral-50 transition-colors">
+                                <td class="px-4 py-3">
+                                    <div class="font-medium">@product.Name</div>
+                                    @if (!string.IsNullOrEmpty(product.ShortName))
+                                    {
+                                        <div class="text-neutral-500 text-xs">@product.ShortName</div>
+                                    }
+                                </td>
+                                <td class="px-4 py-3">@product.ProductType</td>
+                                <td class="px-4 py-3">@PriceUtils.Format(product.UnitPrice, currencyCode)</td>
+                                <td class="px-4 py-3">@product.StockQuantity</td>
+                                <td class="px-4 py-3">
+                                    @if (product.IsAdminVerified)
+                                    {
+                                        <span class="text-emerald-600 font-semibold">&#10003; Verified</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-amber-600 font-semibold">&#9888; Pending Verification</span>
+                                    }
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex gap-2">
+                                        <PaButton asp-action="EditProduct" asp-route-id="@product.PkSKU"
+                                            Theme="PaButtonTagHelper.Themes.Primary"
+                                            Size="PaButtonTagHelper.Sizes.Small"
+                                            >Edit</PaButton>
+                                        <PaButton asp-action="DeleteProduct" asp-route-id="@product.PkSKU"
+                                            Theme="PaButtonTagHelper.Themes.Danger"
+                                            Size="PaButtonTagHelper.Sizes.Small"
+                                            Style="PaButtonTagHelper.Styles.Outline">Delete</PaButton>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var product in Model)
-                            {
-                                <tr class="border-b hover:bg-neutral-50 transition-colors">
-                                    <td class="px-4 py-3">
-                                        <div class="font-medium">@product.Name</div>
-                                        @if (!string.IsNullOrEmpty(product.ShortName))
-                                        {
-                                            <div class="text-neutral-500 text-xs">@product.ShortName</div>
-                                        }
-                                    </td>
-                                    <td class="px-4 py-3">@product.ProductType</td>
-                                    <td class="px-4 py-3">@PriceUtils.Format(product.UnitPrice, currencyCode)</td>
-                                    <td class="px-4 py-3">@product.StockQuantity</td>
-                                    <td class="px-4 py-3">
-                                        @if (product.IsAdminVerified)
-                                        {
-                                            <span class="text-emerald-600 font-semibold">&#10003; Verified</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="text-amber-600 font-semibold">&#9888; Pending Verification</span>
-                                        }
-                                    </td>
-                                    <td class="px-4 py-3">
-                                        <div class="flex gap-2">
-                                            <a asp-action="EditProduct" asp-route-id="@product.PkSKU"
-                                               class="text-xs px-3 py-1 rounded-md bg-primary-600 text-white hover:bg-primary-700 transition-colors">Edit</a>
-                                            <a asp-action="DeleteProduct" asp-route-id="@product.PkSKU"
-                                               class="text-xs px-3 py-1 rounded-md bg-rose-600 text-white hover:bg-rose-700 transition-colors">Delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
 
     </div>
 </div>

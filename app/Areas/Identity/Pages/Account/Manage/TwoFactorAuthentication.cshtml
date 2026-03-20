@@ -55,7 +55,15 @@
                 @if (Model.IsMachineRemembered)
                 {
                     <form method="post" class="inline-flex">
-                        <button type="submit" class="inline-flex items-center justify-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 shadow-sm transition hover:border-neutral-400 hover:bg-neutral-50">Forget this browser</button>
+                        <PaButton
+                            tag="button"
+                            Attributes="type=submit"
+                            Theme="PaButtonTagHelper.Themes.None"
+                            Style="PaButtonTagHelper.Styles.Outline"
+                            Size="PaButtonTagHelper.Sizes.Base"
+                            Classes="inline-flex items-center justify-center text-sm font-semibold bg-white shadow-sm hover:border-neutral-400">
+                            Forget this browser
+                        </PaButton>
                     </form>
                 }
                 <a asp-page="./Disable2fa" class="inline-flex items-center justify-center rounded-md bg-beta-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-beta-700">Disable 2FA</a>

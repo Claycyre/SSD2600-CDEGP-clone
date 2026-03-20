@@ -14,7 +14,15 @@
                     if (User.Identity?.IsAuthenticated ?? false)
                     {
                         <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-                            <button type="submit" class="inline-flex items-center justify-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 shadow-sm transition hover:border-neutral-400 hover:bg-neutral-50">Confirm logout</button>
+                            <PaButton
+                                tag="button"
+                                Attributes="type=submit"
+                                Theme="PaButtonTagHelper.Themes.None"
+                                Style="PaButtonTagHelper.Styles.Outline"
+                                Size="PaButtonTagHelper.Sizes.Base"
+                                Classes="inline-flex items-center justify-center text-sm font-semibold bg-white shadow-sm">
+                                Confirm logout
+                            </PaButton>
                         </form>
                     }
                     else

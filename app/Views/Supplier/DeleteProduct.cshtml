@@ -33,13 +33,19 @@
 
         <form asp-action="DeleteProduct" asp-route-id="@Model.PkSKU" method="post" class="flex flex-wrap gap-3">
             @Html.AntiForgeryToken()
-            <button type="submit"
-                    class="inline-flex items-center justify-center rounded-md bg-rose-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-rose-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/40">
+            <PaButton
+                tag="button"
+                Attributes="type=submit"
+                Theme="PaButtonTagHelper.Themes.Danger"
+                Style="PaButtonTagHelper.Styles.Fill"
+                Size="PaButtonTagHelper.Sizes.Base"
+                Classes="">
                 Confirm Delete
-            </button>
-            <a asp-action="Index"
-               class="inline-flex items-center justify-center rounded-md bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-700 hover:bg-neutral-200 transition-colors">Cancel</a>
+            </PaButton>
+            <PaButton asp-action="Index" Style="PaButtonTagHelper.Styles.Outline"
+                      Size="PaButtonTagHelper.Sizes.Base">
+                Cancel
+            </PaButton>
         </form>
-
     </div>
 </div>

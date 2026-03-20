@@ -25,12 +25,19 @@
             @await Html.PartialAsync("_ProductFormFields", Model)
 
             <div class="flex flex-wrap gap-3">
-                <button type="submit"
-                        class="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
+                <PaButton
+                    tag="button"
+                    Attributes="type=submit"
+                    Theme="PaButtonTagHelper.Themes.Primary"
+                    Style="PaButtonTagHelper.Styles.Fill"
+                    Size="PaButtonTagHelper.Sizes.Base"
+                    Classes="inline-flex items-center justify-center text-sm font-semibold shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
                     Submit for Verification
-                </button>
-                <a asp-action="Index"
-                   class="inline-flex items-center justify-center rounded-md bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-700 hover:bg-neutral-200 transition-colors">Cancel</a>
+                </PaButton>
+                <PaButton asp-action="Index" Style="PaButtonTagHelper.Styles.Outline"
+                          Size="PaButtonTagHelper.Sizes.Base">
+                    Cancel
+                </PaButton>
             </div>
         </form>
 

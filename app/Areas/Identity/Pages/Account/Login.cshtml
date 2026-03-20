@@ -37,9 +37,15 @@
                        asp-for="Input.RememberMe" />
                 @Html.DisplayNameFor(m => m.Input.RememberMe)
             </label>
-            <button id="login-submit" type="submit"
-                    class="inline-flex w-full items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">Log
-                in</button>
+            <PaButton
+                tag="button"
+                Attributes="type=submit id=login-submit"
+                Theme="PaButtonTagHelper.Themes.Primary"
+                Style="PaButtonTagHelper.Styles.Fill"
+                Size="PaButtonTagHelper.Sizes.Base"
+                Classes="inline-flex w-full items-center justify-center text-sm font-semibold shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
+                Log in
+            </PaButton>
                 <div class="space-y-2 text-sm text-neutral-600">
                     <p>
                         <a id="forgot-password" class="font-semibold text-primary-700 hover:text-primary-600"

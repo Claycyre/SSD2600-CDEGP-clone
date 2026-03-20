@@ -51,7 +51,15 @@
                     <span asp-validation-for="Input.Code" class="text-sm text-beta-600"></span>
                 </div>
                 <div asp-validation-summary="ModelOnly" class="rounded-lg border border-beta-200 bg-beta-50 px-3 py-2 text-sm text-beta-800" role="alert"></div>
-                <button type="submit" class="inline-flex items-center justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">Verify</button>
+                <PaButton
+                    tag="button"
+                    Attributes="type=submit"
+                    Theme="PaButtonTagHelper.Themes.Primary"
+                    Style="PaButtonTagHelper.Styles.Fill"
+                    Size="PaButtonTagHelper.Sizes.Base"
+                    Classes="inline-flex items-center justify-center text-sm font-semibold shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
+                    Verify
+                </PaButton>
             </form>
         </li>
     </ol>

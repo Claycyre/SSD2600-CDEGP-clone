@@ -96,7 +96,9 @@
                         <form method="post" asp-controller="Cart" asp-action="Add">
                             <input type="hidden" name="id" value="@Model.Id" />
                             <input type="number" name="quantity" value="1" min="1" class="w-20 border rounded px-2 py-1" />
-                            <button type="submit" class="ml-3 bg-blue-600 text-white rounded px-4 py-2">Add to Cart</button>
+                            <PaButton Attributes="type=submit"
+                                Theme="PaButtonTagHelper.Themes.Primary"
+                            >Add to Cart</PaButton>
                         </form>
                     </div>
 

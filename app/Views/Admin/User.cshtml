@@ -143,17 +143,25 @@
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="userId" value="@u.Id" />
                                 <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                <button type="submit"
-                                        class="w-full text-sm px-4 py-2 rounded-md bg-primary-600 text-white hover:bg-primary-700 transition-colors">
+                                <PaButton
+                                    tag="button"
+                                    Attributes="type=submit"
+                                    Theme="PaButtonTagHelper.Themes.None"
+                                    Style="PaButtonTagHelper.Styles.Fill"
+                                    Size="PaButtonTagHelper.Sizes.Base"
+                                    Classes="w-full">
                                     &#10003; Approve Verification
-                                </button>
+                                </PaButton>
                             </form>
                         }
 
-                        <a asp-action="MessageUser" asp-route-userId="@u.Id"
-                           class="block text-center text-sm px-4 py-2 rounded-md bg-neutral-900 text-white hover:bg-neutral-800 transition-colors">
+                        <PaButton
+                            asp-action="MessageUser" asp-route-userId="@u.Id"
+                            Style="PaButtonTagHelper.Styles.Outline"
+                            Classes=""
+                        >
                             &#9993; Send Message
-                        </a>
+                        </PaButton>
 
                         @if (canModerate)
                         {
@@ -163,10 +171,15 @@
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="userId" value="@u.Id" />
                                     <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                    <button type="submit"
-                                            class="w-full text-sm px-4 py-2 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
+                                    <PaButton
+                                        tag="button"
+                                        Attributes="type=submit"
+                                        Theme="PaButtonTagHelper.Themes.None"
+                                        Style="PaButtonTagHelper.Styles.Fill"
+                                        Size="PaButtonTagHelper.Sizes.Base"
+                                        Classes="w-full">
                                         &#8629; Unban Account
-                                    </button>
+                                    </PaButton>
                                 </form>
                             }
                             else
@@ -177,10 +190,15 @@
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="userId" value="@u.Id" />
                                         <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                        <button type="submit"
-                                                class="w-full text-sm px-4 py-2 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
+                                        <PaButton
+                                            tag="button"
+                                            Attributes="type=submit"
+                                            Theme="PaButtonTagHelper.Themes.None"
+                                            Style="PaButtonTagHelper.Styles.Fill"
+                                            Size="PaButtonTagHelper.Sizes.Base"
+                                            Classes="w-full">
                                             &#8629; Lift Suspension
-                                        </button>
+                                        </PaButton>
                                     </form>
                                 }
                                 else
@@ -189,21 +207,30 @@
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="userId" value="@u.Id" />
                                         <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                        <button type="submit"
-                                                class="w-full text-sm px-4 py-2 rounded-md bg-amber-500 text-white hover:bg-amber-600 transition-colors">
+                                        <PaButton
+                                            tag="button"
+                                            Attributes="type=submit"
+                                            Theme="PaButtonTagHelper.Themes.None"
+                                            Style="PaButtonTagHelper.Styles.Fill"
+                                            Size="PaButtonTagHelper.Sizes.Base"
+                                            Classes="w-full">
                                             &#9646;&#9646; Suspend User (7 days)
-                                        </button>
+                                        </PaButton>
                                     </form>
                                 }
                                 <form method="post" asp-action="BanUser">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="userId" value="@u.Id" />
                                     <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                    <button type="submit"
-                                            onclick="return confirm('Permanently ban @(u.UserName ?? u.Email)? They will be immediately locked out.')"
-                                            class="w-full text-sm px-4 py-2 rounded-md bg-rose-600 text-white hover:bg-rose-700 transition-colors">
-                                        &#9940; Ban Account
-                                    </button>
+                                    <PaButton
+                                        tag="button"
+                                        Attributes="type=submit onclick=\"return confirm('Permanently ban {u.UserName ?? u.Email}? They will be immediately locked out.')\""
+                                        Theme="PaButtonTagHelper.Themes.Danger"
+                                        Style="PaButtonTagHelper.Styles.Fill"
+                                        Size="PaButtonTagHelper.Sizes.Base"
+                                        Classes="w-full">
+                                        Ban Account
+                                    </PaButton>
                                 </form>
                             }
                         }
@@ -293,10 +320,12 @@
             <div class="space-y-4">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-semibold text-neutral-900">Admin Messages (@Model.Messages.Count)</h2>
-                    <a asp-action="MessageUser" asp-route-userId="@u.Id"
-                       class="text-sm px-3 py-1.5 rounded-md bg-neutral-900 text-white hover:bg-neutral-800 transition-colors">
+                    <PaButton 
+                        asp-action="MessageUser" asp-route-userId="@u.Id"
+                        Size="PaButtonTagHelper.Sizes.Small"
+                    >
                         + New Message
-                    </a>
+                    </PaButton>
                 </div>
                 @if (!Model.Messages.Any())
                 {

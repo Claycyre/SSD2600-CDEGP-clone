@@ -11,10 +11,13 @@
     {
         <input type="hidden" name="q" value="@query" />
     }
-    <button type="button" onclick="clearFilters(event)"
-            class="rounded bg-primary-600 min-w-fit text-nowrap px-4 py-2 text-white cursor-pointer">
+    <PaButton tag="button" Attributes="type=button onclick=&quot;clearFilters(event)&quot;"
+              Theme="PaButtonTagHelper.Themes.Primary"
+              Style="PaButtonTagHelper.Styles.Fill"
+              Size="PaButtonTagHelper.Sizes.Base"
+              Classes="min-w-fit text-nowrap">
         Clear Filters
-    </button>
+    </PaButton>
 </form>
 
 <script defer src="~/dist/js/filters.js"></script>

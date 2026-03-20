@@ -70,19 +70,28 @@
                                             <form method="post" asp-action="ApproveProduct" class="inline">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="productId" value="@product.PkSKU" />
-                                                <button type="submit"
-                                                        class="text-xs px-3 py-1 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
+                                                <PaButton
+                                                    tag="button"
+                                                    Attributes="type=submit"
+                                                    Theme="PaButtonTagHelper.Themes.None"
+                                                    Style="PaButtonTagHelper.Styles.Fill"
+                                                    Size="PaButtonTagHelper.Sizes.Small"
+                                                    Classes="text-xs rounded-md bg-emerald-600 text-white hover:bg-emerald-700">
                                                     &#10003; Approve
-                                                </button>
+                                                </PaButton>
                                             </form>
                                             <form method="post" asp-action="RejectProduct" class="inline">
                                                 @Html.AntiForgeryToken()
                                                 <input type="hidden" name="productId" value="@product.PkSKU" />
-                                                <button type="submit"
-                                                        class="text-xs px-3 py-1 rounded-md bg-rose-600 text-white hover:bg-rose-700 transition-colors"
-                                                        onclick="return confirm('Reject and delete this product?')">
+                                                <PaButton
+                                                    tag="button"
+                                                    Attributes="type=submit onclick=\"return confirm('Reject and delete this product?')\""
+                                                    Theme="PaButtonTagHelper.Themes.None"
+                                                    Style="PaButtonTagHelper.Styles.Fill"
+                                                    Size="PaButtonTagHelper.Sizes.Small"
+                                                    Classes="text-xs rounded-md bg-rose-600 text-white hover:bg-rose-700">
                                                     &#10007; Reject
-                                                </button>
+                                                </PaButton>
                                             </form>
                                         </div>
                                     </td>
