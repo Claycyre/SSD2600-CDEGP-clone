@@ -14,7 +14,7 @@
                 <h1 class="font-displayxp text-3xl text-primary-900">@ViewData["Title"]</h1>
                 <p class="text-sm text-neutral-600">Create and manage your product listings.</p>
             </div>
-            <PaButton asp-action="CreateProduct" Theme="PaButtonTagHelper.Themes.Primary">
+            <PaButton asp-action="CreateProduct" Theme="PaButton.Themes.Primary">
                 + Add Product
             </PaButton>
         </div>
@@ -71,13 +71,13 @@
                                 <td class="px-4 py-3">
                                     <div class="flex gap-2">
                                         <PaButton asp-action="EditProduct" asp-route-id="@product.PkSKU"
-                                            Theme="PaButtonTagHelper.Themes.Primary"
-                                            Size="PaButtonTagHelper.Sizes.Small"
+                                            Theme="PaButton.Themes.Primary"
+                                            Size="PaButton.Sizes.Small"
                                             >Edit</PaButton>
                                         <PaButton asp-action="DeleteProduct" asp-route-id="@product.PkSKU"
-                                            Theme="PaButtonTagHelper.Themes.Danger"
-                                            Size="PaButtonTagHelper.Sizes.Small"
-                                            Style="PaButtonTagHelper.Styles.Outline">Delete</PaButton>
+                                            Theme="PaButton.Themes.Danger"
+                                            Size="PaButton.Sizes.Small"
+                                            Style="PaButton.Styles.Outline">Delete</PaButton>
                                     </div>
                                 </td>
                             </tr>

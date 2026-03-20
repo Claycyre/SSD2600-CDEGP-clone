@@ -1,7 +1,7 @@
 @using SSD2600_CDEGP.TagHelpers.PaButton
 @using SSD2600_CDEGP.Helpers
 @using System
-@model PaButtonTagHelper
+@model PaButton
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -9,20 +9,20 @@
     var isAnchor = string.Equals(tagName, "a", StringComparison.OrdinalIgnoreCase);
     var baseClasses = "text-center rounded-lg cursor-pointer transition-colors";
     var sizeClasses = new CssClasses(
-        (Model.Size == PaButtonTagHelper.Sizes.Small, "px-3 py-1 text-sm font-semibold", ""),
-        (Model.Size == PaButtonTagHelper.Sizes.Base, "px-4 py-2 text-md", "")
+        (Model.Size == PaButton.Sizes.Small, "px-3 py-1 text-sm font-semibold", ""),
+        (Model.Size == PaButton.Sizes.Base, "px-4 py-2 text-md", "")
     );
-    var fillClasses = Model.Style == PaButtonTagHelper.Styles.Fill ? new CssClasses(
+    var fillClasses = Model.Style == PaButton.Styles.Fill ? new CssClasses(
         ("text-white"),
-        (Model.Theme == PaButtonTagHelper.Themes.None, "bg-neutral-600 hover:bg-neutral-700", ""),
-        (Model.Theme == PaButtonTagHelper.Themes.Danger, "text-beta-50! bg-beta-500 hover:bg-beta-600", ""),
-        (Model.Theme == PaButtonTagHelper.Themes.Primary, "bg-primary-600 hover:bg-primary-700", "")
+        (Model.Theme == PaButton.Themes.None, "bg-neutral-600 hover:bg-neutral-700", ""),
+        (Model.Theme == PaButton.Themes.Danger, "text-beta-50! bg-beta-500 hover:bg-beta-600", ""),
+        (Model.Theme == PaButton.Themes.Primary, "bg-primary-600 hover:bg-primary-700", "")
     ) : new CssClasses();
-    var outlineClasses = Model.Style == PaButtonTagHelper.Styles.Outline ? new CssClasses(
+    var outlineClasses = Model.Style == PaButton.Styles.Outline ? new CssClasses(
         ("outline outline-neutral-300 text-neutral-700"),
-        (Model.Theme == PaButtonTagHelper.Themes.None, "hover:bg-neutral-50", ""),
-        (Model.Theme == PaButtonTagHelper.Themes.Danger, "hover:outline-beta-300 hover:text-beta-700 hover:bg-beta-100", ""),
-        (Model.Theme == PaButtonTagHelper.Themes.Primary, "hover:outline-primary-300 hover:text-primary-700 hover:bg-primary-50", "")
+        (Model.Theme == PaButton.Themes.None, "hover:bg-neutral-50", ""),
+        (Model.Theme == PaButton.Themes.Danger, "hover:outline-beta-300 hover:text-beta-700 hover:bg-beta-100", ""),
+        (Model.Theme == PaButton.Themes.Primary, "hover:outline-primary-300 hover:text-primary-700 hover:bg-primary-50", "")
     ) : new CssClasses();
 }
 

@@ -7,8 +7,8 @@
     <PaButton
         asp-controller="Messages"
         asp-action="Index"
-        Style="PaButtonTagHelper.Styles.Outline"
-        Size="PaButtonTagHelper.Sizes.Small"
+        Style="PaButton.Styles.Outline"
+        Size="PaButton.Sizes.Small"
         Classes="text-slate-600 font-medium"
         Attributes="data-loading-overlay">
         Inbox
@@ -30,8 +30,8 @@
                             asp-area=""
                             asp-controller="Admin"
                             asp-action="Index"
-                            Style="PaButtonTagHelper.Styles.Fill"
-                            Size="PaButtonTagHelper.Sizes.Small"
+                            Style="PaButton.Styles.Fill"
+                            Size="PaButton.Sizes.Small"
                             Classes="flex items-center justify-start w-full text-start shadow-lg"
                             Attributes="data-loading-overlay">
                             &#9881; User Admin
@@ -40,8 +40,8 @@
                             asp-area=""
                             asp-controller="Admin"
                             asp-action="Products"
-                            Style="PaButtonTagHelper.Styles.Fill"
-                            Size="PaButtonTagHelper.Sizes.Small"
+                            Style="PaButton.Styles.Fill"
+                            Size="PaButton.Sizes.Small"
                             Classes="flex items-center justify-start w-full text-start shadow-lg"
                             Attributes="data-loading-overlay">
                             &#9881; Products
@@ -53,8 +53,8 @@
                         <PaButton
                             asp-controller="Supplier"
                             asp-action="Index"
-                            Style="PaButtonTagHelper.Styles.Fill"
-                            Size="PaButtonTagHelper.Sizes.Small"
+                            Style="PaButton.Styles.Fill"
+                            Size="PaButton.Sizes.Small"
                             Classes="w-full text-start shadow-lg"
                             Attributes="data-loading-overlay">
                             Manage Products
@@ -65,8 +65,8 @@
                     <PaButton 
                         asp-area="Identity"
                         asp-page="/Account/Manage/Index"
-                        Style="PaButtonTagHelper.Styles.Outline"
-                        Size="PaButtonTagHelper.Sizes.Small"
+                        Style="PaButton.Styles.Outline"
+                        Size="PaButton.Sizes.Small"
                         Classes="text-start">
                         Account
                     </PaButton>
@@ -75,9 +75,9 @@
                         <PaButton 
                             tag="button"
                             Attributes="type=submit"
-                            Theme="PaButtonTagHelper.Themes.Danger"
-                            Style="PaButtonTagHelper.Styles.Outline"
-                            Size="PaButtonTagHelper.Sizes.Small"
+                            Theme="PaButton.Themes.Danger"
+                            Style="PaButton.Styles.Outline"
+                            Size="PaButton.Sizes.Small"
                             Classes="block w-full text-start"
                         >
                             Log out
@@ -94,15 +94,15 @@ else
         <PaButton
             asp-area="Identity"
             asp-page="/Account/Register"
-            Style="PaButtonTagHelper.Styles.Outline"
-            Size="PaButtonTagHelper.Sizes.Small">
+            Style="PaButton.Styles.Outline"
+            Size="PaButton.Sizes.Small">
             Register
         </PaButton>
         <PaButton
             asp-area="Identity"
             asp-page="/Account/Login"
-            Style="PaButtonTagHelper.Styles.Outline"
-            Size="PaButtonTagHelper.Sizes.Small">
+            Style="PaButton.Styles.Outline"
+            Size="PaButton.Sizes.Small">
             Log in
         </PaButton>
     </div>

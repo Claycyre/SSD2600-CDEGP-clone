@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace SSD2600_CDEGP.TagHelpers.PaButton;
 
 [HtmlTargetElement("PaButton")]
-public class PaButtonTagHelper : RoutingViewTagHelper
+public class PaButton : RoutingViewTagHelper
 {
     public enum Themes
     {

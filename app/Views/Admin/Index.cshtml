@@ -57,14 +57,14 @@
                 <input type="text" name="search" value="@Model.SearchQuery"
                        placeholder="Search by ID, email, username, or phone number"
                        class="flex-1 rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm placeholder:text-neutral-400 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30" />
-                <PaButton tag="button" Attributes="type=submit" Theme="PaButtonTagHelper.Themes.Primary"
-                          Style="PaButtonTagHelper.Styles.Fill" Size="PaButtonTagHelper.Sizes.Base"
+                <PaButton tag="button" Attributes="type=submit" Theme="PaButton.Themes.Primary"
+                          Style="PaButton.Styles.Fill" Size="PaButton.Sizes.Base"
                           Classes="inline-flex items-center justify-center text-sm font-semibold shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
                     Search
                 </PaButton>
                 @if (!string.IsNullOrWhiteSpace(Model.SearchQuery))
                 {
-                    <PaButton asp-action="Index" Style="PaButtonTagHelper.Styles.Outline" Size="PaButtonTagHelper.Sizes.Base"
+                    <PaButton asp-action="Index" Style="PaButton.Styles.Outline" Size="PaButton.Sizes.Base"
                               Classes="inline-flex items-center justify-center bg-neutral-100 hover:bg-neutral-200">
                         Clear
                     </PaButton>
@@ -186,14 +186,14 @@
                                     <td class="px-4 py-3">
                                         <div class="flex flex-col gap-1 min-w-[90px]">
                                             <PaButton tag="a" asp-action="User" asp-route-userId="@user.Id"
-                                                      Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Outline"
-                                                      Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                      Theme="PaButton.Themes.None" Style="PaButton.Styles.Outline"
+                                                      Size="PaButton.Sizes.Small" Classes="w-full">
                                                 View →
                                             </PaButton>
 
                                             <PaButton tag="button" asp-action="MessageUser" asp-route-userId="@user.Id"
-                                                      Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
-                                                      Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                      Theme="PaButton.Themes.None" Style="PaButton.Styles.Fill"
+                                                      Size="PaButton.Sizes.Small" Classes="w-full">
                                                 Message
                                             </PaButton>
 
@@ -203,8 +203,8 @@
                                                     @Html.AntiForgeryToken()
                                                     <input type="hidden" name="userId" value="@user.Id" />
                                                     <PaButton tag="button" Attributes="type=submit"
-                                                              Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
-                                                              Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                              Theme="PaButton.Themes.None" Style="PaButton.Styles.Fill"
+                                                              Size="PaButton.Sizes.Small" Classes="w-full">
                                                         Approve
                                                     </PaButton>
                                                 </form>
@@ -218,8 +218,8 @@
                                                         @Html.AntiForgeryToken()
                                                         <input type="hidden" name="userId" value="@user.Id" />
                                                         <PaButton tag="button" Attributes="type=submit"
-                                                                  Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
-                                                                  Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                                  Theme="PaButton.Themes.None" Style="PaButton.Styles.Fill"
+                                                                  Size="PaButton.Sizes.Small" Classes="w-full">
                                                             Unban
                                                         </PaButton>
                                                     </form>
@@ -232,8 +232,8 @@
                                                             @Html.AntiForgeryToken()
                                                             <input type="hidden" name="userId" value="@user.Id" />
                                                             <PaButton tag="button" Attributes="type=submit"
-                                                                      Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
-                                                                      Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                                      Theme="PaButton.Themes.None" Style="PaButton.Styles.Fill"
+                                                                      Size="PaButton.Sizes.Small" Classes="w-full">
                                                                 Reinstate
                                                             </PaButton>
                                                         </form>
@@ -244,8 +244,8 @@
                                                             @Html.AntiForgeryToken()
                                                             <input type="hidden" name="userId" value="@user.Id" />
                                                             <PaButton tag="button" Attributes="type=submit"
-                                                                      Theme="PaButtonTagHelper.Themes.None" Style="PaButtonTagHelper.Styles.Fill"
-                                                                      Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                                      Theme="PaButton.Themes.None" Style="PaButton.Styles.Fill"
+                                                                      Size="PaButton.Sizes.Small" Classes="w-full">
                                                                 Suspend
                                                             </PaButton>
                                                         </form>
@@ -255,8 +255,8 @@
                                                         <input type="hidden" name="userId" value="@user.Id" />
                                                         <PaButton tag="button" Attributes="type=submit onclick=\" return
                                                                   confirm('Permanently ban this user? They will be immediately locked out.')\""
-                                                                  Theme="PaButtonTagHelper.Themes.Danger" Style="PaButtonTagHelper.Styles.Fill"
-                                                                  Size="PaButtonTagHelper.Sizes.Small" Classes="w-full">
+                                                                  Theme="PaButton.Themes.Danger" Style="PaButton.Styles.Fill"
+                                                                  Size="PaButton.Sizes.Small" Classes="w-full">
                                                             Ban
                                                         </PaButton>
                                                     </form>
