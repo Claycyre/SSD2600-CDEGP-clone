@@ -6,3 +6,12 @@ function scrollToElement(id: string, opts?: ScrollIntoViewOptions) {
 
   element.scrollIntoView(opts);
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-scroll-target]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const id = el.getAttribute("data-scroll-target");
+      scrollToElement(id, { behavior: "smooth" });
+    });
+  });
+});

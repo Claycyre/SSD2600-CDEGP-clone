@@ -22,6 +22,7 @@ public class PaButton : RoutingViewTagHelper
     {
         Fill,
         Outline,
+        Inverted,
     }
 
     public enum Sizes

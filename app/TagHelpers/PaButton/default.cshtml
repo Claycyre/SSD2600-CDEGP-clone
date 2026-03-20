@@ -24,9 +24,15 @@
         (Model.Theme == PaButton.Themes.Danger, "hover:outline-beta-300 hover:text-beta-700 hover:bg-beta-100", ""),
         (Model.Theme == PaButton.Themes.Primary, "hover:outline-primary-300 hover:text-primary-700 hover:bg-primary-50", "")
     ) : new CssClasses();
+    var invertedClasses = Model.Style == PaButton.Styles.Inverted ? new CssClasses(
+        ("bg-white hover:bg-neutral-50"),
+        (Model.Theme == PaButton.Themes.None, "text-neutral-800", ""),
+        (Model.Theme == PaButton.Themes.Danger, "text-beta-800", ""),
+        (Model.Theme == PaButton.Themes.Primary, "text-primary-800", "")
+    ) : new CssClasses();
 }
 
-<@(tagName) class="@baseClasses @sizeClasses @fillClasses @outlineClasses @Model.Classes" @Model.Attributes
+<@(tagName) class="@baseClasses @sizeClasses @fillClasses @outlineClasses @invertedClasses @Model.Classes" @Model.Attributes
 @if (isAnchor && !string.IsNullOrEmpty(Model.Href))
 {
     <text> href="@Model.Href"</text>

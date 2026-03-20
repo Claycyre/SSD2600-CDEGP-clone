@@ -55,11 +55,10 @@
                 the next era of industrial evolution, providing the raw power needed to sustain the spark of human
                 progress.
             </p>
-            <button
-                class="self-start px-3 py-2 rounded font-semibold text-primary-800 bg-neutral-50 hover:bg-neutral-100 duration-100 cursor-pointer"
-                onclick="scrollToElement('periodic-table', { behavior: 'smooth' })">
+            <PaButton Attributes="data-scroll-target=periodic-table" Theme="PaButton.Themes.Primary"
+                      Style="PaButton.Styles.Inverted" Classes="w-fit font-semibold">
                 Explore the elements
-            </button>
+            </PaButton>
         </div>
     </section>
     <section id="periodic-table" class="flex size-full min-h-screen">
