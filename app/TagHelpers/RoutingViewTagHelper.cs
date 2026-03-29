@@ -71,10 +71,7 @@ public class RoutingViewTagHelper : ViewTagHelper
             }
         }
 
-        if (!string.IsNullOrEmpty(AspArea))
-        {
-            AllRouteValues["area"] = AspArea;
-        }
+        AllRouteValues["area"] = !string.IsNullOrEmpty(AspArea) ? AspArea : "";
 
         Href = BuildHref();
 
