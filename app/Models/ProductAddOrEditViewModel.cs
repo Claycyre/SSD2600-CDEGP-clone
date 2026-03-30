@@ -5,6 +5,9 @@ namespace SSD2600_CDEGP.Models;
 public class ProductAddOrEditViewModel
 {
     [Required]
+    public int SKU { get; set; }
+
+    [Required]
     [StringLength(70)]
     public string Name { get; set; } = string.Empty;
 

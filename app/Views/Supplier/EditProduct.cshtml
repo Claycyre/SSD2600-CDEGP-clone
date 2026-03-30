@@ -17,7 +17,7 @@
             catalogue.
         </p>
 
-        <form asp-action="EditProduct" asp-route-id="@ViewBag.ProductId" method="post" class="space-y-6">
+        <form asp-action="EditProduct" asp-route-sku="@Model.SKU" method="post" class="space-y-6">
             @Html.AntiForgeryToken()
 
             <div asp-validation-summary="ModelOnly"

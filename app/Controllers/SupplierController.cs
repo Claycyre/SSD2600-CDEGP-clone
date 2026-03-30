@@ -80,49 +80,18 @@ public class SupplierController(
         return View(vm);
     }
 
-    // POST: Supplier/EditProduct/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditProduct(
-        int id,
-        [Bind("PkSKU,Name,Description,StockQuantity,FkSupplierId")] Product product
-    )
-    {
-        if (id != product.PkSKU)
-            return NotFound();
-
-        // Get current user
-        var user = await userManager.GetUserAsync(User);
-
-        // Verify user can edit this product
-        if (user?.FkSupplierId != product.FkSupplierId)
-            return Unauthorized("You can only edit products for your supplier.");
-
-        if (ModelState.IsValid)
-        {
-            await productRepository.UpdateAsync(product);
-            return RedirectToAction(nameof(Index));
-        }
-
-        var vm = ModelToVM(product);
-        // necessary for <form asp-action="EditProduct" asp-route-id="@ViewBag.ProductId" method="post">
-        ViewBag.ProductId = id;
-        return View(vm);
-    }
-
     // POST: /Supplier/EditProduct/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> EditProduct(int id, ProductAddOrEditViewModel vm)
+    public async Task<IActionResult> EditProduct(int sku, ProductAddOrEditViewModel vm)
     {
         var supplierId = await GetCurrentSupplierIdAsync();
-        var existing = await _db.Products.FindAsync(id);
+        var existing = await productRepository.GetByIdAsync(sku);
         if (existing == null || existing.FkSupplierId != supplierId)
             return NotFound();
 
         if (!ModelState.IsValid)
         {
-            ViewBag.ProductId = id;
             return View(vm);
         }
 
@@ -141,7 +110,7 @@ public class SupplierController(
         existing.SpecificActivity = vm.SpecificActivity;
         existing.IsAdminVerified = false;
 
-        await _db.SaveChangesAsync();
+        await productRepository.UpdateAsync(existing);
         TempData["Success"] = "Product updated and is awaiting admin re-verification.";
         return RedirectToAction(nameof(Index));
     }
@@ -183,6 +152,7 @@ public class SupplierController(
     {
         return new Product
         {
+            PkSKU = vm.SKU,
             Name = vm.Name,
             ShortName = vm.ShortName,
             Description = vm.Description,
@@ -204,6 +174,7 @@ public class SupplierController(
     {
         return new ProductAddOrEditViewModel
         {
+            SKU = p.PkSKU,
             Name = p.Name,
             ShortName = p.ShortName,
             Description = p.Description,
