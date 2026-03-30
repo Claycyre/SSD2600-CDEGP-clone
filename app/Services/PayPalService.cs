@@ -19,7 +19,8 @@ public class PayPalCaptureResult
 public class PayPalService(
     IHttpClientFactory httpClientFactory,
     IOptions<PayPalSettings> options,
-    IMemoryCache cache)
+    IMemoryCache cache
+)
 {
     private readonly PayPalSettings _settings = options.Value;
     private const string TokenCacheKey = "paypal_access_token";
@@ -27,7 +28,7 @@ public class PayPalService(
     private static readonly JsonSerializerOptions JsonOpts = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
-        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     };
 
     private HttpClient CreateClient() => httpClientFactory.CreateClient("paypal");
@@ -41,13 +42,20 @@ public class PayPalService(
 
         var client = CreateClient();
         var credentials = Convert.ToBase64String(
-            Encoding.UTF8.GetBytes($"{_settings.ClientId}:{_settings.ClientSecret}"));
+            Encoding.UTF8.GetBytes($"{_settings.ClientId}:{_settings.ClientSecret}")
+        );
 
-        var request = new HttpRequestMessage(HttpMethod.Post, $"{_settings.BaseUrl}/v1/oauth2/token")
+        var request = new HttpRequestMessage(
+            HttpMethod.Post,
+            $"{_settings.BaseUrl}/v1/oauth2/token"
+        )
         {
             Headers = { Authorization = new AuthenticationHeaderValue("Basic", credentials) },
-            Content = new StringContent("grant_type=client_credentials",
-                Encoding.UTF8, "application/x-www-form-urlencoded")
+            Content = new StringContent(
+                "grant_type=client_credentials",
+                Encoding.UTF8,
+                "application/x-www-form-urlencoded"
+            ),
         };
 
         var response = await client.SendAsync(request);
@@ -69,16 +77,14 @@ public class PayPalService(
         var token = await GetAccessTokenAsync();
         var client = CreateClient();
 
-        var items = cart.Items.Select(i => new
-        {
-            name = i.Name.Length > 127 ? i.Name[..127] : i.Name,
-            quantity = i.Quantity.ToString(),
-            unit_amount = new
+        var items = cart
+            .Items.Select(i => new
             {
-                currency_code = currencyCode,
-                value = i.Price.ToString("F2")
-            }
-        }).ToList();
+                name = i.Name.Length > 127 ? i.Name[..127] : i.Name,
+                quantity = i.Quantity.ToString(),
+                unit_amount = new { currency_code = currencyCode, value = i.Price.ToString("F2") },
+            })
+            .ToList();
 
         var body = new
         {
@@ -96,20 +102,26 @@ public class PayPalService(
                             item_total = new
                             {
                                 currency_code = currencyCode,
-                                value = cart.Total.ToString("F2")
-                            }
-                        }
+                                value = cart.Total.ToString("F2"),
+                            },
+                        },
                     },
-                    items
-                }
-            }
+                    items,
+                },
+            },
         };
 
-        var request = new HttpRequestMessage(HttpMethod.Post, $"{_settings.BaseUrl}/v2/checkout/orders")
+        var request = new HttpRequestMessage(
+            HttpMethod.Post,
+            $"{_settings.BaseUrl}/v2/checkout/orders"
+        )
         {
             Headers = { Authorization = new AuthenticationHeaderValue("Bearer", token) },
-            Content = new StringContent(JsonSerializer.Serialize(body, JsonOpts),
-                Encoding.UTF8, "application/json")
+            Content = new StringContent(
+                JsonSerializer.Serialize(body, JsonOpts),
+                Encoding.UTF8,
+                "application/json"
+            ),
         };
         request.Headers.Add("PayPal-Request-Id", Guid.NewGuid().ToString());
 
@@ -130,10 +142,11 @@ public class PayPalService(
 
         var request = new HttpRequestMessage(
             HttpMethod.Post,
-            $"{_settings.BaseUrl}/v2/checkout/orders/{paypalOrderId}/capture")
+            $"{_settings.BaseUrl}/v2/checkout/orders/{paypalOrderId}/capture"
+        )
         {
             Headers = { Authorization = new AuthenticationHeaderValue("Bearer", token) },
-            Content = new StringContent("{}", Encoding.UTF8, "application/json")
+            Content = new StringContent("{}", Encoding.UTF8, "application/json"),
         };
 
         var response = await client.SendAsync(request);
@@ -152,26 +165,28 @@ public class PayPalService(
             return new PayPalCaptureResult
             {
                 Success = false,
-                ErrorMessage = $"Unexpected capture status: {status}"
+                ErrorMessage = $"Unexpected capture status: {status}",
             };
 
-        var capture = doc.RootElement
-            .GetProperty("purchase_units")[0]
+        var capture = doc
+            .RootElement.GetProperty("purchase_units")[0]
             .GetProperty("payments")
             .GetProperty("captures")[0];
 
         var captureId = capture.GetProperty("id").GetString()!;
 
         string? payerEmail = null;
-        if (doc.RootElement.TryGetProperty("payer", out var payer) &&
-            payer.TryGetProperty("email_address", out var email))
+        if (
+            doc.RootElement.TryGetProperty("payer", out var payer)
+            && payer.TryGetProperty("email_address", out var email)
+        )
             payerEmail = email.GetString();
 
         return new PayPalCaptureResult
         {
             Success = true,
             CaptureId = captureId,
-            PayerEmail = payerEmail
+            PayerEmail = payerEmail,
         };
     }
 }
