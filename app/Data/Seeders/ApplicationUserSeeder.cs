@@ -42,6 +42,13 @@ public class ApplicationUserSeeder(DbContext _context, List<Supplier> _available
                     return f.PickRandom(suppliers).Id;
                 }
             )
+            .RuleFor(u => u.VerificationSubmitted, f => f.Random.Float() < 0.80)
+            .RuleFor(
+                u => u.VerificationApproved,
+                (f, u) => u.VerificationSubmitted && f.Random.Bool()
+            )
+            .RuleFor(u => u.UserBanned, f => f.Random.Float() < 0.20)
+            .RuleFor(u => u.UserSuspended, (f, u) => !u.UserBanned && f.Random.Float() < 0.20)
             .RuleFor(u => u.PreferredCurrencyCode, f => f.PickRandom("CAD", "USD", "EUR", "GBP"))
             // IdentityFW stuff
             .RuleFor(u => u.SecurityStamp, f => Guid.NewGuid().ToString())
