@@ -113,6 +113,14 @@ public static class DbInitializer
             }
         }
 
+        foreach (var user in fakeUsers)
+        {
+            if (user.FkSupplierId != null)
+            {
+                userManager.AddToRoleAsync(user, "Supplier").GetAwaiter().GetResult();
+            }
+        }
+
         new ContactDetailSeeder(context, fakeUsers).Generate();
         context.SaveChanges();
 
