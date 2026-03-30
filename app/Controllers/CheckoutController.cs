@@ -38,7 +38,7 @@ public class CheckoutController(
             Cart = cart,
             ContactDetail = contact,
             CurrencyCode = user?.PreferredCurrencyCode ?? "CAD",
-            PayPalClientId = _payPalSettings.ClientId,
+            PayPalClientId = _payPalSettings.ClientId
         };
 
         return View(vm);
@@ -61,9 +61,7 @@ public class CheckoutController(
 
     // POST /Checkout/CapturePayPalOrder — called by PayPal JS SDK after user approves
     [HttpPost]
-    public async Task<IActionResult> CapturePayPalOrder(
-        [FromBody] CapturePayPalOrderRequest request
-    )
+    public async Task<IActionResult> CapturePayPalOrder([FromBody] CapturePayPalOrderRequest request)
     {
         var cart = cartService.GetCart();
         if (!cart.Items.Any())
@@ -83,7 +81,7 @@ public class CheckoutController(
             GatewayName = "PayPal",
             Subtotal = (double)cart.Total,
             Total = (double)cart.Total,
-            CurrencyCode = currency,
+            CurrencyCode = currency
         };
         db.Transactions.Add(transaction);
         await db.SaveChangesAsync();
@@ -95,7 +93,7 @@ public class CheckoutController(
             OrderDate = DateTime.UtcNow,
             Status = "Processing",
             FkUserId = user!.Id,
-            FkTransactionId = transaction.PkTransactionId,
+            FkTransactionId = transaction.PkTransactionId
         };
         db.Orders.Add(order);
         await db.SaveChangesAsync();
@@ -103,18 +101,15 @@ public class CheckoutController(
         // Persist OrderLineItems
         foreach (var item in cart.Items)
         {
-            if (!int.TryParse(item.Id, out int sku))
-                continue;
+            if (!int.TryParse(item.Id, out int sku)) continue;
 
-            db.OrderLineItems.Add(
-                new OrderLineItem
-                {
-                    FkOrderId = order.PkOrderId,
-                    FkProductSKU = sku,
-                    Quantity = item.Quantity,
-                    UnitPrice = (double)item.Price,
-                }
-            );
+            db.OrderLineItems.Add(new OrderLineItem
+            {
+                FkOrderId = order.PkOrderId,
+                FkProductSKU = sku,
+                Quantity = item.Quantity,
+                UnitPrice = (double)item.Price
+            });
         }
         await db.SaveChangesAsync();
 
@@ -128,9 +123,8 @@ public class CheckoutController(
     {
         var userId = userManager.GetUserId(User);
 
-        var order = await db
-            .Orders.Include(o => o.OrderLineItems)
-                .ThenInclude(li => li.Product)
+        var order = await db.Orders
+            .Include(o => o.OrderLineItems).ThenInclude(li => li.Product)
             .Include(o => o.Transaction)
             .FirstOrDefaultAsync(o => o.PkOrderId == orderId && o.FkUserId == userId);
 

@@ -26,16 +26,14 @@ public class CartService(IHttpContextAccessor httpContextAccessor)
         if (existing != null)
             existing.Quantity += quantity;
         else
-            cart.Items.Add(
-                new CartItem
-                {
-                    Id = id,
-                    Name = name,
-                    Price = price,
-                    Quantity = quantity,
-                    ImageUrl = imageUrl,
-                }
-            );
+            cart.Items.Add(new CartItem
+            {
+                Id = id,
+                Name = name,
+                Price = price,
+                Quantity = quantity,
+                ImageUrl = imageUrl
+            });
 
         SaveCart(cart);
     }
@@ -51,8 +49,7 @@ public class CartService(IHttpContextAccessor httpContextAccessor)
     {
         var cart = GetCart();
         var item = cart.Items.FirstOrDefault(i => i.Id == id);
-        if (item == null)
-            return;
+        if (item == null) return;
 
         if (quantity <= 0)
             cart.Items.Remove(item);

@@ -6,6 +6,7 @@ public class PayPalSettings
     public string ClientSecret { get; set; } = string.Empty;
     public string Mode { get; set; } = "sandbox";
 
-    public string BaseUrl =>
-        Mode == "live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
+    public string BaseUrl => Mode == "live"
+        ? "https://api-m.paypal.com"
+        : "https://api-m.sandbox.paypal.com";
 }
