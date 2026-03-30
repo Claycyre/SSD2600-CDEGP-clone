@@ -1,3 +1,4 @@
+using Bogus;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SSD2600_CDEGP.Data;
@@ -43,85 +44,7 @@ public static class DbInitializer
                 roleManager.CreateAsync(new IdentityRole(role)).GetAwaiter().GetResult();
         }
 
-        // Seed admin account if it doesn't exist
-        if (userManager.FindByNameAsync("admin@admin.com").GetAwaiter().GetResult() == null)
-        {
-            var adminUser = new ApplicationUser
-            {
-                UserName = "admin@admin.com",
-                NormalizedUserName = "ADMIN@ADMIN.COM",
-                Email = "admin@admin.com",
-                NormalizedEmail = "ADMIN@ADMIN.COM",
-                EmailConfirmed = true,
-                UserRole = "SiteAdmin",
-                RegisteredAt = DateTime.UtcNow,
-                VerificationSubmitted = true,
-                VerificationApproved = true,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-            };
-            adminUser.PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(
-                adminUser,
-                "admin"
-            );
-            userManager.CreateAsync(adminUser).GetAwaiter().GetResult();
-            userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
-        }
-
-        // Seed admin account if it doesn't exist
-        if (
-            userManager.FindByNameAsync("admin@prometheusatomics.local").GetAwaiter().GetResult()
-            == null
-        )
-        {
-            var adminUser = new ApplicationUser
-            {
-                UserName = "admin@prometheusatomics.local",
-                NormalizedUserName = "ADMIN@ADMIN.COM",
-                Email = "admin@prometheusatomics.local",
-                NormalizedEmail = "ADMIN@PROMETHEUS.LOCAL",
-                EmailConfirmed = true,
-                UserRole = "SiteAdmin",
-                RegisteredAt = DateTime.UtcNow,
-                VerificationSubmitted = true,
-                VerificationApproved = true,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-            };
-            adminUser.PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(
-                adminUser,
-                "admin"
-            );
-            userManager.CreateAsync(adminUser).GetAwaiter().GetResult();
-            userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
-        }
-
-        // Seed admin account if it doesn't exist
-        if (userManager.FindByNameAsync("admin@admin.com").GetAwaiter().GetResult() == null)
-        {
-            var adminUser = new ApplicationUser
-            {
-                UserName = "admin@admin.com",
-                NormalizedUserName = "ADMIN@ADMIN.COM",
-                Email = "admin@admin.com",
-                NormalizedEmail = "ADMIN@ADMIN.COM",
-                EmailConfirmed = true,
-                UserRole = "SiteAdmin",
-                RegisteredAt = DateTime.UtcNow,
-                VerificationSubmitted = true,
-                VerificationApproved = true,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-            };
-            adminUser.PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(
-                adminUser,
-                "endmin"
-            );
-            userManager.CreateAsync(adminUser).GetAwaiter().GetResult();
-            userManager.AddToRoleAsync(adminUser, "Admin").GetAwaiter().GetResult();
-        }
-
-        if (!doReseed && context.Users.Count() > 2)
+        if (!doReseed && context.Users.Any())
         {
             return;
         }
@@ -129,44 +52,66 @@ public static class DbInitializer
         var fakeSuppliers = new SupplierSeeder(context).Generate(10, 20);
         context.SaveChanges();
 
-        var fakeUsers = new ApplicationUserSeeder(context, fakeSuppliers).Generate(20, 50);
-
-        // Seed a few named supplier user accounts linked to the first suppliers
-        var passHasher = new PasswordHasher<ApplicationUser>();
-        var supplierAccounts = new List<ApplicationUser>();
-        var namedSuppliers = fakeSuppliers.Take(3).ToList();
-        var supplierEmails = new[]
+        var userSeeder = new ApplicationUserSeeder(context, fakeSuppliers);
+        var protoUsers = new List<ProtoUser>
         {
-            "supplier1@example.com",
-            "supplier2@example.com",
-            "supplier3@example.com",
-        };
-        for (int i = 0; i < namedSuppliers.Count; i++)
-        {
-            var email = supplierEmails[i];
-            if (userManager.FindByNameAsync(email).GetAwaiter().GetResult() == null)
+            new()
             {
-                var supplierUser = new ApplicationUser
+                User = new ApplicationUser
                 {
-                    UserName = email,
-                    NormalizedUserName = email.ToUpperInvariant(),
-                    Email = email,
-                    NormalizedEmail = email.ToUpperInvariant(),
-                    EmailConfirmed = true,
-                    UserRole = "Supplier",
-                    FkSupplierId = namedSuppliers[i].Id,
-                    RegisteredAt = DateTime.UtcNow,
-                    SecurityStamp = Guid.NewGuid().ToString(),
-                    ConcurrencyStamp = Guid.NewGuid().ToString(),
-                };
-                supplierUser.PasswordHash = passHasher.HashPassword(supplierUser, "supplier");
-                userManager.CreateAsync(supplierUser).GetAwaiter().GetResult();
-                userManager.AddToRoleAsync(supplierUser, "Supplier").GetAwaiter().GetResult();
-                supplierAccounts.Add(supplierUser);
+                    UserName = "admin@admin.com",
+                    Email = "admin@admin.com",
+                    UserRole = "SiteAdmin",
+                },
+                Password = "admin",
+                AddUserToRole = "Admin",
+            },
+            new()
+            {
+                User = new ApplicationUser
+                {
+                    UserName = "admin@prometheusatomics.local",
+                    Email = "admin@prometheusatomics.local",
+                    UserRole = "SiteAdmin",
+                },
+                Password = "admin",
+                AddUserToRole = "Admin",
+            },
+        };
+
+        for (int i = 0; i < Math.Floor((double)fakeSuppliers.Count / 3); i++)
+        {
+            var email = string.Concat("supplier", (i + 1).ToString(), "@example.com");
+            protoUsers.Add(
+                new ProtoUser
+                {
+                    User = new ApplicationUser
+                    {
+                        UserName = email,
+                        Email = email,
+                        UserRole = "Supplier",
+                        FkSupplierId = fakeSuppliers[i].Id,
+                    },
+                    Password = "supplier",
+                    AddUserToRole = "Supplier",
+                }
+            );
+        }
+        userSeeder.SeedThese(protoUsers);
+
+        var fakeUsers = userSeeder.Generate(20, 50);
+        context.SaveChanges();
+
+        foreach (var protoUser in userSeeder.GetPrescribedUsers())
+        {
+            if (!string.IsNullOrEmpty(protoUser.AddUserToRole))
+            {
+                userManager
+                    .AddToRoleAsync(protoUser.User, protoUser.AddUserToRole)
+                    .GetAwaiter()
+                    .GetResult();
             }
         }
-
-        context.SaveChanges();
 
         new ContactDetailSeeder(context, fakeUsers).Generate();
         context.SaveChanges();

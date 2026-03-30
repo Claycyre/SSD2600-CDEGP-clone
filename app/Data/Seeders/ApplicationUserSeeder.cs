@@ -5,10 +5,40 @@ using SSD2600_CDEGP.Models;
 
 namespace SSD2600_CDEGP.Data.Seeders;
 
+public record ProtoUser
+{
+    public required ApplicationUser User { get; set; }
+    public required string Password { get; set; }
+    public string AddUserToRole { get; set; } = default!;
+}
+
 public class ApplicationUserSeeder(DbContext _context, List<Supplier> _availableSuppliers)
     : BaseSeeder<ApplicationUser>(_context)
 {
     private readonly List<Supplier> suppliers = _availableSuppliers;
+
+    private readonly List<ProtoUser> prescribedUsers = [];
+
+    public void SeedThese(List<ProtoUser> users)
+    {
+        prescribedUsers.AddRange([
+            .. users.Select(p =>
+            {
+                p.User.EmailConfirmed = true;
+                p.User.PasswordHash = new PasswordHasher<ApplicationUser>().HashPassword(
+                    p.User,
+                    p.Password
+                );
+
+                return p;
+            }),
+        ]);
+    }
+
+    public List<ProtoUser> GetPrescribedUsers()
+    {
+        return prescribedUsers;
+    }
 
     public List<ApplicationUser> Generate(int min, int max)
     {
@@ -55,6 +85,11 @@ public class ApplicationUserSeeder(DbContext _context, List<Supplier> _available
             .RuleFor(u => u.ConcurrencyStamp, f => Guid.NewGuid().ToString());
 
         var fakeApplicationUsers = fakeApplicationUserGenerator.GenerateBetween(min, max);
+
+        foreach (var protoUser in prescribedUsers)
+        {
+            fakeApplicationUsers.Add(protoUser.User);
+        }
 
         foreach (var user in fakeApplicationUsers)
         {
